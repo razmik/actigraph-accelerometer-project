@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import sys
+import math
 
 wrist_raw_data_filename = "D:/Accelerometer Data/Sample/LSM216/LSM216 Waist (2016-11-03)RAW.csv"
 epoch_filename = "D:/Accelerometer Data/Sample/LSM216/LSM216 Waist (2016-11-03)15sec.csv"
@@ -57,18 +58,34 @@ raw_data_wrist_groups = np.array_split(raw_data_wrist, len(aggregated_wrist))
 # frequency domain features
 
 for i in range(0, len(raw_data_wrist_groups)):
-    spectrum = np.fft.fft(np.sin(raw_data_wrist_groups[i]['vm']))
-    freq = np.fft.fftfreq(raw_data_wrist_groups[i]['vm'].shape[-1])
 
-    plt.plot(freq, spectrum.real, freq, spectrum.imag)
+    """
+    dt = 0.01  # sample rate
+    N = 1500  # number of samples
+    T = dt * N  # time period (duration of signal)
+
+    # fundamental frequency
+    df = 1 / T  # Hz
+    dw = (2 * math.pi) / T  # rad/s
+
+    ny = dw * N / 2  # top frequency
+
+    f = np.fft.fftfreq(N) * N * df
+    """
+
+    spectrum = np.fft.fft(np.sin(raw_data_wrist_groups[i]['vm']))
+    freqs = np.fft.fftfreq(raw_data_wrist_groups[i]['vm'].shape[-1], 0.01)
+
+
+    idx = np.argmax(np.abs(spectrum))
+    freq = freqs[idx]
+
+    print("range", i, freq, np.amax(np.abs(spectrum)))
+
+    plt.plot(freqs, abs(spectrum))
     plt.show()
 
     sys.exit(0)
-
-    idx = np.argmax(np.abs(spectrum))
-    freq = freq[idx]
-
-    print("range", i, idx, np.amax(np.abs(spectrum)))
 
 """
 Helpers:

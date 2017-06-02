@@ -2,15 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-x = np.random.random(20)
-
-print(x)
-print('\n')
+# x = np.random.random(100)
+x = np.array([1,2,1,0,1,2,1,0])
 
 spectrum = np.fft.fft(np.sin(x))
-freq = np.fft.fftfreq(x.shape[-1])
+freqs = np.fft.fftfreq(x.shape[-1], 0.01)
 
-print(abs(spectrum))
+idx = np.argmax(np.abs(spectrum))
+freq = freqs[idx]
 
-plt.plot(freq, abs(spectrum))
+print("res", freq, np.amax(np.abs(spectrum)))
+
+plt.plot(freqs, abs(spectrum))
 plt.show()
