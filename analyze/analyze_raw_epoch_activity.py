@@ -143,21 +143,21 @@ plt.plot(x_range, normalize_wrist_cpm, 'r', x_range, normalize_wrist_10perc, 'b'
 
 plt.figure(4)
 x_range = np.arange(len(aggregated_wrist))
-plt.title("Waist Activity Intensity vs - Wrist VM and SD")
-plt.xlabel('Red - Activity Intensity, Blue - Wrist Mean VM, Green - Wrist Mean SD')
-plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_mvm, 'b', x_range, normalize_wrist_sd, 'g')
+plt.title("Waist Processed CPM vs - Wrist VM and SD")
+plt.xlabel('Red - Waist Processed CPM, Blue - Wrist Mean VM, Green - Wrist Mean SD')
+plt.plot(x_range, normalize_waist_cpm, 'r', x_range, normalize_wrist_mvm, 'b', x_range, normalize_wrist_sd, 'g')
 
 plt.figure(5)
 x_range = np.arange(len(aggregated_wrist))
 plt.title("Waist Processed CPM vs - Wrist Max VM and Min VM")
-plt.xlabel('Red - Activity Intensity, Blue - Wrist Max VM, Green - Wrist Min SD')
-plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_maxvm, 'b', x_range, normalize_wrist_minvm, 'g')
+plt.xlabel('Red - Waist Processed CPM, Blue - Wrist Max VM, Green - Wrist Min SD')
+plt.plot(x_range, normalize_waist_cpm, 'r', x_range, normalize_wrist_maxvm, 'b', x_range, normalize_wrist_minvm, 'g')
 
 plt.figure(6)
 x_range = np.arange(len(aggregated_wrist))
 plt.title("Waist Processed CPM vs - Wrist Percentiles")
-plt.xlabel('Red - Activity Intensity, Blue - 10th perc VM, Green - 25th perc, Magenta - 50th perc, Yellow - 75th perc, Black - 90th perc')
-plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_10perc, 'b', x_range, normalize_wrist_25perc, 'g', x_range, normalize_wrist_50perc, 'm', x_range, normalize_wrist_75perc, 'y', x_range, normalize_wrist_90perc, 'k')
+plt.xlabel('Red - Waist Processed CPM, Blue - 10th perc VM, Green - 25th perc, Magenta - 50th perc, Yellow - 75th perc, Black - 90th perc')
+plt.plot(x_range, normalize_waist_cpm, 'r', x_range, normalize_wrist_10perc, 'b', x_range, normalize_wrist_25perc, 'g', x_range, normalize_wrist_50perc, 'm', x_range, normalize_wrist_75perc, 'y', x_range, normalize_wrist_90perc, 'k')
 
 
 
@@ -165,19 +165,19 @@ plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_10
 
 plt.figure(7)
 x_range = np.arange(len(aggregated_wrist))
-plt.title("Wrist Processed CPM vs - Wrist VM and SD")
-plt.xlabel('Red - Wrist CPM, Blue - Wrist Mean VM, Green - Wrist Mean SD')
-plt.plot(x_range, normalize_wrist_cpm, 'r', x_range, normalize_wrist_mvm, 'b', x_range, normalize_wrist_sd, 'g')
+plt.title("Waist Activity Intensity vs - Wrist VM and SD")
+plt.xlabel('Red - Activity Intensity, Blue - Wrist Mean VM, Green - Wrist Mean SD')
+plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_mvm, 'b', x_range, normalize_wrist_sd, 'g')
 
 plt.figure(8)
 x_range = np.arange(len(aggregated_wrist))
-plt.title("Wrist Processed CPM vs - Wrist Max VM and Min VM")
-plt.xlabel('Red - Wrist CPM, Blue - Wrist Max VM, Green - Wrist Min SD')
-plt.plot(x_range, normalize_wrist_cpm, 'r', x_range, normalize_wrist_maxvm, 'b', x_range, normalize_wrist_minvm, 'g')
+plt.title("Waist Activity Intensity vs - Wrist Max VM and Min VM")
+plt.xlabel('Red - Activity Intensity, Blue - Wrist Max VM, Green - Wrist Min SD')
+plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_maxvm, 'b', x_range, normalize_wrist_minvm, 'g')
 
 plt.figure(9)
 x_range = np.arange(len(aggregated_wrist))
-plt.title("Wrist Processed CPM vs - Wrist Percentiles")
-plt.xlabel('Red - Wrist CPM, Blue - 10th perc VM, Green - 25th perc, Magenta - 50th perc, Yellow - 75th perc, Black - 90th perc')
-plt.plot(x_range, normalize_wrist_cpm, 'r', x_range, normalize_wrist_10perc, 'b', x_range, normalize_wrist_25perc, 'g', x_range, normalize_wrist_50perc, 'm', x_range, normalize_wrist_75perc, 'y', x_range, normalize_wrist_90perc, 'k')
+plt.title("Waist Activity Intensity vs - Wrist Percentiles")
+plt.xlabel('Red - Activity Intensity, Blue - 10th perc VM, Green - 25th perc, Magenta - 50th perc, Yellow - 75th perc, Black - 90th perc')
+plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_10perc, 'b', x_range, normalize_wrist_25perc, 'g', x_range, normalize_wrist_50perc, 'm', x_range, normalize_wrist_75perc, 'y', x_range, normalize_wrist_90perc, 'k')
 plt.show()
