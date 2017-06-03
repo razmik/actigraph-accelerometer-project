@@ -517,7 +517,14 @@
       <option name="project" value="LOCAL" />
       <updated>1496463859247</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="update graph labels">
+      <created>1496463870847</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1496463870847</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
