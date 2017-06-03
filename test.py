@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# https://stackoverflow.com/questions/3694918/how-to-extract-frequency-associated-with-fft-values-in-python#comment3894827_3694976
 
 # x = np.random.random(100)
 x = np.array([1,2,1,0,1,2,1,0])
