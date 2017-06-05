@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import sys
+import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 wrist_raw_data_filename = "D:/Accelerometer Data/LSM2/Week 1/Wednesday/LSM255 Wrist (2016-11-01)RAW.csv"
@@ -109,6 +110,29 @@ normalize_wrist_25perc = (aggregated_wrist['25perc'] - np.amin(aggregated_wrist[
 normalize_wrist_50perc = (aggregated_wrist['50perc'] - np.amin(aggregated_wrist['50perc'])) / (np.amax(aggregated_wrist['50perc']) - np.amin(aggregated_wrist['50perc']))
 normalize_wrist_75perc = (aggregated_wrist['75perc'] - np.amin(aggregated_wrist['75perc'])) / (np.amax(aggregated_wrist['75perc']) - np.amin(aggregated_wrist['75perc']))
 normalize_wrist_90perc = (aggregated_wrist['90perc'] - np.amin(aggregated_wrist['90perc'])) / (np.amax(aggregated_wrist['90perc']) - np.amin(aggregated_wrist['90perc']))
+
+
+# Correlation
+
+print("Wrist CPM vs Mean VM:", round(stats.pearsonr(normalize_wrist_mvm, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs Mean SD:", round(stats.pearsonr(normalize_wrist_sd, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs Max:", round(stats.pearsonr(normalize_wrist_maxvm, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs Min:", round(stats.pearsonr(normalize_wrist_minvm, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs 10th perc:", round(stats.pearsonr(normalize_wrist_10perc, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs 25th perc:", round(stats.pearsonr(normalize_wrist_25perc, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs 50th perc:", round(stats.pearsonr(normalize_wrist_50perc, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs 75th perc:", round(stats.pearsonr(normalize_wrist_75perc, normalize_waist_cpm)[0], 2))
+print("Wrist CPM vs 90th perc:", round(stats.pearsonr(normalize_wrist_90perc, normalize_waist_cpm)[0], 2))
+
+print("Activity Intensity (Hip) vs Mean VM:", round(stats.pearsonr(normalize_wrist_mvm, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs Mean SD:", round(stats.pearsonr(normalize_wrist_sd, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs Max:", round(stats.pearsonr(normalize_wrist_maxvm, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs Min:", round(stats.pearsonr(normalize_wrist_minvm, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs 10th perc:", round(stats.pearsonr(normalize_wrist_10perc, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs 25th perc:", round(stats.pearsonr(normalize_wrist_25perc, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs 50th perc:", round(stats.pearsonr(normalize_wrist_50perc, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs 75th perc:", round(stats.pearsonr(normalize_wrist_75perc, normalize_activity_intensity)[0], 2))
+print("Activity Intensity (Hip) vs 90th perc:", round(stats.pearsonr(normalize_wrist_90perc, normalize_activity_intensity)[0], 2))
 
 """
 Visualize

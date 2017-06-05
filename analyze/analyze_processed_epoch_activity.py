@@ -21,6 +21,7 @@ from os.path import isfile, join
 import sys
 import numpy as np
 import pandas as pd
+import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 subject = 'LSM203'
@@ -124,9 +125,6 @@ summarized_wrist_epoch_data = wrist_epoch_data.groupby(np.arange(len(wrist_epoch
 summarized_wrist_epoch_data.columns = ['mean_wrist_vm_15', 'mean_wrist_vm_60',
                             'mean_waist_eq_wrist_vm_60', 'mean_waist_vm_60', 'mean_waist_intensity']
 
-# visualize
-print(summarized_wrist_epoch_data)
-
 """
 Normalize 0-1
 z = (value - min(array)) / (max(array) - min(array))
@@ -134,6 +132,12 @@ z = (value - min(array)) / (max(array) - min(array))
 normalize_wrist_cpm = (summarized_wrist_epoch_data['mean_wrist_vm_60'] - np.amin(summarized_wrist_epoch_data['mean_wrist_vm_60'])) / (np.amax(summarized_wrist_epoch_data['mean_wrist_vm_60']) - np.amin(summarized_wrist_epoch_data['mean_wrist_vm_60']))
 normalize_waist_cpm = (summarized_wrist_epoch_data['mean_waist_vm_60'] - np.amin(summarized_wrist_epoch_data['mean_waist_vm_60'])) / (np.amax(summarized_wrist_epoch_data['mean_waist_vm_60']) - np.amin(summarized_wrist_epoch_data['mean_waist_vm_60']))
 normalize_activity_intensity = (summarized_wrist_epoch_data['mean_waist_intensity'] - np.amin(summarized_wrist_epoch_data['mean_waist_intensity'])) / (np.amax(summarized_wrist_epoch_data['mean_waist_intensity']) - np.amin(summarized_wrist_epoch_data['mean_waist_intensity']))
+
+# Correlation
+
+print("Activity Intensity (Hip) vs Wrist CPM:", round(stats.pearsonr(normalize_activity_intensity, normalize_wrist_cpm)[0], 2))
+print("Hip CPM vs Wrist CPM:", round(stats.pearsonr(normalize_waist_cpm, normalize_wrist_cpm)[0], 2))
+
 
 plt.figure(1)
 x_range = np.arange(len(summarized_wrist_epoch_data))
