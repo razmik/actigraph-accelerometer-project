@@ -9,6 +9,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import heapq
 import sys
 import math
 
@@ -59,57 +60,32 @@ raw_data_wrist_groups = np.array_split(raw_data_wrist, len(aggregated_wrist))
 
 for i in range(0, len(raw_data_wrist_groups)):
 
-    """
-    dt = 0.01  # sample rate
-    N = 1500  # number of samples
-    T = dt * N  # time period (duration of signal)
+    x = raw_data_wrist_groups[i]['vm']
 
-    # fundamental frequency
-    df = 1 / T  # Hz
-    dw = (2 * math.pi) / T  # rad/s
+    spectrum = np.fft.fft(x)
+    freqs = np.fft.fftfreq(x.shape[-1], 0.01)
 
-    ny = dw * N / 2  # top frequency
+    sp2 = np.sort(np.abs(spectrum), kind='mergesort')
+    index_max2 = np.where(np.abs(spectrum) == sp2[-2])
+    index_min2 = np.where(np.abs(spectrum) == sp2[1])
 
-    f = np.fft.fftfreq(N) * N * df
-    """
+    max_freq = freqs[np.argmax(np.abs(spectrum))]
+    max_2_freq = float(freqs[index_max2[0]][0])
+    min_freq = freqs[np.argmin(np.abs(spectrum))]
+    min_2_freq = float(freqs[index_min2[0][0]])
 
-    spectrum = np.fft.fft(np.sin(raw_data_wrist_groups[i]['vm']))
-    freqs = np.fft.fftfreq(raw_data_wrist_groups[i]['vm'].shape[-1], 0.01)
+    sum_of_spectrum = np.sum(spectrum)
 
+    print("Iteration", i, "max", max_freq, max_2_freq, "min", min_freq, min_2_freq)
 
-    idx = np.argmax(np.abs(spectrum))
-    freq = freqs[idx]
+    # idx_1 = np.argmax(np.abs(spectrum))
+    # freq = freqs[idx_1]
 
-    print("range", i, freq, np.amax(np.abs(spectrum)))
+    # print("range", i, freq, np.amax(np.abs(spectrum)), idx_1)
 
-    plt.plot(freqs, abs(spectrum))
-    plt.show()
-
-    sys.exit(0)
-
-"""
-Helpers:
-
-https://docs.scipy.org/doc/numpy/reference/routines.fft.html
-
-https://stackoverflow.com/questions/3694918/how-to-extract-frequency-associated-with-fft-values-in-python#comment3894827_3694976
-
-
-
-"""
-
-
-# plt.plot(freq, np.abs(spectrum))
-# plt.show()
-
-# Estimate a spectral density of vm using a fast Fourier transform. Compute the modulus corresponding to each frequency.
-# This statistic is the sum of those moduli divided by the sum of the moduli at each frequency.
-# https://docs.scipy.org/doc/numpy/reference/generated/numpy.fft.fftfreq.html
-# power_spectrum = np.abs(np.fft.fft(raw_data.vm))**2
-# freqs = np.fft.fftfreq(raw_data.vm.size, 0.01)
-# idx = np.argsort(freqs)
-# print("freqs size: "+str(freqs.size)+"\n"+str(freqs))
-# plt.plot(freqs[idx], power_spectrum[idx])
-# plt.show()
-# print(freqs, power_spectrum)
-# sys.exit(0)
+    # plt.figure(1)
+    # plt.plot(np.arange(len(raw_data_wrist_groups[i])), raw_data_wrist_groups[i]['vm'], 'r')
+    #
+    # plt.figure(2)
+    # plt.plot(freqs, abs(spectrum))
+    # plt.show()

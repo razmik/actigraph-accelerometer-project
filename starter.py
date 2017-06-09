@@ -59,11 +59,6 @@ raw_data['sd'] = raw_data.apply(getSD, axis=1)
 
 print("getSD done")
 def getSDAngle(row):
-    # if(row.name==1500):
-    #     print("ROw angle: "+str(row.angle)+"   Aggregated mangle: "+str(aggregated['mangle'][int(row.name / n)]))
-    #     print(str(row.name) + "    " + str(int(row.name / n)) + "    " + str(
-    #         (row.angle - aggregated['mangle'][int(row.name / n)]) ** 2))
-
     return (row.angle - aggregated['mangle'][int(row.name/n)]) ** 2
 raw_data['sdangle'] = raw_data.apply(getSDAngle, axis=1)
 

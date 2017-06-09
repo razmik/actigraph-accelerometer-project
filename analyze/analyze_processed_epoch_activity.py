@@ -24,7 +24,7 @@ import pandas as pd
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 
-subject = 'LSM203'
+subject = 'LSM205'
 one_hour = 4 * 60  # 1 hour = (15 seconds epoch * 4 * 60)
 summarize_duration = one_hour * 1
 wrist_key = 'Wrist'
@@ -32,8 +32,6 @@ hip_key = 'Waist'
 epoch_start_rows = 10
 path = "D:/Accelerometer Data/ActilifeProcessedEpochs/LSM2/Week 1/Wednesday"
 path = path.replace('\\', '/')
-output_folder = "D:/Accelerometer Data/ActilifeProcessedEpochs/LSM2/Week 1/Wednesday/processed/summary"
-output_folder = output_folder.replace('\\', '/')
 
 path_components = path.split('/')
 output_prefix = (path_components[3] + '_summary_' + str(summarize_duration) + '_hours_' + path_components[4] + '_' + path_components[5]).replace(' ', '_')
@@ -144,14 +142,5 @@ x_range = np.arange(len(summarized_wrist_epoch_data))
 plt.xlabel('Red - Wrist CPM, Blue - Hip CPM, Green - Activity Intensity')
 plt.plot(x_range, normalize_wrist_cpm, 'r', x_range, normalize_waist_cpm, 'b', x_range, normalize_activity_intensity, 'g')
 plt.show()
-
-sys.exit(0)
-
-# save output file
-# Filename example: LSM203 Waist (2016-11-02)15sec.csv
-output_filename = file_dictionary[participant][wrist_key].split(' ')
-file_date = output_filename[2].split('15sec')
-output_filename = output_folder + '/' + participant + '_' + output_prefix + '_' + file_date[0] + '.csv'
-wrist_epoch_data.to_csv(output_filename, sep=',')
 
 print("Completed.")

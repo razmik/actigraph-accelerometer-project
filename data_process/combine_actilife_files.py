@@ -16,17 +16,17 @@
 """
 from os import listdir
 from os.path import isfile, join
-import sys
 import numpy as np
 import pandas as pd
+import sys, time
+
+process_start_time = time.time()
 
 wrist_key = 'Wrist'
 hip_key = 'Waist'
 epoch_start_rows = 10
-path = "D:/Accelerometer Data/ActilifeProcessedEpochs/LSM2/Week 1/Wednesday"
-path = path.replace('\\', '/')
-output_folder = "D:/Accelerometer Data/ActilifeProcessedEpochs/LSM2/Week 1/Wednesday/processed"
-output_folder = output_folder.replace('\\', '/')
+path = "D:/Accelerometer Data/ActilifeProcessedEpochs/LSM2/Week 1/Thursday".replace('\\', '/')
+output_folder = "D:/Accelerometer Data/ActilifeProcessedEpochs/LSM2/Week 1/Thursday/processed".replace('\\', '/')
 
 path_components = path.split('/')
 output_prefix = (path_components[3] + '_' + path_components[4] + '_' + path_components[5]).replace(' ', '_')
@@ -88,6 +88,7 @@ for file in files:
 print("Processing data of total", len(file_dictionary))
 i = 1
 for participant in file_dictionary:
+    itr_start_time = time.time()
     wrist_file = path + '/' + file_dictionary[participant][wrist_key]
     hip_file = path + '/' + file_dictionary[participant][hip_key]
 
@@ -111,15 +112,18 @@ for participant in file_dictionary:
     wrist_epoch_data['waist_vm_60'] = hip_epoch_data['waist_vm_60']
     wrist_epoch_data['waist_intensity'] = hip_epoch_data['waist_intensity']
 
+    itr_end_time = time.time()
+
     # save output file
     # Filename example: LSM203 Waist (2016-11-02)15sec.csv
     output_filename = file_dictionary[participant][wrist_key].split(' ')
     file_date = output_filename[2].split('15sec')
     output_filename = output_folder + '/' + participant + '_' + output_prefix + '_' + file_date[0] + '.csv'
     wrist_epoch_data.to_csv(output_filename, sep=',')
-    print("Process completion " + str(i) + " / " + str(len(file_dictionary)))
+    print("Process completion " + str(i) + " / " + str(len(file_dictionary)) + " with duration " + str(itr_end_time-itr_start_time) + " seconds.")
     i += 1
 
-print("Completed.")
+process_end_time = time.time()
+print("Completed with duration " + str(process_end_time-process_start_time) + " seconds.")
 
 
