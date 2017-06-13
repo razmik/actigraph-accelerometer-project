@@ -11,9 +11,9 @@ import pandas as pd
 from scipy.signal import butter, lfilter
 import math, sys, time
 
-wrist_raw_data_filename = "D:/Accelerometer Data/LSM2/Week 1/Wednesday/LSM204 Wrist (2016-11-02)RAW.csv"
+wrist_raw_data_filename = "D:/Accelerometer Data/LSM2/Week 1/Wednesday/LSM255 Wrist (2016-11-01)RAW.csv"
 wrist_raw_data_filename = wrist_raw_data_filename.replace('\\', '/')
-epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs\LSM2\Week 1\Wednesday/processed/LSM204_LSM2_Week_1_Wednesday_(2016-11-02).csv"
+epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs\LSM2\Week 1\Wednesday/processed/LSM255_LSM2_Week_1_Wednesday_(2016-11-01).csv"
 epoch_filename = epoch_filename.replace('\\', '/')
 path_components = wrist_raw_data_filename.split('/')
 
@@ -23,8 +23,8 @@ filename_components = path_components[5].split(' ')
 
 # epoch granularity
 n = 1500
-starting_row = 24840010
-end_row = 27660000
+starting_row = 0
+end_row = 2880000
 epoch_start = int(starting_row/n)
 
 # Sample rate and desired cutoff frequencies (in Hz).
@@ -62,20 +62,40 @@ raw_data_wrist['vm'] = np.sqrt([(raw_data_wrist.X ** 2) + (raw_data_wrist.Y ** 2
 
 # Calculate the angle of arcsin from X and VM, arcsin(axis used/vector magnitude)/(pi/2)
 raw_data_wrist['angle'] = (90 * np.arcsin(raw_data_wrist.X/raw_data_wrist['vm'])) / (math.pi/2)
+
+aggregated_wrist = raw_data_wrist.groupby(np.arange(len(raw_data_wrist))//n).mean()
+aggregated_wrist.columns = ['X', 'Y', 'Z', 'mvm', 'mangle']
+
+
+def getWristSD(row):
+    return (row.vm - aggregated_wrist['mvm'][int(row.name/n)]) ** 2
+
+
+def getSDAngle(row):
+    return (row.angle - aggregated_wrist['mangle'][int(row.name/n)]) ** 2
+
+raw_data_wrist['sd'] = raw_data_wrist.apply(getWristSD, axis=1)
+raw_data_wrist['sdangle'] = raw_data_wrist.apply(getSDAngle, axis=1)
+
 raw_data_wrist['enmo'] = raw_data_wrist['vm'] - 1
 raw_data_wrist.loc[raw_data_wrist['enmo'] < 0, 'enmo'] = 0
 raw_data_wrist.loc[raw_data_wrist['enmo'] >= 0, 'enmo'] = raw_data_wrist['enmo']
+
+aggregated_wrist = raw_data_wrist.groupby(np.arange(len(raw_data_wrist))//n).mean()
+
+aggregated_wrist.columns = ['X', 'Y', 'Z', 'mvm', 'mangle', 'sdvm', 'sdvm_manual', 'sdangle', 'menmo']
+aggregated_wrist['sdvm'] = np.sqrt(aggregated_wrist['sdvm'])
+aggregated_wrist['sdangle'] = np.sqrt(aggregated_wrist['sdangle'])
+
+del aggregated_wrist['X']
+del aggregated_wrist['Y']
+del aggregated_wrist['Z']
 
 wrist_grouped_temp = raw_data_wrist.groupby(raw_data_wrist.index // n)
 aggregated_wrist = pd.DataFrame()
 
 print("Calculating max, min, and percentiles.")
 
-aggregated_wrist['mvm'] = wrist_grouped_temp['vm'].mean()
-aggregated_wrist['sdvm'] = wrist_grouped_temp['vm'].std()
-aggregated_wrist['mangle'] = wrist_grouped_temp['angle'].mean()
-aggregated_wrist['sdangle'] = wrist_grouped_temp['angle'].std()
-aggregated_wrist['menmo'] = wrist_grouped_temp['enmo'].mean()
 aggregated_wrist['maxvm'] = wrist_grouped_temp.max()['vm']
 aggregated_wrist['minvm'] = wrist_grouped_temp.min()['vm']
 aggregated_wrist['10perc'] = wrist_grouped_temp['vm'].quantile(.1)
@@ -121,20 +141,11 @@ for i in range(0, len(raw_data_wrist_groups)):
     sp2 = np.sort(np.abs(spectrum), kind='mergesort')
     index_max2 = np.where(np.abs(spectrum) == sp2[-2])
 
-    pow_dom_freq = np.amax(spectrum)
-    pow_dom_freq = np.sqrt(pow_dom_freq.real ** 2 + pow_dom_freq.imag ** 2)
-
-    pow_dom_2_freq = sp2[-2]
-    pow_dom_2_freq = np.sqrt(pow_dom_2_freq.real ** 2 + pow_dom_2_freq.imag ** 2)
-
-    total_power = np.sum(spectrum)
-    total_power = np.sqrt(total_power.real ** 2 + total_power.imag ** 2)
-
     aggregated_wrist.set_value(i, 'dom_freq', freqs[np.argmax(np.abs(spectrum))])
     aggregated_wrist.set_value(i, 'dom_2_freq', float(freqs[index_max2[0]][0]))
-    aggregated_wrist.set_value(i, 'pow_dom_freq', pow_dom_freq)
-    aggregated_wrist.set_value(i, 'pow_dom_2_freq', pow_dom_2_freq)
-    aggregated_wrist.set_value(i, 'total_power', total_power)
+    aggregated_wrist.set_value(i, 'pow_dom_freq', float(np.amax(np.abs(spectrum))))
+    aggregated_wrist.set_value(i, 'pow_dom_2_freq', float(np.abs(sp2[-2])))
+    aggregated_wrist.set_value(i, 'total_power', np.sum(spectrum))
 
     X_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['X'], lowcut, highcut, fs, order)
     Y_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['Y'], lowcut, highcut, fs, order)
@@ -142,6 +153,7 @@ for i in range(0, len(raw_data_wrist_groups)):
 
     VM_bp = np.sqrt([(X_bp ** 2) + (Y_bp ** 2) + (Z_bp ** 2)])[0]
     aggregated_wrist.set_value(i, 'band_vm', np.abs(VM_bp).sum())
+
 
 cal_stats_freq_end_time = time.time()
 print("Calculating frequency domain features duration", str(round(cal_stats_freq_end_time - cal_stats_time_end_time, 2)), "seconds")

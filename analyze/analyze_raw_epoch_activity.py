@@ -69,6 +69,8 @@ del aggregated_wrist['X']
 del aggregated_wrist['Y']
 del aggregated_wrist['Z']
 
+aggregated_wrist['mvm'] = wrist_grouped_temp['vm'].mean()
+aggregated_wrist['sdvm'] = wrist_grouped_temp['vm'].std()
 aggregated_wrist['maxvm'] = wrist_grouped_temp.max()['vm']
 aggregated_wrist['minvm'] = wrist_grouped_temp.min()['vm']
 aggregated_wrist['10perc'] = wrist_grouped_temp.quantile(.1)['vm']
@@ -206,4 +208,5 @@ x_range = np.arange(len(aggregated_wrist))
 plt.xlabel(("Timeline - " + timeline))
 plt.title('Red - Activity Intensity, Blue - 10th perc VM, Green - 25th perc, Magenta - 50th perc, Yellow - 75th perc, Black - 90th perc')
 plt.plot(x_range, normalize_activity_intensity, 'r', x_range, normalize_wrist_10perc, 'b', x_range, normalize_wrist_25perc, 'g', x_range, normalize_wrist_50perc, 'm', x_range, normalize_wrist_75perc, 'y', x_range, normalize_wrist_90perc, 'k')
+
 plt.show()
