@@ -11,10 +11,15 @@ import pandas as pd
 from scipy.signal import butter, lfilter
 import math, sys, time
 
-wrist_raw_data_filename = "D:/Accelerometer Data/LSM2/Week 1/Wednesday/LSM204 Wrist (2016-11-02)RAW.csv"
-wrist_raw_data_filename = wrist_raw_data_filename.replace('\\', '/')
-epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs\LSM2\Week 1\Wednesday/processed/LSM204_LSM2_Week_1_Wednesday_(2016-11-02).csv"
-epoch_filename = epoch_filename.replace('\\', '/')
+experiment = 'LSM2'
+week = 'Week 1'
+day = 'Wednesday'
+user = 'LSM204'
+date = '(2016-11-02)'
+device = 'Wrist'
+
+wrist_raw_data_filename = "D:/Accelerometer Data/"+experiment+"/"+week+"/"+day+"/"+user+" "+device+" "+date+"RAW.csv".replace('\\', '/')
+epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/"+experiment+"/"+week+"/"+day+"/processed/"+user+"_"+experiment+"_"+week.replace(' ', '_')+"_"+day+"_"+date+".csv".replace('\\', '/')
 path_components = wrist_raw_data_filename.split('/')
 
 output_path = "D:/Accelerometer Data/Processed"
@@ -158,10 +163,12 @@ Include the epoch counts for 15 seconds and CPM values in aggregated dataframe
 """
 print("Combining with ActiGraph processed epoch count data as target variables")
 epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start, nrows=len(aggregated_wrist),
-                         usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-epoch_data.columns = ['actilife_wrist_vm_15', 'actilife_wrist_vm_60', 'actilife_waist_eq_wrist_vm_60',
-                      'actilife_wrist_cpm', 'actilife_wrist_vm_cpm', 'actilife_waist_vm_15', 'actilife_waist_vm_60',
-                      'actilife_waist_vm_cpm', 'actilife_waist_cpm', 'actilife_waist_intensity', 'actilife_waist_ee']
+                         usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
+epoch_data.columns = ['actilife_wrist_Axis1', 'actilife_wrist_Axis2', 'actilife_wrist_Axis3', 'actilife_wrist_vm_15', 'actilife_wrist_vm_60',
+                      'actilife_wrist_Axis1_waist_eq', 'actilife_wrist_Axis2_waist_eq', 'actilife_wrist_Axis3_waist_eq',
+                      'actilife_wrist_vm_waist_eq', 'actilife_wrist_cpm', 'actilife_wrist_vm_cpm', 'actilife_waist_vm_15',
+                      'actilife_waist_vm_60', 'actilife_waist_vm_cpm', 'actilife_waist_cpm', 'actilife_waist_intensity',
+                      'actilife_waist_ee', 'actilife_waist_Axis1', 'actilife_waist_Axis2', 'actilife_waist_Axis3']
 
 epoch_data['raw_wrist_mvm'] = aggregated_wrist['mvm']
 epoch_data['raw_wrist_sdvm'] = aggregated_wrist['sdvm']

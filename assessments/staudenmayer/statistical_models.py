@@ -90,9 +90,9 @@ Decision Tree
 data.loc[(data['wrist_sdvm'] <= 0.26) & (data['wrist_mangle'] < -52), 'dt_estimated_met_category'] = 1
 data.loc[(data['wrist_sdvm'] <= 0.26) & (data['wrist_mangle'] >= -52), 'dt_estimated_met_category'] = 2
 data.loc[(0.26 < data['wrist_sdvm']) & (data['wrist_sdvm'] <= 0.79) & (
-data['wrist_mangle'] > -53), 'dt_estimated_met_category'] = 2
+    data['wrist_mangle'] > -53), 'dt_estimated_met_category'] = 2
 data.loc[(0.26 < data['wrist_sdvm']) & (data['wrist_sdvm'] <= 0.79) & (
-data['wrist_mangle'] <= -53), 'dt_estimated_met_category'] = 3
+    data['wrist_mangle'] <= -53), 'dt_estimated_met_category'] = 3
 data.loc[data['wrist_sdvm'] > 0.79, 'dt_estimated_met_category'] = 3
 
 dt_estimated = data['dt_estimated_met_category']

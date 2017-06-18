@@ -30,7 +30,7 @@ process_start_time = time.time()
 
 experiment = 'LSM2'
 week = 'Week 1'
-day = 'Wednesdy'
+day = 'Wednesday'
 
 wrist_key = 'Wrist'
 hip_key = 'Waist'
@@ -51,7 +51,6 @@ def get_freedson_adult_vm3_intensity(row):
 def get_freedson_vm3_combination_11_energy_expenditure(row):
     """
     https://actigraph.desk.com/customer/en/portal/articles/2515835-what-is-the-difference-among-the-energy-expenditure-algorithms-
-
     if VMCPM > 2453
         Kcals/min= 0.001064×VM + 0.087512(BM) - 5.500229
     else
@@ -62,7 +61,6 @@ def get_freedson_vm3_combination_11_energy_expenditure(row):
         CPM = Counts per Minute
         BM = Body Mass in kg
     """
-
     #  calculate Energy Expenditure using VM3 and a constant body mass (e.g., 80 kg)
     if hip_epoch_data['waist_vm_cpm'][row.name] > 2453:
         met_value = (0.001064 * hip_epoch_data['waist_vm_60'][row.name]) + (0.087512 * 80) - 5.500229
@@ -78,20 +76,44 @@ def get_freedson_vm3_combination_11_energy_expenditure(row):
     return met_value
 
 
-def get_waist_equivalent_wrist_counts(row):
+def get_equivalent_count_for_axis1(row):
     # https://actigraph.desk.com/customer/en/portal/articles/2515826-what-does-the-%22worn-on-wrist%22-option-do-in-the-data-scoring-tab-
-    wrist_cpm = wrist_epoch_data['wristX'][row.name]
-
-    if wrist_cpm <= 644:
-        waist_eq_cpm = 0.5341614 * wrist_cpm
-    elif wrist_cpm <= 1272:
-        waist_eq_cpm = 1.7133758 * wrist_cpm - 759.414013
-    elif wrist_cpm <= 3806:
-        waist_eq_cpm = 0.3997632 * wrist_cpm + 911.501184
+    count = wrist_epoch_data['wrist_Axis1'][row.name]
+    if count <= 644:
+        result = 0.5341614 * count
+    elif count <= 1272:
+        result = 1.7133758 * count - 759.414013
+    elif count <= 3806:
+        result = 0.3997632 * count + 911.501184
     else:
-        waist_eq_cpm = 0.0128995 * wrist_cpm + 2383.904505
+        result = 0.0128995 * count + 2383.904505
+    return result
 
-    return waist_eq_cpm
+
+def get_equivalent_count_for_axis2(row):
+    count = wrist_epoch_data['wrist_Axis2'][row.name]
+    if count <= 644:
+        result = 0.5341614 * count
+    elif count <= 1272:
+        result = 1.7133758 * count - 759.414013
+    elif count <= 3806:
+        result = 0.3997632 * count + 911.501184
+    else:
+        result = 0.0128995 * count + 2383.904505
+    return result
+
+
+def get_equivalent_count_for_axis3(row):
+    count = wrist_epoch_data['wrist_Axis3'][row.name]
+    if count <= 644:
+        result = 0.5341614 * count
+    elif count <= 1272:
+        result = 1.7133758 * count - 759.414013
+    elif count <= 3806:
+        result = 0.3997632 * count + 911.501184
+    else:
+        result = 0.0128995 * count + 2383.904505
+    return result
 
 
 """
@@ -128,20 +150,27 @@ for participant in file_dictionary:
     wrist_file = path + '/' + file_dictionary[participant][wrist_key]
     hip_file = path + '/' + file_dictionary[participant][hip_key]
 
+    """
+    Calculate Waist (hip) epoch values and reference parameters
+    """
     hip_epoch_data = pd.read_csv(hip_file, skiprows=epoch_start_rows, usecols=[0, 1, 2])
-    hip_epoch_data.columns = ['waistX', 'waistY', 'waistZ']
-    hip_epoch_data['waist_vm_15'] = \
-    np.sqrt([(hip_epoch_data.waistX ** 2) + (hip_epoch_data.waistY ** 2) + (hip_epoch_data.waistZ ** 2)])[0]
+    hip_epoch_data.columns = ['Axis1', 'Axis2', 'Axis3']
+    hip_epoch_data['waist_vm_15'] = np.sqrt([(hip_epoch_data.Axis1 ** 2) + (hip_epoch_data.Axis2 ** 2) + (hip_epoch_data.Axis3 ** 2)])[0]
     hip_epoch_data['waist_vm_60'] = hip_epoch_data['waist_vm_15'] * 4
-    hip_epoch_data['waist_cpm'] = hip_epoch_data.waistX
+    hip_epoch_data['waist_cpm'] = hip_epoch_data.Axis1 * 4
 
+    """
+    Calculate Wrist epoch values and reference parameters
+    """
     wrist_epoch_data = pd.read_csv(wrist_file, skiprows=epoch_start_rows, usecols=[0, 1, 2])
-    wrist_epoch_data.columns = ['wristX', 'wristY', 'wristZ']
-    wrist_epoch_data['wrist_vm_15'] = \
-    np.sqrt([(wrist_epoch_data.wristX ** 2) + (wrist_epoch_data.wristY ** 2) + (wrist_epoch_data.wristZ ** 2)])[0]
+    wrist_epoch_data.columns = ['wrist_Axis1', 'wrist_Axis2', 'wrist_Axis3']
+    wrist_epoch_data['wrist_vm_15'] = np.sqrt([(wrist_epoch_data.wrist_Axis1 ** 2) + (wrist_epoch_data.wrist_Axis2 ** 2) + (wrist_epoch_data.wrist_Axis3 ** 2)])[0]
     wrist_epoch_data['wrist_vm_60'] = wrist_epoch_data['wrist_vm_15'] * 4
-    wrist_epoch_data['waist_eq_wrist_vm_60'] = wrist_epoch_data.apply(get_waist_equivalent_wrist_counts, axis=1)
-    wrist_epoch_data['wrist_cpm'] = wrist_epoch_data.wristX
+    wrist_epoch_data['wrist_Axis1_waist_eq'] = wrist_epoch_data.apply(get_equivalent_count_for_axis1, axis=1)
+    wrist_epoch_data['wrist_Axis2_waist_eq'] = wrist_epoch_data.apply(get_equivalent_count_for_axis2, axis=1)
+    wrist_epoch_data['wrist_Axis3_waist_eq'] = wrist_epoch_data.apply(get_equivalent_count_for_axis3, axis=1)
+    wrist_epoch_data['wrist_vm_waist_eq'] = np.sqrt([(wrist_epoch_data['wrist_Axis1_waist_eq'] ** 2) + (wrist_epoch_data['wrist_Axis2_waist_eq'] ** 2) + (wrist_epoch_data['wrist_Axis3_waist_eq'] ** 2)])[0]
+    wrist_epoch_data['wrist_cpm'] = wrist_epoch_data.wrist_Axis1 * 4
 
     temp_hip = 0
     temp_wrist = 0
@@ -153,15 +182,14 @@ for participant in file_dictionary:
         if index % 4 == 0 and index < length_hip - 3 and index < length_waist - 3:
             temp_hip = hip_epoch_data.iloc[index]['waist_vm_15'] + hip_epoch_data.iloc[index + 1]['waist_vm_15'] + \
                        hip_epoch_data.iloc[index + 2]['waist_vm_15'] + hip_epoch_data.iloc[index + 3]['waist_vm_15']
-            temp_wrist = wrist_epoch_data.iloc[index]['wrist_vm_cpm'] + wrist_epoch_data.iloc[index + 1][
-                'wrist_vm_cpm'] + wrist_epoch_data.iloc[index + 2]['wrist_vm_cpm'] + wrist_epoch_data.iloc[index + 3][
-                             'wrist_vm_cpm']
+            temp_wrist = wrist_epoch_data.iloc[index]['wrist_vm_15'] + wrist_epoch_data.iloc[index + 1][
+                'wrist_vm_15'] + wrist_epoch_data.iloc[index + 2]['wrist_vm_15'] + wrist_epoch_data.iloc[index + 3][
+                             'wrist_vm_15']
         hip_epoch_data.set_value(index, 'waist_vm_cpm', temp_hip)
         wrist_epoch_data.set_value(index, 'wrist_vm_cpm', temp_wrist)
 
-    hip_epoch_data['waist_vm_cpm'] = hip_epoch_data['waist_vm_15'] * 4
-    hip_epoch_data['waist_intensity'] = hip_epoch_data.apply(get_freedson_adult_vm3_intensity, axis=1)
     hip_epoch_data['waist_ee'] = hip_epoch_data.apply(get_freedson_vm3_combination_11_energy_expenditure, axis=1)
+    hip_epoch_data['waist_intensity'] = hip_epoch_data.apply(get_freedson_adult_vm3_intensity, axis=1)
 
     """
     Read Wrist Epoch Data to be saved.
@@ -173,10 +201,9 @@ for participant in file_dictionary:
     wrist_epoch_data['waist_cpm'] = hip_epoch_data['waist_cpm']
     wrist_epoch_data['waist_intensity'] = hip_epoch_data['waist_intensity']
     wrist_epoch_data['waist_ee'] = hip_epoch_data['waist_ee']
-
-    del wrist_epoch_data['wristX']
-    del wrist_epoch_data['wristY']
-    del wrist_epoch_data['wristZ']
+    wrist_epoch_data['waist_Axis1'] = hip_epoch_data['Axis1']
+    wrist_epoch_data['waist_Axis2'] = hip_epoch_data['Axis2']
+    wrist_epoch_data['waist_Axis3'] = hip_epoch_data['Axis3']
 
     itr_end_time = time.time()
 

@@ -22,7 +22,7 @@ for file in files:
 """
 If only a single file needs to be assessed.
 """
-data = pd.read_csv('D:/Accelerometer Data/Processed/LSM2/Week 1/Wednesday/LSM204_(2016-11-02)_row_16560_to_18440.csv')
+data = pd.read_csv('D:/Accelerometer Data/Processed/LSM2/Week 1/Wednesday/filtered/LSM204_(2016-11-02)_row_16560_to_18440.csv')
 
 
 def plot_confusion_matrix(cm, classes,
@@ -62,49 +62,38 @@ def plot_confusion_matrix(cm, classes,
 # data = pd.read_csv(epoch_filename)
 del data['Unnamed: 0']
 
-print("bandpass wrist vm vs. wrist_epoch_15:", round(stats.pearsonr(data['band_vm'], data['wrist_vm_15'])[0], 2))
-print("wrist processed vm vs. waist process:", round(stats.pearsonr(data['waist_vm_60'], data['wrist_vm_60'])[0], 2))
-print("bandpass wrist vm vs. waist processed:", round(stats.pearsonr(data['band_vm'], data['waist_vm_60'])[0], 2))
-
-data.loc[data['waist_intensity'] == 1, 'target_met_category'] = 1
-data.loc[data['waist_intensity'] == 2, 'target_met_category'] = 2
-data.loc[data['waist_intensity'] == 3, 'target_met_category'] = 3
-data.loc[data['waist_intensity'] == 4, 'target_met_category'] = 3
-
 """
 Linear Regression
 """
-
-target = data['target_met_category']
-lr_estimated_filtered = data['lr_estimated_met_bandpass_filtered']
-lr_estimated_not_filtered = data['lr_estimated_met_notfiltered']
+target = data['actilife_waist_ee']
+lr_estimated_not_filtered = 1.89378 + (5.50821 * data['raw_wrist_sdvm']) - (0.02705 * data['raw_wrist_mangle'])
 
 class_names = ['light', 'moderate', 'vigorous']
 
 """
 Model evaluation statistics
 """
-print("Linear Regression - Filtered")
-
-# The mean squared error
-print("LR Mean squared error: %.2f"
-      % np.mean((lr_estimated_filtered - target) ** 2))
-
-# The R squared score
-# r2_score(y_true, y_pred, sample_weight=None, multioutput=None)
-print("LR R squared score: %.2f"
-      % r2_score(target, lr_estimated_filtered))
-
-# Compute confusion matrix
-cnf_matrix = confusion_matrix(target, lr_estimated_filtered)
-np.set_printoptions(precision=2)
-
-# Plot non-normalized confusion matrix
-plt.figure(1)
-plot_confusion_matrix(cnf_matrix, classes=class_names,
-                      title='Linear Regression - Filtered')
-
-
+# print("Linear Regression - Filtered")
+#
+# # The mean squared error
+# print("LR Mean squared error: %.2f"
+#       % np.mean((lr_estimated_filtered - target) ** 2))
+#
+# # The R squared score
+# # r2_score(y_true, y_pred, sample_weight=None, multioutput=None)
+# print("LR R squared score: %.2f"
+#       % r2_score(target, lr_estimated_filtered))
+#
+# # Compute confusion matrix
+# cnf_matrix = confusion_matrix(target, lr_estimated_filtered)
+# np.set_printoptions(precision=2)
+#
+# # Plot non-normalized confusion matrix
+# plt.figure(1)
+# plot_confusion_matrix(cnf_matrix, classes=class_names,
+#                       title='Linear Regression - Filtered')
+#
+#
 
 print("Linear Regression - Not Filtered")
 
@@ -117,14 +106,17 @@ print("LR Mean squared error: %.2f"
 print("LR R squared score: %.2f"
       % r2_score(target, lr_estimated_not_filtered))
 
-# Compute confusion matrix
-cnf_matrix = confusion_matrix(target, lr_estimated_not_filtered)
-np.set_printoptions(precision=2)
-
-# Plot non-normalized confusion matrix
-plt.figure(2)
-plot_confusion_matrix(cnf_matrix, classes=class_names,
-                      title='Linear Regression - Not Filtered')
-
-
+plt.plot(np.arange(len(target)), target, 'r', np.arange(len(target)), lr_estimated_not_filtered, 'b', )
 plt.show()
+
+# # Compute confusion matrix
+# cnf_matrix = confusion_matrix(target, lr_estimated_not_filtered)
+# np.set_printoptions(precision=2)
+#
+# # Plot non-normalized confusion matrix
+# plt.figure(2)
+# plot_confusion_matrix(cnf_matrix, classes=class_names,
+#                       title='Linear Regression - Not Filtered')
+#
+#
+# plt.show()
