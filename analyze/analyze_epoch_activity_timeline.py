@@ -16,26 +16,27 @@ epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/"+experiment+"/"
 
 # epoch granularity
 n = 1500
-starting_row = 0
-end_row = 29160010
+starting_row = 24480010
+end_row = 28800010
 
 # summarize parameters
-one_hour = 4 * 60 * n  # 1 hour = (15 seconds epoch * 4 * 60)
-min_5 = n * 4 * 5
-summarize_duration = one_hour * 1
+# one_hour = 4 * 60 * n  # 1 hour = (15 seconds epoch * 4 * 60)
+# min_5 = n * 4 * 5
+# summarize_duration = one_hour * 1
+# processed_epoch_summarize_duration = summarize_duration / n
+summarize_duration = 4 * 5 * n * 1
 processed_epoch_summarize_duration = summarize_duration / n
-
 timeline = "5 minute epochs"
 
 start = starting_row + 10
-row_count = (end_row - starting_row) / summarize_duration
+row_count = int((end_row - starting_row) / summarize_duration)
 epoch_start = int(starting_row/summarize_duration)
 
 if row_count == -1:
-    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start, nrows=row_count,
+    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start,
                          usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
 else:
-    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start,
+    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start, nrows=row_count,
                          usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
 
 epoch_data.columns = ['actilife_wrist_Axis1', 'actilife_wrist_Axis2', 'actilife_wrist_Axis3', 'actilife_wrist_vm_15', 'actilife_wrist_vm_60',
@@ -44,14 +45,10 @@ epoch_data.columns = ['actilife_wrist_Axis1', 'actilife_wrist_Axis2', 'actilife_
                       'actilife_waist_vm_60', 'actilife_waist_vm_cpm', 'actilife_waist_cpm', 'actilife_waist_intensity',
                       'actilife_waist_ee', 'actilife_waist_Axis1', 'actilife_waist_Axis2', 'actilife_waist_Axis3']
 
-epoch_data = epoch_data.groupby(np.arange(len(epoch_data))//processed_epoch_summarize_duration).mean()
-
 x_range = np.arange(len(epoch_data))
-
 normalize_intensity = (epoch_data['actilife_waist_intensity'] - np.amin(epoch_data['actilife_waist_intensity'])) / (np.amax(epoch_data['actilife_waist_intensity']) - np.amin(epoch_data['actilife_waist_intensity']))
 normalize_energy_expenditure = (epoch_data['actilife_waist_ee'] - np.amin(epoch_data['actilife_waist_ee'])) / (np.amax(epoch_data['actilife_waist_ee']) - np.amin(epoch_data['actilife_waist_ee']))
 normalize_waist_vm_60 = (epoch_data['actilife_waist_vm_60'] - np.amin(epoch_data['actilife_waist_vm_60'])) / (np.amax(epoch_data['actilife_waist_vm_60']) - np.amin(epoch_data['actilife_waist_vm_60']))
-
 
 plt.figure(1)
 plt.xlabel(("Timeline - " + timeline))

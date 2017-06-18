@@ -14,7 +14,7 @@ import math, sys, time
 experiment = 'LSM2'
 week = 'Week 1'
 day = 'Wednesday'
-user = 'LSM204'
+user = 'LSM203'
 date = '(2016-11-02)'
 device = 'Wrist'
 
@@ -28,8 +28,8 @@ filename_components = path_components[5].split(' ')
 
 # epoch granularity
 n = 1500
-starting_row = 24840010
-end_row = 27660000
+starting_row = 24480010
+end_row = 28800010
 epoch_start = int(starting_row / n)
 
 # Sample rate and desired cutoff frequencies (in Hz).
