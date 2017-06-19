@@ -29,7 +29,7 @@ import sys, time
 process_start_time = time.time()
 
 experiment = 'LSM2'
-week = 'Week 1'
+week = 'Week 2'
 day = 'Wednesday'
 
 wrist_key = 'Wrist'

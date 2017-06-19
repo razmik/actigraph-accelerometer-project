@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2c4c84ba-6615-4f44-a5f7-cbd158c9e2f0" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data_process/combine_raw_epoch_main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analyze/analyze_correlation.py" afterPath="$PROJECT_DIR$/analyze/analyze_correlation.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analyze/analyze_epoch_activity_timeline.py" afterPath="$PROJECT_DIR$/analyze/analyze_epoch_activity_timeline.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_process/combine_actilife_files.py" afterPath="$PROJECT_DIR$/data_process/combine_actilife_files.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_butterworth_filter.py" afterPath="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_butterworth_filter.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_no_filter.py" afterPath="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_no_filter.py" />
     </list>
@@ -16,6 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/accelerometer_project$combine_raw_epoch_main.coverage" NAME="combine_raw_epoch_main Coverage Results" MODIFIED="1497859867811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
     <SUITE FILE_PATH="coverage/accelerometer_project$sample.coverage" NAME="sample Coverage Results" MODIFIED="1496892724734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AccelerometerProject$correlation.coverage" NAME="correlation Coverage Results" MODIFIED="1495691372051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/accelerometer_project$combine_raw_and_epoch_files.coverage" NAME="combine_raw_and_epoch_files Coverage Results" MODIFIED="1497357460554" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
@@ -26,7 +29,7 @@
     <SUITE FILE_PATH="coverage/accelerometer_project$analyze_activity.coverage" NAME="analyze_activity Coverage Results" MODIFIED="1496456879630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
     <SUITE FILE_PATH="coverage/accelerometer_project$analyze_raw_epoch_activity.coverage" NAME="analyze_raw_epoch_activity Coverage Results" MODIFIED="1497354005273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
     <SUITE FILE_PATH="coverage/accelerometer_project$filter_raw_data.coverage" NAME="filter_raw_data Coverage Results" MODIFIED="1497357304312" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
-    <SUITE FILE_PATH="coverage/accelerometer_project$analyze_epoch_activity_timeline.coverage" NAME="analyze_epoch_activity_timeline Coverage Results" MODIFIED="1497783150289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
+    <SUITE FILE_PATH="coverage/accelerometer_project$analyze_epoch_activity_timeline.coverage" NAME="analyze_epoch_activity_timeline Coverage Results" MODIFIED="1497855728951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
     <SUITE FILE_PATH="coverage/accelerometer_project$test.coverage" NAME="test Coverage Results" MODIFIED="1496903895941" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AccelerometerProject$starter.coverage" NAME="starter Coverage Results" MODIFIED="1495365281072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AccelerometerProject$corr_combined.coverage" NAME="corr_combined Coverage Results" MODIFIED="1496019037065" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -36,9 +39,9 @@
     <SUITE FILE_PATH="coverage/accelerometer_project$convert_filter.coverage" NAME="convert_filter Coverage Results" MODIFIED="1496984054845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
     <SUITE FILE_PATH="coverage/accelerometer_project$linear_regression.coverage" NAME="linear_regression Coverage Results" MODIFIED="1497062607481" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments/staudenmayer" />
     <SUITE FILE_PATH="coverage/accelerometer_project$analyze_epoch_activity_durations.coverage" NAME="analyze_epoch_activity_durations Coverage Results" MODIFIED="1497354949437" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
-    <SUITE FILE_PATH="coverage/accelerometer_project$analyze_correlation.coverage" NAME="analyze_correlation Coverage Results" MODIFIED="1497783725560" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
+    <SUITE FILE_PATH="coverage/accelerometer_project$analyze_correlation.coverage" NAME="analyze_correlation Coverage Results" MODIFIED="1497861728617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
     <SUITE FILE_PATH="coverage/accelerometer_project$combine_raw_and_epoch_files_no_filter.coverage" NAME="combine_raw_and_epoch_files_no_filter Coverage Results" MODIFIED="1497783220546" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
-    <SUITE FILE_PATH="coverage/accelerometer_project$combine_actilife_files.coverage" NAME="combine_actilife_files Coverage Results" MODIFIED="1497758155017" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
+    <SUITE FILE_PATH="coverage/accelerometer_project$combine_actilife_files.coverage" NAME="combine_actilife_files Coverage Results" MODIFIED="1497857821193" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
     <SUITE FILE_PATH="coverage/accelerometer_project$corr_processed_epoch_files.coverage" NAME="corr_processed_epoch_files Coverage Results" MODIFIED="1496388591534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/correlation" />
     <SUITE FILE_PATH="coverage/accelerometer_project$dt.coverage" NAME="dt Coverage Results" MODIFIED="1496995874829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments/staudenmayer" />
     <SUITE FILE_PATH="coverage/accelerometer_project$statistical_models.coverage" NAME="statistical_models Coverage Results" MODIFIED="1497510742497" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments/staudenmayer" />
@@ -54,9 +57,11 @@
       <file leaf-file-name="combine_raw_and_epoch_files_butterworth_filter.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_butterworth_filter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7400">
-              <caret line="188" column="27" lean-forward="false" selection-start-line="188" selection-start-column="12" selection-end-line="188" selection-end-column="27" />
-              <folding />
+            <state relative-caret-position="518">
+              <caret line="176" column="30" lean-forward="false" selection-start-line="176" selection-start-column="16" selection-end-line="176" selection-end-column="30" />
+              <folding>
+                <element signature="e#300#318#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -64,8 +69,8 @@
       <file leaf-file-name="analyze_correlation.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/analyze/analyze_correlation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1002">
-              <caret line="26" column="31" lean-forward="false" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+            <state relative-caret-position="1198">
+              <caret line="54" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -123,11 +128,12 @@
         <option value="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files.py" />
         <option value="$PROJECT_DIR$/assessments/staudenmayer/statistical_models_filtered_vs_not.py" />
         <option value="$PROJECT_DIR$/assessments/staudenmayer/statistical_models.py" />
-        <option value="$PROJECT_DIR$/data_process/combine_actilife_files.py" />
         <option value="$PROJECT_DIR$/analyze/analyze_epoch_activity_durations.py" />
         <option value="$PROJECT_DIR$/analyze/analyze_epoch_activity_timeline.py" />
-        <option value="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_no_filter.py" />
+        <option value="$PROJECT_DIR$/data_process/combine_actilife_files.py" />
         <option value="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_butterworth_filter.py" />
+        <option value="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_no_filter.py" />
+        <option value="$PROJECT_DIR$/data_process/combine_raw_epoch_main.py" />
         <option value="$PROJECT_DIR$/analyze/analyze_correlation.py" />
       </list>
     </option>
@@ -236,8 +242,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -306,25 +312,6 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="combine_raw_and_epoch_files_no_filter" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_process" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="AccelerometerProject" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_no_filter.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="combine_raw_and_epoch_files_butterworth_filter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -358,6 +345,25 @@
       <module name="AccelerometerProject" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analyze/analyze_correlation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="combine_raw_epoch_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_process" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="AccelerometerProject" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_process/combine_raw_epoch_main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -515,17 +521,17 @@
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.combine_actilife_files" />
       <item index="1" class="java.lang.String" itemvalue="Python.analyze_epoch_activity_timeline" />
-      <item index="2" class="java.lang.String" itemvalue="Python.combine_raw_and_epoch_files_no_filter" />
-      <item index="3" class="java.lang.String" itemvalue="Python.combine_raw_and_epoch_files_butterworth_filter" />
-      <item index="4" class="java.lang.String" itemvalue="Python.analyze_correlation" />
+      <item index="2" class="java.lang.String" itemvalue="Python.combine_raw_and_epoch_files_butterworth_filter" />
+      <item index="3" class="java.lang.String" itemvalue="Python.analyze_correlation" />
+      <item index="4" class="java.lang.String" itemvalue="Python.combine_raw_epoch_main" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.analyze_correlation" />
-        <item index="1" class="java.lang.String" itemvalue="Python.combine_raw_and_epoch_files_butterworth_filter" />
-        <item index="2" class="java.lang.String" itemvalue="Python.combine_raw_and_epoch_files_no_filter" />
+        <item index="1" class="java.lang.String" itemvalue="Python.combine_raw_epoch_main" />
+        <item index="2" class="java.lang.String" itemvalue="Python.combine_actilife_files" />
         <item index="3" class="java.lang.String" itemvalue="Python.analyze_epoch_activity_timeline" />
-        <item index="4" class="java.lang.String" itemvalue="Python.combine_actilife_files" />
+        <item index="4" class="java.lang.String" itemvalue="Python.combine_raw_and_epoch_files_butterworth_filter" />
       </list>
     </recent_temporary>
   </component>
@@ -624,7 +630,14 @@
       <option name="project" value="LOCAL" />
       <updated>1497763063316</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="updated analyze methods">
+      <created>1497791715711</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1497791715711</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -639,13 +652,13 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34436008" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34436008" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39967462" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -669,7 +682,8 @@
     <MESSAGE value="update graph labels" />
     <MESSAGE value="include correlation on the graphs." />
     <MESSAGE value="updated algorithms" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated algorithms" />
+    <MESSAGE value="updated analyze methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated analyze methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -678,13 +692,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/starter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="3" column="11" lean-forward="false" selection-start-line="3" selection-start-column="11" selection-end-line="4" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/raw_data.csv" />
     <entry file="file://$PROJECT_DIR$/aggregated2.csv" />
     <entry file="file://$PROJECT_DIR$/correlation/correlation.py">
@@ -898,39 +905,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analyze/analyze_epoch_activity_timeline.py">
+    <entry file="file://$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_no_filter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="24" column="35" lean-forward="true" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
+        <state relative-caret-position="706">
+          <caret line="21" column="100" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="100" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data_process/combine_actilife_files.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1920">
-          <caret line="52" column="130" lean-forward="true" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="130" />
+        <state relative-caret-position="474">
+          <caret line="36" column="21" lean-forward="true" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_no_filter.py">
+    <entry file="file://$PROJECT_DIR$/data_process/combine_raw_epoch_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5360">
-          <caret line="22" column="37" lean-forward="true" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+        <state relative-caret-position="600">
+          <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/analyze_epoch_activity_timeline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1238">
+          <caret line="38" column="0" lean-forward="true" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_butterworth_filter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7400">
-          <caret line="188" column="27" lean-forward="false" selection-start-line="188" selection-start-column="12" selection-end-line="188" selection-end-column="27" />
-          <folding />
+        <state relative-caret-position="518">
+          <caret line="176" column="30" lean-forward="false" selection-start-line="176" selection-start-column="16" selection-end-line="176" selection-end-column="30" />
+          <folding>
+            <element signature="e#300#318#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/analyze/analyze_correlation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1002">
-          <caret line="26" column="31" lean-forward="false" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+        <state relative-caret-position="1198">
+          <caret line="54" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
