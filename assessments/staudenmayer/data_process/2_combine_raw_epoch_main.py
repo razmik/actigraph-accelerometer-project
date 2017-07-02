@@ -20,8 +20,8 @@ def get_converted_day(day_str):
     else:
         return day_str
 
-filtered_processor = importlib.import_module('combine_raw_and_epoch_files_butterworth_filter')
-not_filtered_processor = importlib.import_module('combine_raw_and_epoch_files_no_filter')
+filtered_processor = importlib.import_module('private_combine_raw_and_epoch_files_butterworth_filter')
+not_filtered_processor = importlib.import_module('private_combine_raw_and_epoch_files_no_filter')
 
 input_detail_filename = "D:\Accelerometer Data\Processed/LSM2_ActiveTimeline_Details_v1.csv".replace('\\', '/')
 

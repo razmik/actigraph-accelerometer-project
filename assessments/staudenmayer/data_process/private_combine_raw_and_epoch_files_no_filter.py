@@ -19,14 +19,15 @@ import math, sys, time
 # device = 'Wrist'
 
 
-def process_with_filter(starting_row, end_row, experiment, week, day, user, date, device='Wrist'):
+def process_without_filter(starting_row, end_row, experiment, week, day, user, date, device='Wrist'):
 
     wrist_raw_data_filename = "D:/Accelerometer Data/"+experiment+"/"+week+"/"+day+"/"+user+" "+device+" "+date+"RAW.csv".replace('\\', '/')
     epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/"+experiment+"/"+week+"/"+day+"/processed/"+user+"_"+experiment+"_"+week.replace(' ', '_')+"_"+day+"_"+date+".csv".replace('\\', '/')
     path_components = wrist_raw_data_filename.split('/')
 
     output_path = "D:/Accelerometer Data/Processed"
-    output_path = output_path + '/' + path_components[2] + '/' + path_components[3] + '/' + path_components[4] + '/filtered'
+    output_path = output_path + '/' + path_components[2] + '/' + path_components[3] + '/' + path_components[
+        4] + '/not_filtered'
     filename_components = path_components[5].split(' ')
 
     # epoch granularity
@@ -65,26 +66,6 @@ def process_with_filter(starting_row, end_row, experiment, week, day, user, date
     raw_data_wrist.columns = ['X', 'Y', 'Z']
 
     """
-    Filter the raw X, Y, Z through 4th order Butterworth filter - 0.5Hz to 2.5Hz
-    """
-
-    def butter_bandpass(lowcut, highcut, fs, order):
-        nyq = 0.5 * fs
-        low = lowcut / nyq
-        high = highcut / nyq
-        b, a = butter(order, [low, high], btype='band')
-        return b, a
-
-    def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
-        b, a = butter_bandpass(lowcut, highcut, fs, order=order)
-        y = lfilter(b, a, data)
-        return y
-
-    raw_data_wrist['X'] = butter_bandpass_filter(raw_data_wrist['X'], lowcut, highcut, fs, order)
-    raw_data_wrist['Y'] = butter_bandpass_filter(raw_data_wrist['Y'], lowcut, highcut, fs, order)
-    raw_data_wrist['Z'] = butter_bandpass_filter(raw_data_wrist['Z'], lowcut, highcut, fs, order)
-
-    """
     Calculate the statistical inputs (Features)
     """
     print("Calculating statistical parameters.")
@@ -107,8 +88,8 @@ def process_with_filter(starting_row, end_row, experiment, week, day, user, date
     aggregated_wrist['mangle'] = wrist_grouped_temp['angle'].mean()
     aggregated_wrist['sdangle'] = wrist_grouped_temp['angle'].std()
     aggregated_wrist['menmo'] = wrist_grouped_temp['enmo'].mean()
-    aggregated_wrist['maxvm'] = wrist_grouped_temp['vm'].max()
-    aggregated_wrist['minvm'] = wrist_grouped_temp['vm'].min()
+    aggregated_wrist['maxvm'] = wrist_grouped_temp.max()['vm']
+    aggregated_wrist['minvm'] = wrist_grouped_temp.min()['vm']
     aggregated_wrist['10perc'] = wrist_grouped_temp['vm'].quantile(.1)
     aggregated_wrist['25perc'] = wrist_grouped_temp['vm'].quantile(.25)
     aggregated_wrist['50perc'] = wrist_grouped_temp['vm'].quantile(.5)
@@ -121,6 +102,21 @@ def process_with_filter(starting_row, end_row, experiment, week, day, user, date
 
     # frequency domain features
     print("Calculating frequency domain features.")
+
+
+    def butter_bandpass(lowcut, highcut, fs, order):
+        nyq = 0.5 * fs
+        low = lowcut / nyq
+        high = highcut / nyq
+        b, a = butter(order, [low, high], btype='band')
+        return b, a
+
+
+    def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
+        b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+        y = lfilter(b, a, data)
+        return y
+
 
     aggregated_wrist['dom_freq'] = 0
     aggregated_wrist['dom_2_freq'] = 0
@@ -153,6 +149,13 @@ def process_with_filter(starting_row, end_row, experiment, week, day, user, date
         aggregated_wrist.set_value(i, 'pow_dom_freq', pow_dom_freq)
         aggregated_wrist.set_value(i, 'pow_dom_2_freq', pow_dom_2_freq)
         aggregated_wrist.set_value(i, 'total_power', total_power)
+
+        X_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['X'], lowcut, highcut, fs, order)
+        Y_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['Y'], lowcut, highcut, fs, order)
+        Z_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['Z'], lowcut, highcut, fs, order)
+
+        VM_bp = np.sqrt([(X_bp ** 2) + (Y_bp ** 2) + (Z_bp ** 2)])[0]
+        aggregated_wrist.set_value(i, 'band_vm', np.abs(VM_bp).sum())
 
     cal_stats_freq_end_time = time.time()
     print("Calculating frequency domain features duration",
@@ -187,6 +190,7 @@ def process_with_filter(starting_row, end_row, experiment, week, day, user, date
     epoch_data['raw_dom_2_freq'] = aggregated_wrist['dom_2_freq']
     epoch_data['raw_pow_dom_2_freq'] = aggregated_wrist['pow_dom_2_freq']
     epoch_data['raw_total_power'] = aggregated_wrist['total_power']
+    epoch_data['raw_band_vm'] = aggregated_wrist['band_vm']
 
     print("Combining duration", str(round(time.time() - cal_stats_freq_end_time, 2)), "seconds")
 

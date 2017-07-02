@@ -8,13 +8,15 @@ import itertools
 from os import listdir
 from os.path import isfile, join
 
-path = "D:/Accelerometer Data/Processed/LSM2/Week 1/Wednesday/".replace('\\', '/')
+experiment = 'LSM2'
+week = 'Week 1'
+day1 = 'Wednesday'
+day2 = 'Thursday'
 
-files = [f for f in listdir(path) if isfile(join(path, f))]
-
-data = pd.DataFrame()
-for file in files:
-    data = data.append(pd.read_csv(path + file), ignore_index=True)
+non_filtered_path1 = "D:/Accelerometer Data/Processed/"+experiment+"/"+week+"/"+day1+"/not_filtered/".replace('\\', '/')
+non_filtered_path2 = "D:/Accelerometer Data/Processed/"+experiment+"/"+week+"/"+day2+"/not_filtered/".replace('\\', '/')
+filtered_path1 = "D:/Accelerometer Data/Processed/"+experiment+"/"+week+"/"+day1+"/filtered/".replace('\\', '/')
+filtered_path2 = "D:/Accelerometer Data/Processed/"+experiment+"/"+week+"/"+day2+"/filtered/".replace('\\', '/')
 
 # filename_only = 'LSM255_(2016-11-01)_row_0_to_1920'
 # epoch_filename = "D:/Accelerometer Data/Processed/LSM2/Week 1/Wednesday/" + filename_only + ".csv".replace('\\', '/')
@@ -22,7 +24,7 @@ for file in files:
 """
 If only a single file needs to be assessed.
 """
-data = pd.read_csv('D:/Accelerometer Data/Processed/LSM2/Week 1/Wednesday/LSM204_(2016-11-02)_row_16560_to_18440.csv')
+# data = pd.read_csv('D:/Accelerometer Data/Processed/LSM2/Week 1/Wednesday/LSM204_(2016-11-02)_row_16560_to_18440.csv')
 
 
 def plot_confusion_matrix(cm, classes,
@@ -59,87 +61,110 @@ def plot_confusion_matrix(cm, classes,
     plt.xlabel('Predicted label')
 
 
-# data = pd.read_csv(epoch_filename)
-del data['Unnamed: 0']
+def evaluate_models(data, status):
 
-print("bandpass wrist vm vs. wrist_epoch_15:", round(stats.pearsonr(data['band_vm'], data['wrist_vm_15'])[0], 2))
-print("wrist processed vm vs. waist process:", round(stats.pearsonr(data['waist_vm_60'], data['wrist_vm_60'])[0], 2))
-print("bandpass wrist vm vs. waist processed:", round(stats.pearsonr(data['band_vm'], data['waist_vm_60'])[0], 2))
+    del data['Unnamed: 0']
 
-data.loc[data['waist_intensity'] == 1, 'target_met_category'] = 1
-data.loc[data['waist_intensity'] == 2, 'target_met_category'] = 2
-data.loc[data['waist_intensity'] == 3, 'target_met_category'] = 3
-data.loc[data['waist_intensity'] == 4, 'target_met_category'] = 3
+    # convert activity intensity to 3 levels
+    data.loc[data['actilife_waist_intensity'] == 1, 'target_met_category'] = 1
+    data.loc[data['actilife_waist_intensity'] == 2, 'target_met_category'] = 2
+    data.loc[data['actilife_waist_intensity'] == 3, 'target_met_category'] = 3
+    data.loc[data['actilife_waist_intensity'] == 4, 'target_met_category'] = 3
 
-"""
-Linear Regression
-"""
+    """
+    Linear Regression
+    """
+    data['lr_estimated_met'] = 1.89378 + (5.50821 * data['raw_wrist_sdvm']) - (0.02705 * data['raw_wrist_mangle'])
+    data.loc[data['lr_estimated_met'] < 3, 'lr_estimated_met_category'] = 1
+    data.loc[(3 <= data['lr_estimated_met']) & (data['lr_estimated_met'] < 6), 'lr_estimated_met_category'] = 2
+    data.loc[6 <= data['lr_estimated_met'], 'lr_estimated_met_category'] = 3
 
-data['lr_estimated_met'] = 1.89378 + (5.50821 * data['wrist_sdvm']) - (0.02705 * data['wrist_mangle'])
-data.loc[data['lr_estimated_met'] < 3, 'lr_estimated_met_category'] = 1
-data.loc[(3 <= data['lr_estimated_met']) & (data['lr_estimated_met'] < 6), 'lr_estimated_met_category'] = 2
-data.loc[6 <= data['lr_estimated_met'], 'lr_estimated_met_category'] = 3
+    target = data['target_met_category'].fillna(1)  #float64
+    lr_estimated = data['lr_estimated_met_category'].fillna(1)  #.astype(np.int64)  #float64
 
-target = data['target_met_category']
-lr_estimated = data['lr_estimated_met_category']
+    """
+    Decision Tree
+    """
 
-"""
-Decision Tree
-"""
+    data.loc[(data['raw_wrist_sdvm'] <= 0.26) & (data['raw_wrist_mangle'] < -52), 'dt_estimated_met_category'] = 1
+    data.loc[(data['raw_wrist_sdvm'] <= 0.26) & (data['raw_wrist_mangle'] >= -52), 'dt_estimated_met_category'] = 2
+    data.loc[(0.26 < data['raw_wrist_sdvm']) & (data['raw_wrist_sdvm'] <= 0.79) & (
+        data['raw_wrist_mangle'] > -53), 'dt_estimated_met_category'] = 2
+    data.loc[(0.26 < data['raw_wrist_sdvm']) & (data['raw_wrist_sdvm'] <= 0.79) & (
+        data['raw_wrist_mangle'] <= -53), 'dt_estimated_met_category'] = 3
+    data.loc[data['raw_wrist_sdvm'] > 0.79, 'dt_estimated_met_category'] = 3
 
-data.loc[(data['wrist_sdvm'] <= 0.26) & (data['wrist_mangle'] < -52), 'dt_estimated_met_category'] = 1
-data.loc[(data['wrist_sdvm'] <= 0.26) & (data['wrist_mangle'] >= -52), 'dt_estimated_met_category'] = 2
-data.loc[(0.26 < data['wrist_sdvm']) & (data['wrist_sdvm'] <= 0.79) & (
-    data['wrist_mangle'] > -53), 'dt_estimated_met_category'] = 2
-data.loc[(0.26 < data['wrist_sdvm']) & (data['wrist_sdvm'] <= 0.79) & (
-    data['wrist_mangle'] <= -53), 'dt_estimated_met_category'] = 3
-data.loc[data['wrist_sdvm'] > 0.79, 'dt_estimated_met_category'] = 3
+    dt_estimated = data['dt_estimated_met_category'].fillna(1)
 
-dt_estimated = data['dt_estimated_met_category']
+    class_names = ['light', 'moderate', 'vigorous']
 
-class_names = ['light', 'moderate', 'vigorous']
+    # print(dt_estimated)
+    # sys.exit(0)
 
-"""
-Model evaluation statistics
-"""
-print("Linear Regression Equation")
+    """
+    Model evaluation statistics
+    """
+    print("Linear Regression Equation")
 
-# The mean squared error
-print("LR Mean squared error: %.2f"
-      % np.mean((lr_estimated - target) ** 2))
+    # The mean squared error
+    print("LR Mean squared error: %.2f"
+          % np.mean((lr_estimated - target) ** 2))
 
-# The R squared score
-# r2_score(y_true, y_pred, sample_weight=None, multioutput=None)
-print("LR R squared score: %.2f"
-      % r2_score(target, lr_estimated))
+    # The R squared score
+    print("LR R squared score: %.2f" % r2_score(target, lr_estimated))
 
-# Compute confusion matrix
-cnf_matrix = confusion_matrix(target, lr_estimated)
-np.set_printoptions(precision=2)
+    # Compute confusion matrix
+    cnf_matrix = confusion_matrix(target, lr_estimated)
+    np.set_printoptions(precision=2)
 
-# Plot non-normalized confusion matrix
-plt.figure(1)
-plot_confusion_matrix(cnf_matrix, classes=class_names,
-                      title='Linear Regression')
+    # Plot non-normalized confusion matrix
+    plt.figure(1)
+    plot_confusion_matrix(cnf_matrix, classes=class_names, title=status + ' Linear Regression')
 
-print("\nDecision Tree")
+    print("\nDecision Tree")
 
-# The mean squared error
-print("DT Mean squared error: %.2f"
-      % np.mean((dt_estimated - target) ** 2))
+    # The mean squared error
+    print("DT Mean squared error: %.2f" % np.mean((dt_estimated - target) ** 2))
 
-# The R squared score
-# r2_score(y_true, y_pred, sample_weight=None, multioutput=None)
-print("DT R squared score: %.2f"
-      % r2_score(target, dt_estimated))
+    # The R squared score
+    print("DT R squared score: %.2f" % r2_score(target, dt_estimated))
 
-# Compute confusion matrix
-cnf_matrix = confusion_matrix(target, dt_estimated)
-np.set_printoptions(precision=2)
+    # Compute confusion matrix
+    cnf_matrix = confusion_matrix(target, dt_estimated)
+    np.set_printoptions(precision=2)
 
-# Plot non-normalized confusion matrix
-plt.figure(2)
-plot_confusion_matrix(cnf_matrix, classes=class_names,
-                      title='Decision Tree')
+    # Plot non-normalized confusion matrix
+    plt.figure(2)
+    plot_confusion_matrix(cnf_matrix, classes=class_names, title=status + ' Decision Tree')
 
-plt.show()
+    plt.show()
+
+
+
+print('Evaluation for non-filtered raw readings.')
+
+data_nonf = pd.DataFrame()
+non_filtered_files1 = [f for f in listdir(non_filtered_path1) if isfile(join(non_filtered_path1, f))]
+for file in non_filtered_files1:
+    data_nonf = data_nonf.append(pd.read_csv(non_filtered_path1 + file), ignore_index=True)
+
+non_filtered_files2 = [f for f in listdir(non_filtered_path2) if isfile(join(non_filtered_path2, f))]
+for file in non_filtered_files2:
+    data_nonf = data_nonf.append(pd.read_csv(non_filtered_path2 + file), ignore_index=True)
+
+print('Completed reading data.')
+
+evaluate_models(data_nonf, 'Non Filtered')
+
+# print('Evaluation for filtered raw readings.')
+#
+# data_f = pd.DataFrame()
+# filtered_files1 = [f for f in listdir(filtered_path1) if isfile(join(filtered_path1, f))]
+# for file in filtered_files1:
+#     data_f = data_f.append(pd.read_csv(filtered_path1 + file), ignore_index=True)
+#
+# filtered_files2 = [f for f in listdir(filtered_path2) if isfile(join(filtered_path2, f))]
+# for file in filtered_files2:
+#     data_f = data_f.append(pd.read_csv(filtered_path2 + file), ignore_index=True)
+#
+# evaluate_models(data_f, 'Filtered')
