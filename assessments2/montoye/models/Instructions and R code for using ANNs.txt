@@ -1,0 +1,29 @@
+#Within your accelerometer file, the names of the variables must match those used when the ANNs were created.  In the next 4 lines, the variable names are shown. Each row corresponds to one monitor location. The hip and thigh monitors are ActiGRa[h GT3X+, and the two wrist monitors are GENEActiv.
+
+#nnet_hip: #outcome variable: DO_Sed_LPA_MVPA. #features: TenPct_AGhipX, TenPct_AGhipY, TenPct_AGhipZ, TwentyFivePct_AGhipX, TwentyFivePct_AGhipY, TwentyFivePct_AGhipZ, FiftyPct_AGhipX, FiftyPct_AGhipY, FiftyPct_AGhipZ, SeventyFivePct_AGhipX, SeventyFivePct_AGhipY, SeventyFivePct_AGhipZ, NinetyPct_AGhipX, NinetyPct_AGhipY, NinetyPct_AGhipZ
+#nnet_thigh: #outcome variable: DO_Sed_LPA_MVPA. #features: TenPct_AGthighX, TenPct_AGthighY, TenPct_AGthighZ, TwentyFivePct_AGthighX, TwentyFivePct_AGthighY, TwentyFivePct_AGthighZ, FiftyPct_AGthighX, FiftyPct_AGthighY, FiftyPct_AGthighZ, SeventyFivePct_AGthighX, SeventyFivePct_AGthighY, SeventyFivePct_AGthighZ, NinetyPct_AGthighX, NinetyPct_AGthighY, NinetyPct_AGthighZ
+#nnet_left: #outcome variable: DO_Sed_LPA_MVPA. #features: TenPct_GEleftY, TenPct_GEleftZ, TwentyFivePct_GEleftX, TwentyFivePct_GEleftY, TwentyFivePct_GEleftZ, FiftyPct_GEleftX, FiftyPct_GEleftY, FiftyPct_GEleftZ, SeventyFivePct_GEleftX, SeventyFivePct_GEleftY, SeventyFivePct_GEleftZ, NinetyPct_GEleftX, NinetyPct_GEleftY, NinetyPct_GEleftZ
+#nnet_right: #outcome variable: DO_Sed_LPA_MVPA. #features: TenPct_GErightX, TenPct_GErightY, TenPct_GErightZ, TwentyFivePct_GErightX, TwentyFivePct_GErightY, TwentyFivePct_GErightZ, FiftyPct_GErightX, FiftyPct_GErightY, FiftyPct_GErightZ, SeventyFivePct_GErightX, SeventyFivePct_GErightY, SeventyFivePct_GErightZ, NinetyPct_GErightX, NinetyPct_GErightY, NinetyPct_GErightZ
+
+#Set your working directory, which is where your files to analyze are.  The files must have already had features extracted in 30-second windows.
+setwd('C:/Users/montoye/activity intensity prediction models')
+library(nnet)
+library(caret)
+
+
+#data for which you will predict activity intensity category (Sedentary, Light, or Moderate-Vigorous).
+testing<-read.table(file='activity intensity data.txt',header=TRUE)
+
+
+#this will load the created ANNs into R for you to use in activity intensity category prediction.
+load("C:/montoye/activity intensity prediction models/hip_PAintensity.RData")
+load("C:/montoye/activity intensity prediction models/thigh_PAintensity.RData")
+load("C:/montoye/activity intensity prediction models/left_PAintensity.RData")
+load("C:/montoye/activity intensity prediction models/right_PAintensity.RData")
+
+
+#this will complete the prediction with the testing data and the specific ANN you want to use.
+pred_hip<-predict(nnet_hip,testing)
+pred_thigh<-predict(nnet_thigh,testing)
+pred_left<-predict(nnet_left,testing)
+pred_right<-predict(nnet_right,testing)
