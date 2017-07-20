@@ -11,45 +11,29 @@ import pandas as pd
 from scipy.signal import butter, lfilter
 import math, sys, time
 
-# experiment = 'LSM2'
-# week = 'Week 1'
-# day = 'Wednesday'
-# user = 'LSM203'
-# date = '(2016-11-02)'
-# device = 'Wrist'
 
-
-def process_without_filter(starting_row, end_row, experiment, week, day, user, date, device='Wrist'):
-
-    wrist_raw_data_filename = "D:/Accelerometer Data/"+experiment+"/"+week+"/"+day+"/"+user+" "+device+" "+date+"RAW.csv".replace('\\', '/')
-    epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/Epoch5/"+experiment+"/"+week+"/"+day+"/processed/"+user+"_Epoch5_"+experiment+"_"+week.replace(' ', '_')+"_"+date+".csv".replace('\\', '/')
-    # epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/Epoch5/"+experiment+"/"+week+"/"+day+"/processed/"+user+"_"+experiment+"_"+week.replace(' ', '_')+"_"+day+"_"+date+".csv".replace('\\', '/')
+def process_without_filter(starting_row, end_row, experiment, week, day, user, date, epoch, epoch_duration,
+                           device='Wrist'):
+    wrist_raw_data_filename = "D:/Accelerometer Data/" + experiment + "/" + week + "/" + day + "/" + user + " " + device + " " + date + "RAW.csv".replace(
+        '\\', '/')
+    epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/" + epoch + "/" + experiment + "/" + week + "/" + day + "/processed_1min_ref/" + user + "_" + experiment + "_" + week.replace(
+        ' ', '_') + "_" + day + "_" + date + "5s.csv".replace('\\', '/')
     path_components = wrist_raw_data_filename.split('/')
 
-    output_path = "D:/Accelerometer Data/Processed"
-    output_path = output_path + '/' + path_components[2] + '/' + path_components[3] + '/' + path_components[
-        4] + '/not_filtered/epoch_5'
+    output_path = "D:/Accelerometer Data/Assessment/staudenmayer/"
+    output_path = output_path + path_components[2] + '/' + path_components[3] + '/' + path_components[4] + "/" + epoch
     filename_components = path_components[5].split(' ')
 
-    # epoch granularity
-    n = 500
-    # starting_row = 24480010
-    # end_row = 28800010
+    n = epoch_duration
     epoch_start = int(starting_row / n)
-
-    # Sample rate and desired cutoff frequencies (in Hz).
-    # fs = 100.0
-    # lowcut = 0.25  # 0.25
-    # highcut = 2.5  # 2.5
-    # nsamples = n
-    # order = 4
 
     start = starting_row + 10
     start_time = time.time()
     print("Reading raw data file.")
-
     row_count = end_row - starting_row
-    output_filename = output_path + '/' + filename_components[0] + '_' + filename_components[2].replace('RAW.csv', '_') + 'row_' + str(int(starting_row / n)) + '_to_' + str(int(end_row / n)) + '.csv'
+    output_filename = output_path + '/' + filename_components[0] + '_' + filename_components[2].replace('RAW.csv',
+                                                                                                        '_') + 'row_' + str(
+        int(starting_row / n)) + '_to_' + str(int(end_row / n)) + '.csv'
     print("Duration:", ((end_row - starting_row) / (100 * 3600)), "hours")
     raw_data_wrist = pd.read_csv(wrist_raw_data_filename, skiprows=start, nrows=row_count)
 
@@ -58,7 +42,6 @@ def process_without_filter(starting_row, end_row, experiment, week, day, user, d
     """
     Calculate the statistical inputs (Features)
     """
-    print("Calculating statistical parameters.")
 
     # Calculate the vector magnitude from X, Y, Z raw readings
     raw_data_wrist['vm'] = np.sqrt([(raw_data_wrist.X ** 2) + (raw_data_wrist.Y ** 2) + (raw_data_wrist.Z ** 2)])[0]
@@ -66,113 +49,32 @@ def process_without_filter(starting_row, end_row, experiment, week, day, user, d
     # Calculate the angle of arcsin from X and VM, arcsin(axis used/vector magnitude)/(pi/2)
     raw_data_wrist['angle'] = (90 * np.arcsin(raw_data_wrist.X / raw_data_wrist['vm'])) / (math.pi / 2)
 
+    # count = 0
+    # for val in raw_data_wrist['angle']:
+    #     if math.isnan(val):
+    #         print(val, raw_data_wrist['vm'][count])
+    #     count += 1
+    #
+    # # sys.exit(0)
+
     wrist_grouped_temp = raw_data_wrist.groupby(raw_data_wrist.index // n)
     aggregated_wrist = pd.DataFrame()
 
-    print("Calculating max, min, and percentiles.")
-
-    # aggregated_wrist['mvm'] = wrist_grouped_temp['vm'].mean()
     aggregated_wrist['sdvm'] = wrist_grouped_temp['vm'].std()
     aggregated_wrist['mangle'] = wrist_grouped_temp['angle'].mean()
-    # aggregated_wrist['sdangle'] = wrist_grouped_temp['angle'].std()
-    # aggregated_wrist['maxvm'] = wrist_grouped_temp.max()['vm']
-    # aggregated_wrist['minvm'] = wrist_grouped_temp.min()['vm']
-    # aggregated_wrist['10perc'] = wrist_grouped_temp['vm'].quantile(.1)
-    # aggregated_wrist['25perc'] = wrist_grouped_temp['vm'].quantile(.25)
-    # aggregated_wrist['50perc'] = wrist_grouped_temp['vm'].quantile(.5)
-    # aggregated_wrist['75perc'] = wrist_grouped_temp['vm'].quantile(.75)
-    # aggregated_wrist['90perc'] = wrist_grouped_temp['vm'].quantile(.9)
 
-    # frequency domain features
-    # print("Calculating frequency domain features.")
-    #
-    #
-    # def butter_bandpass(lowcut, highcut, fs, order):
-    #     nyq = 0.5 * fs
-    #     low = lowcut / nyq
-    #     high = highcut / nyq
-    #     b, a = butter(order, [low, high], btype='band')
-    #     return b, a
-    #
-    #
-    # def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
-    #     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
-    #     y = lfilter(b, a, data)
-    #     return y
-    #
-    #
-    # aggregated_wrist['dom_freq'] = 0
-    # aggregated_wrist['dom_2_freq'] = 0
-    # aggregated_wrist['pow_dom_freq'] = 0
-    # aggregated_wrist['pow_dom_2_freq'] = 0
-    # aggregated_wrist['total_power'] = 0
-    #
-    # raw_data_wrist_groups = np.array_split(raw_data_wrist, len(aggregated_wrist))
-    #
-    # for i in range(0, len(raw_data_wrist_groups)):
-    #     VM = raw_data_wrist_groups[i]['vm']
-    #
-    #     spectrum = np.fft.fft(VM)
-    #     freqs = np.fft.fftfreq(VM.shape[-1], (1 / fs))
-    #
-    #     sp2 = np.sort(np.abs(spectrum), kind='mergesort')
-    #     index_max2 = np.where(np.abs(spectrum) == sp2[-2])
-    #
-    #     pow_dom_freq = np.amax(spectrum)
-    #     pow_dom_freq = np.sqrt(pow_dom_freq.real ** 2 + pow_dom_freq.imag ** 2)
-    #
-    #     pow_dom_2_freq = sp2[-2]
-    #     pow_dom_2_freq = np.sqrt(pow_dom_2_freq.real ** 2 + pow_dom_2_freq.imag ** 2)
-    #
-    #     total_power = np.sum(spectrum)
-    #     total_power = np.sqrt(total_power.real ** 2 + total_power.imag ** 2)
-    #
-    #     aggregated_wrist.set_value(i, 'dom_freq', freqs[np.argmax(np.abs(spectrum))])
-    #     aggregated_wrist.set_value(i, 'dom_2_freq', float(freqs[index_max2[0]][0]))
-    #     aggregated_wrist.set_value(i, 'pow_dom_freq', pow_dom_freq)
-    #     aggregated_wrist.set_value(i, 'pow_dom_2_freq', pow_dom_2_freq)
-    #     aggregated_wrist.set_value(i, 'total_power', total_power)
-    #
-    #     X_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['X'], lowcut, highcut, fs, order)
-    #     Y_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['Y'], lowcut, highcut, fs, order)
-    #     Z_bp = butter_bandpass_filter(raw_data_wrist_groups[i]['Z'], lowcut, highcut, fs, order)
-    #
-    #     VM_bp = np.sqrt([(X_bp ** 2) + (Y_bp ** 2) + (Z_bp ** 2)])[0]
-    #     aggregated_wrist.set_value(i, 'band_vm', np.abs(VM_bp).sum())
-    #
-    # cal_stats_freq_end_time = time.time()
-    # print("Calculating frequency domain features duration",
-    #       str(round(cal_stats_freq_end_time - cal_stats_time_end_time, 2)), "seconds")
+    aggregated_wrist['mangle'] = aggregated_wrist['mangle'].fillna(1)
 
     """
-    Include the epoch counts for 15 seconds and CPM values in aggregated dataframe
+    Include the epoch counts for 5 seconds and CPM values in aggregated dataframe
     """
-    print("Combining with ActiGraph processed epoch count data as target variables")
-    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start, nrows=len(aggregated_wrist),
-                             usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
-    epoch_data.columns = ['actilife_wrist_AxisX', 'actilife_wrist_AxisY', 'actilife_wrist_AxisZ', 'actilife_wrist_vm_5', 'actilife_wrist_vm_60',
-                          'actilife_wrist_AxisX_waist_eq', 'actilife_wrist_AxisY_waist_eq', 'actilife_wrist_AxisZ_waist_eq',
-                          'actilife_wrist_vm_waist_eq', 'actilife_wrist_cpm', 'actilife_wrist_vm_cpm', 'actilife_waist_vm_5',
-                          'actilife_waist_vm_60', 'actilife_waist_vm_cpm', 'actilife_waist_cpm', 'actilife_waist_intensity',
-                          'actilife_waist_ee', 'actilife_waist_AxisX', 'actilife_waist_AxisY', 'actilife_waist_AxisZ']
+    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start, nrows=len(aggregated_wrist))
+    epoch_data.columns = ['actilife_waist_AxisX', 'actilife_waist_AxisY', 'actilife_waist_AxisZ',
+                          'actilife_waist_vm_60',
+                          'actilife_waist_vm_cpm', 'actilife_waist_cpm', 'waist_ee', 'actilife_waist_intensity']
 
-    # epoch_data['raw_wrist_mvm'] = aggregated_wrist['mvm']
     epoch_data['raw_wrist_sdvm'] = aggregated_wrist['sdvm']
     epoch_data['raw_wrist_mangle'] = aggregated_wrist['mangle']
-    # epoch_data['raw_wrist_sdangle'] = aggregated_wrist['sdangle']
-    # epoch_data['raw_wrist_maxvm'] = aggregated_wrist['maxvm']
-    # epoch_data['raw_wrist_minvm'] = aggregated_wrist['minvm']
-    # epoch_data['raw_wrist_10perc'] = aggregated_wrist['10perc']
-    # epoch_data['raw_wrist_25perc'] = aggregated_wrist['25perc']
-    # epoch_data['raw_wrist_50perc'] = aggregated_wrist['50perc']
-    # epoch_data['raw_wrist_75perc'] = aggregated_wrist['75perc']
-    # epoch_data['raw_wrist_90perc'] = aggregated_wrist['90perc']
-    # epoch_data['raw_dom_freq'] = aggregated_wrist['dom_freq']
-    # epoch_data['raw_pow_dom_freq'] = aggregated_wrist['pow_dom_freq']
-    # epoch_data['raw_dom_2_freq'] = aggregated_wrist['dom_2_freq']
-    # epoch_data['raw_pow_dom_2_freq'] = aggregated_wrist['pow_dom_2_freq']
-    # epoch_data['raw_total_power'] = aggregated_wrist['total_power']
-    # epoch_data['raw_band_vm'] = aggregated_wrist['band_vm']
 
     # Save file
     epoch_data.to_csv(output_filename, sep=',')

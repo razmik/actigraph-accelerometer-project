@@ -5,7 +5,9 @@ import pandas as pd
 import sys, time
 
 summarise_duration = 3000
-multiply_factor = 2
+
+time_epoch = 30
+multiplication_factor = int(60 / time_epoch)
 
 input_detail_filename = "D:\Accelerometer Data\Processed/LSM2_ActiveTimeline_Details_v1.csv".replace('\\', '/')
 input_details = pd.read_csv(input_detail_filename, usecols=[0, 1, 2, 3, 4, 7, 8, 9, 10])
@@ -17,7 +19,8 @@ def convert_user(row):
 input_details['subject'] = input_details.apply(convert_user, axis=1)
 
 output_folder = 'D:\Accelerometer Data\Montoye\Features\LSM2\Week 1\Wednesday\Epoch_30_processed/'.replace('\\', '/')
-epoch_files_path = 'D:\Accelerometer Data\Montoye\Features\LSM2\Week 1\Wednesday\Epoch_30/'.replace('\\', '/')
+epoch_files_path = "D:\Accelerometer Data\ActilifeProcessedEpochs\Epoch60/LSM2\Week 1\Wednesday/".replace('\\', '/')
+# epoch_files_path = 'D:\Accelerometer Data\Montoye\Features\LSM2\Week 1\Wednesday\Epoch_30/'.replace('\\', '/')
 epoch_files = [f for f in listdir(epoch_files_path) if isfile(join(epoch_files_path, f))]
 
 
@@ -27,18 +30,6 @@ def get_freedson_adult_vm3_intensity(row):
 
 
 def get_freedson_vm3_combination_11_energy_expenditure(row):
-    """
-    https://actigraph.desk.com/customer/en/portal/articles/2515835-what-is-the-difference-among-the-energy-expenditure-algorithms-
-    if VMCPM > 2453
-        Kcals/min= 0.001064×VM + 0.087512(BM) - 5.500229
-    else
-        Kcals/min=CPM×0.0000191×BM
-    where
-        VM = Vector Magnitude Combination (per minute) of all 3 axes (sqrt((Axis 1)^2+(Axis 2)^2+(Axis 3)^2])
-        VMCPM = Vector Magnitude Counts per Minute
-        CPM = Counts per Minute
-        BM = Body Mass in kg
-    """
     #  calculate Energy Expenditure using VM3 and a constant body mass (e.g., 80 kg)
     if epoch_data['waist_vm_cpm'][row.name] > 2453:
         met_value = (0.001064 * epoch_data['waist_vm_60'][row.name]) + (0.087512 * 80) - 5.500229
@@ -61,28 +52,21 @@ for file in epoch_files:
     Process Files
     """
     epoch_data = pd.read_csv(epoch_files_path+file, skiprows=10, usecols=[0, 1, 2], header=None)
-    epoch_data.columns = ['X', 'Y', 'Z']
-    epoch_data['waist_vm_30'] = np.sqrt([(epoch_data.X ** 2) + (epoch_data.Y ** 2) + (epoch_data.Z ** 2)])[0]
-    epoch_data['waist_vm_60'] = epoch_data['waist_vm_30'] * multiply_factor
-    epoch_data['waist_cpm'] = epoch_data.Y * multiply_factor
-
-    temp_hip = 0
-    temp_wrist = 0
-    length_hip = len(epoch_data)
-    epoch_data['waist_vm_cpm'] = 0
-    for index, row in epoch_data.iterrows():
-        if index % multiply_factor == 0 and index < length_hip - (multiply_factor-1):
-            temp_hip = epoch_data.iloc[index]['waist_vm_30'] + epoch_data.iloc[index + 1]['waist_vm_30']
-        epoch_data.set_value(index, 'waist_vm_cpm', temp_hip)
+    epoch_data.columns = ['AxisX', 'AxisY', 'AxisZ']
+    epoch_data['waist_vm_60'] = np.sqrt([(epoch_data.AxisX ** 2) + (epoch_data.AxisY ** 2) + (epoch_data.AxisZ ** 2)])[0]
+    epoch_data['waist_vm_cpm'] = epoch_data['waist_vm_60']
+    epoch_data['waist_cpm'] = epoch_data.AxisY
 
     epoch_data['waist_ee'] = epoch_data.apply(get_freedson_vm3_combination_11_energy_expenditure, axis=1)
     epoch_data['waist_intensity'] = epoch_data.apply(get_freedson_adult_vm3_intensity, axis=1)
+
+    epoch_data = epoch_data.reindex(np.repeat(epoch_data.index.values, multiplication_factor), method='ffill')
 
     """
     Clean Files
     """
     active_data = pd.DataFrame()
-    # Filename example: LSM203 Waist (2016-11-02)30sec.csv
+
     rows = input_details[input_details['subject'].isin([file.split(' ')[0]]) & input_details['week'].isin(['Week 1'])]
 
     for index, row in rows.iterrows():

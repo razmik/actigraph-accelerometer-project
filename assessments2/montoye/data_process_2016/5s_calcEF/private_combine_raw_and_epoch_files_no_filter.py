@@ -12,101 +12,95 @@ from scipy.signal import butter, lfilter
 import math, sys, time
 
 
-def process_without_filter(starting_row, end_row, experiment, week, day, user, date, device):
+def process_without_filter(starting_row, end_row, experiment, week, day, user, date, epoch, epoch_duration, device):
 
-    raw_data_filename = "D:/Accelerometer Data/"+experiment+"/"+week+"/"+day+"/"+user+" "+device+" "+date+"RAW.csv".replace('\\', '/')
-    epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/Epoch5/"+experiment+"/"+week+"/"+day+"/processed/"+user+"_Epoch5_"+experiment+"_"+week.replace(' ', '_')+"_"+date+".csv".replace('\\', '/')
-    path_components = raw_data_filename.split('/')
+    wrist_raw_data_filename = "D:/Accelerometer Data/"+experiment+"/"+week+"/"+day+"/"+user+" "+device+" "+date+"RAW.csv".replace('\\', '/')
+    epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/"+epoch+"/"+experiment+"/"+week+"/"+day+"/processed_1min_ref/"+user+"_"+experiment+"_"+week.replace(' ', '_')+"_"+day+"_"+date+"5s.csv".replace('\\', '/')
+    path_components = wrist_raw_data_filename.split('/')
 
-    output_path = "D:/Accelerometer Data/Processed"
-    output_path = output_path + '/' + path_components[2] + '/' + path_components[3] + '/' + path_components[
-        4] + '/not_filtered/epoch_5/montoye_2016'
+    output_path = "D:/Accelerometer Data/Assessment/montoye/"
+    output_path = output_path + path_components[2] + '/' + path_components[3] + '/' + path_components[4] + "/" + epoch
     filename_components = path_components[5].split(' ')
 
-    n = 500
+    n = epoch_duration
     epoch_start = int(starting_row / n)
 
     start = starting_row + 10
     start_time = time.time()
     print("Reading raw data file.")
-
     row_count = end_row - starting_row
-    output_filename = output_path + '/' + filename_components[0] + '_' + filename_components[2].replace('RAW.csv', '_') + 'row_' + str(int(starting_row / n)) + '_to_' + str(int(end_row / n)) + '.csv'
+    output_filename = output_path + '/' + filename_components[0] + '_' + filename_components[2].replace('RAW.csv',
+                                                                                                        '_') + 'row_' + str(
+        int(starting_row / n)) + '_to_' + str(int(end_row / n)) + '.csv'
     print("Duration:", ((end_row - starting_row) / (100 * 3600)), "hours")
-    raw_data = pd.read_csv(raw_data_filename, skiprows=start, nrows=row_count)
+    raw_data_wrist = pd.read_csv(wrist_raw_data_filename, skiprows=start, nrows=row_count)
 
-    raw_data.columns = ['X', 'Y', 'Z']
+    raw_data_wrist.columns = ['X', 'Y', 'Z']
 
     """
     Calculate the statistical inputs (Features)
     """
-    print("Calculating statistical parameters.")
 
-    grouped_temp = raw_data.groupby(raw_data.index // n)
-    aggregated = pd.DataFrame()
+    wrist_grouped_temp = raw_data_wrist.groupby(raw_data_wrist.index // n)
+    aggregated_wrist = pd.DataFrame()
 
-    aggregated['XMean'] = grouped_temp['X'].mean()
-    aggregated['YMean'] = grouped_temp['Y'].mean()
-    aggregated['ZMean'] = grouped_temp['Z'].mean()
-    aggregated['XVar'] = grouped_temp['X'].var()
-    aggregated['YVar'] = grouped_temp['Y'].var()
-    aggregated['ZVar'] = grouped_temp['Z'].var()
+    aggregated_wrist['XMean'] = wrist_grouped_temp['X'].mean()
+    aggregated_wrist['YMean'] = wrist_grouped_temp['Y'].mean()
+    aggregated_wrist['ZMean'] = wrist_grouped_temp['Z'].mean()
+    aggregated_wrist['XVar'] = wrist_grouped_temp['X'].var()
+    aggregated_wrist['YVar'] = wrist_grouped_temp['Y'].var()
+    aggregated_wrist['ZVar'] = wrist_grouped_temp['Z'].var()
 
-    aggregated['X10perc'] = grouped_temp['X'].quantile(.1)
-    aggregated['X25perc'] = grouped_temp['X'].quantile(.25)
-    aggregated['X50perc'] = grouped_temp['X'].quantile(.5)
-    aggregated['X75perc'] = grouped_temp['X'].quantile(.75)
-    aggregated['X90perc'] = grouped_temp['X'].quantile(.9)
+    aggregated_wrist['X10perc'] = wrist_grouped_temp['X'].quantile(.1)
+    aggregated_wrist['X25perc'] = wrist_grouped_temp['X'].quantile(.25)
+    aggregated_wrist['X50perc'] = wrist_grouped_temp['X'].quantile(.5)
+    aggregated_wrist['X75perc'] = wrist_grouped_temp['X'].quantile(.75)
+    aggregated_wrist['X90perc'] = wrist_grouped_temp['X'].quantile(.9)
 
-    aggregated['Y10perc'] = grouped_temp['Y'].quantile(.1)
-    aggregated['Y25perc'] = grouped_temp['Y'].quantile(.25)
-    aggregated['Y50perc'] = grouped_temp['Y'].quantile(.5)
-    aggregated['Y75perc'] = grouped_temp['Y'].quantile(.75)
-    aggregated['Y90perc'] = grouped_temp['Y'].quantile(.9)
+    aggregated_wrist['Y10perc'] = wrist_grouped_temp['Y'].quantile(.1)
+    aggregated_wrist['Y25perc'] = wrist_grouped_temp['Y'].quantile(.25)
+    aggregated_wrist['Y50perc'] = wrist_grouped_temp['Y'].quantile(.5)
+    aggregated_wrist['Y75perc'] = wrist_grouped_temp['Y'].quantile(.75)
+    aggregated_wrist['Y90perc'] = wrist_grouped_temp['Y'].quantile(.9)
 
-    aggregated['Z10perc'] = grouped_temp['Z'].quantile(.1)
-    aggregated['Z25perc'] = grouped_temp['Z'].quantile(.25)
-    aggregated['Z50perc'] = grouped_temp['Z'].quantile(.5)
-    aggregated['Z75perc'] = grouped_temp['Z'].quantile(.75)
-    aggregated['Z90perc'] = grouped_temp['Z'].quantile(.9)
+    aggregated_wrist['Z10perc'] = wrist_grouped_temp['Z'].quantile(.1)
+    aggregated_wrist['Z25perc'] = wrist_grouped_temp['Z'].quantile(.25)
+    aggregated_wrist['Z50perc'] = wrist_grouped_temp['Z'].quantile(.5)
+    aggregated_wrist['Z75perc'] = wrist_grouped_temp['Z'].quantile(.75)
+    aggregated_wrist['Z90perc'] = wrist_grouped_temp['Z'].quantile(.9)
 
     """
-    Include the epoch counts for 15 seconds and CPM values in aggregated dataframe
+    Include the epoch counts for 5 seconds and CPM values in aggregated dataframe
     """
-    print("Combining with ActiGraph processed epoch count data as target variables")
-    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start, nrows=len(aggregated),
-                             usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
-    epoch_data.columns = ['actilife_wrist_AxisX', 'actilife_wrist_AxisY', 'actilife_wrist_AxisZ', 'actilife_wrist_vm_5', 'actilife_wrist_vm_60',
-                          'actilife_wrist_AxisX_waist_eq', 'actilife_wrist_AxisY_waist_eq', 'actilife_wrist_AxisZ_waist_eq',
-                          'actilife_wrist_vm_waist_eq', 'actilife_wrist_cpm', 'actilife_wrist_vm_cpm', 'actilife_waist_vm_5',
-                          'actilife_waist_vm_60', 'actilife_waist_vm_cpm', 'actilife_waist_cpm', 'actilife_waist_intensity',
-                          'actilife_waist_ee', 'actilife_waist_AxisX', 'actilife_waist_AxisY', 'actilife_waist_AxisZ']
+    epoch_data = pd.read_csv(epoch_filename, skiprows=epoch_start, nrows=len(aggregated_wrist))
+    epoch_data.columns = ['actilife_waist_AxisX', 'actilife_waist_AxisY', 'actilife_waist_AxisZ', 'actilife_waist_vm_60',
+                          'actilife_waist_vm_cpm', 'actilife_waist_cpm', 'waist_ee', 'actilife_waist_intensity']
 
-    epoch_data['raw_wrist_XMean'] = aggregated['XMean']
-    epoch_data['raw_wrist_YMean'] = aggregated['YMean']
-    epoch_data['raw_wrist_ZMean'] = aggregated['ZMean']
+    epoch_data['raw_wrist_XMean'] = aggregated_wrist['XMean']
+    epoch_data['raw_wrist_YMean'] = aggregated_wrist['YMean']
+    epoch_data['raw_wrist_ZMean'] = aggregated_wrist['ZMean']
 
-    epoch_data['raw_wrist_XVar'] = aggregated['XVar']
-    epoch_data['raw_wrist_YVar'] = aggregated['YVar']
-    epoch_data['raw_wrist_ZVar'] = aggregated['ZVar']
+    epoch_data['raw_wrist_XVar'] = aggregated_wrist['XVar']
+    epoch_data['raw_wrist_YVar'] = aggregated_wrist['YVar']
+    epoch_data['raw_wrist_ZVar'] = aggregated_wrist['ZVar']
 
-    epoch_data['raw_wrist_X10perc'] = aggregated['X10perc']
-    epoch_data['raw_wrist_X25perc'] = aggregated['X25perc']
-    epoch_data['raw_wrist_X50perc'] = aggregated['X50perc']
-    epoch_data['raw_wrist_X75perc'] = aggregated['X75perc']
-    epoch_data['raw_wrist_X90perc'] = aggregated['X90perc']
+    epoch_data['raw_wrist_X10perc'] = aggregated_wrist['X10perc']
+    epoch_data['raw_wrist_X25perc'] = aggregated_wrist['X25perc']
+    epoch_data['raw_wrist_X50perc'] = aggregated_wrist['X50perc']
+    epoch_data['raw_wrist_X75perc'] = aggregated_wrist['X75perc']
+    epoch_data['raw_wrist_X90perc'] = aggregated_wrist['X90perc']
 
-    epoch_data['raw_wrist_Y10perc'] = aggregated['Y10perc']
-    epoch_data['raw_wrist_Y25perc'] = aggregated['Y25perc']
-    epoch_data['raw_wrist_Y50perc'] = aggregated['Y50perc']
-    epoch_data['raw_wrist_Y75perc'] = aggregated['Y75perc']
-    epoch_data['raw_wrist_Y90perc'] = aggregated['Y90perc']
+    epoch_data['raw_wrist_Y10perc'] = aggregated_wrist['Y10perc']
+    epoch_data['raw_wrist_Y25perc'] = aggregated_wrist['Y25perc']
+    epoch_data['raw_wrist_Y50perc'] = aggregated_wrist['Y50perc']
+    epoch_data['raw_wrist_Y75perc'] = aggregated_wrist['Y75perc']
+    epoch_data['raw_wrist_Y90perc'] = aggregated_wrist['Y90perc']
 
-    epoch_data['raw_wrist_Z10perc'] = aggregated['Z10perc']
-    epoch_data['raw_wrist_Z25perc'] = aggregated['Z25perc']
-    epoch_data['raw_wrist_Z50perc'] = aggregated['Z50perc']
-    epoch_data['raw_wrist_Z75perc'] = aggregated['Z75perc']
-    epoch_data['raw_wrist_Z90perc'] = aggregated['Z90perc']
+    epoch_data['raw_wrist_Z10perc'] = aggregated_wrist['Z10perc']
+    epoch_data['raw_wrist_Z25perc'] = aggregated_wrist['Z25perc']
+    epoch_data['raw_wrist_Z50perc'] = aggregated_wrist['Z50perc']
+    epoch_data['raw_wrist_Z75perc'] = aggregated_wrist['Z75perc']
+    epoch_data['raw_wrist_Z90perc'] = aggregated_wrist['Z90perc']
 
     # Save file
     epoch_data.to_csv(output_filename, sep=',')

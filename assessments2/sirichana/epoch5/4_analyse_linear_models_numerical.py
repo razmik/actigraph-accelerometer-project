@@ -65,7 +65,7 @@ def evaluate_models(data, status):
     """
     Assessment data
     """
-    target_ee = data['actilife_waist_ee']
+    target_ee = data['waist_ee']
     lr_A_esitmated = data['lr_A_estimated_met']
     lr_B_esitmated = data['lr_B_estimated_met']
 
@@ -89,10 +89,9 @@ if __name__ == '__main__':
     experiment = 'LSM2'
     week = 'Week 1'
     day1 = 'Wednesday'
-    epoch = 'Epoch5'
 
-    prediction_path = ("D:/Accelerometer Data/Processed/" + experiment + "/" + week + "/" + day1 + "/filtered/"+epoch+"/").replace(
-        '\\', '/')
+    # D:\Accelerometer Data\Assessment\sirichana\LSM2\Week 1\Wednesday\Epoch5
+    prediction_path = ("D:/Accelerometer Data\Assessment\sirichana/" + experiment + "/" + week + "/" + day1 + "/Epoch5/").replace('\\', '/')
 
     prediction_files = [f for f in listdir(prediction_path) if isfile(join(prediction_path, f))]
 
@@ -101,5 +100,4 @@ if __name__ == '__main__':
         predictions = predictions.append(pd.read_csv(prediction_path + file))
 
     predictions.index = np.arange(0, len(predictions))
-
-    evaluate_models(predictions, 'Sirichana - '+epoch)
+    evaluate_models(predictions, 'Sirichana - 5 epochs')
