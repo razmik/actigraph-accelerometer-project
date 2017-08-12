@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import pandas as pd
 from sklearn.metrics import r2_score, confusion_matrix, precision_recall_fscore_support
+import scipy.stats as stats
 import matplotlib.pyplot as plt
 import itertools
 from os import listdir
@@ -47,15 +48,16 @@ def plot_confusion_matrix(cm, classes,
 wrist = 'left_wrist'
 # model = 'v1v2'
 model = 'v2'
-model_title = 'Montoye 2017 ANN ' + model + ' ' + wrist
-print(model_title)
+print('Montoye 2017 ANN', wrist)
 
-result_folder = 'D:\Accelerometer Data\Montoye\Features\LSM2\Week 1\Wednesday\Assessment2\Montoye_2017_predictions/'+wrist+'/60sec/'+model+'/combined/'.replace('\\', '/')
+result_folder = 'D:\Accelerometer Data\Montoye\Features\LSM2\Week 1\Wednesday\Assessment2\Montoye_2017_predictions/' + wrist + '/60sec/' + model + '/combined/'.replace(
+    '\\', '/')
 result_data_files = [f for f in listdir(result_folder) if isfile(join(result_folder, f))]
 
 """
 Evaluate the users as a whole
 """
+
 count = 0
 for file in result_data_files:
 
@@ -70,7 +72,7 @@ for file in result_data_files:
     count += 1
 
 results = BA.BlandAltman.clean_data_points(results)
-BA.BlandAltman.bland_altman_paired_plot_tested(results, model_title, 2, log_transformed=True, min_count_regularise=True)
+BA.BlandAltman.bland_altman_paired_plot_tested(results, 'Montoye 2017 ANN left_wrist', 2, log_transformed=True, min_count_regularise=True)
 
 target_intensity = results['actual_category']
 predicted_intensity = results['predicted_category']
@@ -89,7 +91,8 @@ print("Montoye 2017 ANN (MET) R squared score: %.2f" % r2_score(target_ee, predi
 print("Montoye 2017 ANN (Instensity) R squared score: %.2f" % r2_score(target_intensity, predicted_intensity))
 
 # Precision and Recall
-precision, recall, fscore, support = precision_recall_fscore_support(target_intensity, predicted_intensity, average='macro')
+precision, recall, fscore, support = precision_recall_fscore_support(target_intensity, predicted_intensity,
+                                                                     average='macro')
 print('overall precision: {}'.format(precision))
 print('overall recall: {}'.format(recall))
 print('overall fscore: {}'.format(fscore))
@@ -107,5 +110,5 @@ np.set_printoptions(precision=2)
 
 # Plot non-normalized confusion matrix
 plt.figure(1)
-plot_confusion_matrix(cnf_matrix, classes=class_names, title='Montoye 2017 '+wrist+' ANN')
+plot_confusion_matrix(cnf_matrix, classes=class_names, title='Montoye 2017 ' + wrist + ' ANN')
 plt.show()

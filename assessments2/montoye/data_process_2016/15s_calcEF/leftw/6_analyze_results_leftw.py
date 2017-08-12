@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import itertools
 from os import listdir
 from os.path import isfile, join
+sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
+import bland_altman_extension as BA
 
 
 def plot_confusion_matrix(cm, classes,
@@ -53,10 +55,14 @@ Evaluate the users as a whole
 count = 0
 for file in result_data_files:
 
+    dataframe = pd.read_csv(result_folder + file)
+    dataframe['subject'] = file.split('_(2016')[0]
+
     if count == 0:
-        results = pd.read_csv(result_folder+file)
+        results = dataframe
     else:
-        results = results.append(pd.read_csv(result_folder+file), ignore_index=True)
+        results = results.append(dataframe, ignore_index=True)
+
     count += 1
 
 target_intensity = results['actual_category']

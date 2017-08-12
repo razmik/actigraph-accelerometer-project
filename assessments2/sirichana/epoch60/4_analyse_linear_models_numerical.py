@@ -5,6 +5,8 @@ import itertools, sys
 from sklearn.metrics import r2_score, confusion_matrix, precision_recall_fscore_support
 from os import listdir
 from os.path import isfile, join
+sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
+import bland_altman_extension as BA
 
 
 def plot_confusion_matrix(cm, classes,
@@ -63,6 +65,16 @@ def evaluate_models(data, status):
     data['lr_B_estimated_met'] = (data['svm'] + 12.7) / 105.3
 
     """
+    Bland Altman Plots
+    """
+    data = BA.BlandAltman.clean_data_points_prediction_only(data, 'lr_A_estimated_met')
+    data = BA.BlandAltman.clean_data_points_prediction_only(data, 'lr_B_estimated_met')
+    BA.BlandAltman.bland_altman_paired_plot_tested(data, status+' LR A', 1, log_transformed=True,
+                                                   min_count_regularise=True, prediction_column='lr_A_estimated_met')
+    BA.BlandAltman.bland_altman_paired_plot_tested(data, status+' LR B', 2, log_transformed=True,
+                                                   min_count_regularise=True, prediction_column='lr_B_estimated_met')
+
+    """
     Assessment data
     """
     target_ee = data['waist_ee']
@@ -95,9 +107,21 @@ if __name__ == '__main__':
 
     prediction_files = [f for f in listdir(prediction_path) if isfile(join(prediction_path, f))]
 
-    predictions = pd.DataFrame()
+    count = 0
     for file in prediction_files:
-        predictions = predictions.append(pd.read_csv(prediction_path + file))
 
-    predictions.index = np.arange(0, len(predictions))
-    evaluate_models(predictions, 'Sirichana - 60 epochs')
+        dataframe = pd.read_csv(prediction_path + file)
+        dataframe['subject'] = file.split('_(2016')[0]
+
+        if count == 0:
+            results = dataframe
+        else:
+            results = results.append(dataframe, ignore_index=True)
+
+        count += 1
+
+    results = BA.BlandAltman.clean_data_points_reference_only(results)
+
+    results.index = np.arange(0, len(results))
+    evaluate_models(results, 'Sirichana - 60 epochs')
+    plt.show()
