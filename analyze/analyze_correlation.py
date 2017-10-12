@@ -128,12 +128,12 @@ with open('correlation_dict_Intensity.pickle', 'wb') as handle:
 
 # Draw the CVS file
 correlation_dict_MET = refine_met_dict(correlation_dict_MET)
-with open("test_MET.csv", "w") as outfile:
+with open("pearson_correlation_MET.csv", "w") as outfile:
    writer = csv.writer(outfile)
    writer.writerow(correlation_dict_MET.keys())
    writer.writerows(zip(*correlation_dict_MET.values()))
 
-with open("test_Intensity.csv", "w") as outfile:
+with open("pearson_correlation_Intensity.csv", "w") as outfile:
    writer = csv.writer(outfile)
    writer.writerow(correlation_dict_Intensity.keys())
    writer.writerows(zip(*correlation_dict_Intensity.values()))
