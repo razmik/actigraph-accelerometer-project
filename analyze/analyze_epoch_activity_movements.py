@@ -12,15 +12,15 @@ date = '(2016-11-02)'
 device = 'Wrist'
 
 # wrist_raw_data_filename = "D:/Accelerometer Data/"+experiment+"/"+week+"/"+day+"/"+user+" "+device+" "+date+"RAW.csv".replace('\\', '/')
-epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/"+experiment+"/"+week+"/"+day+"/processed/"+user+"_"+experiment+"_"+week.replace(' ', '_')+"_"+day+"_"+date+".csv".replace('\\', '/')
-
+# epoch_filename = "D:\Accelerometer Data\ActilifeProcessedEpochs/"+experiment+"/"+week+"/"+day+"/processed/"+user+"_"+experiment+"_"+week.replace(' ', '_')+"_"+day+"_"+date+".csv".replace('\\', '/')
+epoch_filename = 'D:\Accelerometer Data\Processed\LSM2\Week 1\Wednesday/not_filtered\epoch_15/LSM219_(2016-11-02)_row_16522_to_20063.csv'.replace('\\', '/')
 # epoch granularity
 n = 1500
 starting_row = 0
 end_row = -1
 
 # summarize parameters
-summarized_duration = 4 * 60 * 1  #hour
+summarized_duration = 4 * 60 * (1 / 6 ) #hour
 
 # row_count = int((end_row - starting_row) / summarize_duration)
 # epoch_start = int(starting_row/summarize_duration)
@@ -50,12 +50,13 @@ normalize_intensity = get_normalized('actilife_waist_intensity')
 normalized_wrist_vm = get_normalized('actilife_wrist_vm_15')
 normalized_waist_vm = get_normalized('actilife_waist_vm_15')
 
-plt.figure(1)
-plt.title('Red - Activity Intensity,    Blue - Wrist,    Green - Waist')
-plt.plot(x_range, normalize_intensity, 'r', x_range, normalized_wrist_vm, 'b', x_range, normalized_waist_vm, 'g')
+# plt.figure(1)
+# plt.title('Red - Activity Intensity,    Blue - Wrist,    Green - Waist')
+# plt.plot(x_range, normalize_intensity, 'r', x_range, normalized_wrist_vm, 'b', x_range, normalized_waist_vm, 'g')
 
 plt.figure(2)
-plt.title('Red - Energy Expenditure,    Blue - Wrist,    Green - Waist')
+plt.title('Energy Expenditure for 1 hour epochs')
 plt.plot(x_range, normalized_enrgy, 'r', x_range, normalized_wrist_vm, 'b', x_range, normalized_waist_vm, 'g')
+plt.xlabel('Red - Energy Expenditure,    Blue - Wrist Acc.,    Green - Waist Acc.')
 
 plt.show()

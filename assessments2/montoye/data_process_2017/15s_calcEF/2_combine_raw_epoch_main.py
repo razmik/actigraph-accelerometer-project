@@ -22,7 +22,7 @@ for index, row in input_details.iterrows():
     week = row['week']
     day = row['day']
     date_line = row['date'].split('/')
-    date = '(' + date_line[2] + '-' + date_line[1] + '-' + get_converted_day(date_line[0]) + ')'  # 2/11/2016 -> (2016-11-02)
+    date = '(' + date_line[2] + '-' + date_line[1] + '-' + get_converted_day(date_line[0]) + ')'
     user = row['subject'].split(' ')[0]
     device = 'Wrist'
 

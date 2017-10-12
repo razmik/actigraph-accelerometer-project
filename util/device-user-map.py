@@ -4,10 +4,6 @@ import pandas as pd
 import sys, time
 
 
-file_folder = 'D:\Accelerometer Data\LSM1\Week 1\Sample/'.replace('\\', '/')
-code_file = 'D:\Accelerometer Data\LSM1\device-user-map.csv'.replace('\\', '/')
-
-files = [f for f in listdir(file_folder) if isfile(join(file_folder, f))]
 
 """
 Create the local mapping for codes, (device id <-> user)
@@ -17,24 +13,52 @@ MOS2E33154170	LSM140
 MOS2E33154173	LSM149
 MOS2E33154174	LSM105 WAIST
 """
-codes = {}
-codes_df = pd.read_csv(code_file)
-for index, row in codes_df.iterrows():
+def get_codes(code_filename):
+    codes = {}
+    codes_df = pd.read_csv(code_filename)
+    for index, row in codes_df.iterrows():
 
-    if 'WAIST' in row['participant_code']:
-        codes[row['id']] = row['participant_code'].split(' ')[0] + ' Waist'
-    else:
-        codes[row['id']] = row['participant_code'] + ' Wrist'
+        if 'WAIST' in row['participant_code']:
+            codes[row['id']] = row['participant_code'].split(' ')[0] + ' Waist'
+        else:
+            codes[row['id']] = row['participant_code'] + ' Wrist'
+    return codes
+
+
+def update_filenames(file_list, file_folder):
+    """
+    Update file names
+    """
+    for file in file_list:
+        current_name_split = file.split(' ')
+        new_filename = codes[current_name_split[0]] + ' ' + current_name_split[1]
+        print('In:', file_folder + file)
+        rename(file_folder + file, file_folder + new_filename)
+        print('Out:', file_folder + new_filename, '\n')
+
+    print('Processing completed.')
+
 
 """
-Update filenames
+Config
 """
-for file in files:
+# file_folder_name = 'D:\Accelerometer Data\LSM1\Week 1\Ian/'.replace('\\', '/')
+code_file = 'D:\Accelerometer Data\LSM1\device-user-map.csv'.replace('\\', '/')
+# files = [f for f in listdir(file_folder) if isfile(join(file_folder, f))]
 
-    current_name_split = file.split(' ')
-    new_filename = codes[current_name_split[0]] + ' ' + current_name_split[1]
-    print('In:', file_folder+file)
-    rename(file_folder+file, file_folder+new_filename)
-    print('Out:', file_folder+new_filename, '\n')
+filename = 'D:\Accelerometer Data\LSM1\Week 1\Thursday Outputs/Thursday Outputs_DailyDetailed_testfile.csv'.replace('\\', '/')
+output_filename = 'D:\Accelerometer Data\LSM1\Week 1\Thursday Outputs/Thursday Outputs_DailyDetailed_keys.csv'.replace('\\', '/')
 
-print('Processing completed.')
+codes = get_codes(code_file)
+
+dataframe = pd.read_csv(filename)
+dataframe['username'] = ''
+for index, row in dataframe.iterrows():
+    row['username'] = codes[row['Subject']]
+
+dataframe.to_csv(output_filename)
+
+
+
+
+

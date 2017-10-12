@@ -1,10 +1,11 @@
-#setwd('E:/Projects/accelerometer-project/assessments2/montoye/data_process_2017/5s_calcEF/leftw/')
+#setwd('E:/Projects/accelerometer-project/assessments2/montoye/data_process_2017/general/')
 
 library(nnet)
 library(caret)
 
 epochs = c('Epoch5', 'Epoch15', 'Epoch30', 'Epoch60')
-wrists = c('right_wrist')
+#wrists = c('left_wrist', 'right_wrist')
+wrists = c('left_wrist')
 
 print('v1v2')
 
@@ -12,9 +13,9 @@ for (epoch in epochs){
   for (wrist in wrists){
 
     if (wrist == 'left_wrist'){
-      nnet_wrist<-load("../../models/V1V2_LW.RData")
+      nnet_wrist<-load("../models/V1V2_LW.RData")
     }else if(wrist == 'right_wrist'){
-      nnet_wrist<-load("../../models/V1V2_RW.RData")
+      nnet_wrist<-load("../models/V1V2_RW.RData")
     }
 
     a <- 'E:/Data/Accelerometer_Montoye_ANN/2017/'

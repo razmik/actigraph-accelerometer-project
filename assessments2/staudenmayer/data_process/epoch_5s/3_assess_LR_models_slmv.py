@@ -4,10 +4,11 @@ import pandas as pd
 from sklearn.metrics import r2_score, confusion_matrix, precision_recall_fscore_support
 import matplotlib.pyplot as plt
 import itertools
-import math
+import math, time
 from os import listdir
 from os.path import isfile, join
-
+sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
+import statistical_extensions
 
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
@@ -43,32 +44,32 @@ def plot_confusion_matrix(cm, classes,
     plt.xlabel('Predicted label')
 
 
+def predict(data):
+    data['predicted_ee'] = 1.89378 + (5.50821 * data['raw_wrist_sdvm']) - (0.02705 * data['raw_wrist_mangle'])
+    return data
+
+
 def evaluate_models(data, status):
 
-    def met_to_intensity(row):
+    def met_to_intensity_waist_ee(row):
         ee = data['waist_ee'][row.name]
-        return 1 if ee < 1.5 else 2 if ee < 3 else 3
+        return 1 if ee <= 1.5 else 2 if ee < 3 else 3
+
+    def met_to_intensity_lr_estimated_ee(row):
+        ee = data['predicted_ee'][row.name]
+        return 1 if ee <= 1.5 else 2 if ee < 3 else 3
 
     # convert activity intensity to 3 levels - SB, LPA, MVPA
-    data['target_met_category'] = data.apply(met_to_intensity, axis=1)
-
-    """
-    Linear Regression
-    """
-
-    data['lr_estimated_met'] = 1.89378 + (5.50821 * data['raw_wrist_sdvm']) - (0.02705 * data['raw_wrist_mangle'])
-    data.loc[data['lr_estimated_met'] < 3, 'lr_estimated_met_category'] = 1
-    data.loc[(3 <= data['lr_estimated_met']) & (data['lr_estimated_met'] < 6), 'lr_estimated_met_category'] = 2
-    data.loc[data['lr_estimated_met'] >= 6, 'lr_estimated_met_category'] = 3
+    data['target_met_category'] = data.apply(met_to_intensity_waist_ee, axis=1)
+    data['lr_predicted_met_category'] = data.apply(met_to_intensity_lr_estimated_ee, axis=1)
 
     target_category = data['target_met_category']
-    lr_estimated_category = data['lr_estimated_met_category']
+    lr_estimated_category = data['lr_predicted_met_category']
 
     target_met = data['waist_ee']
-    lr_estimated_met = data['lr_estimated_met']
+    lr_estimated_met = data['predicted_ee']
 
     class_names = ['SB', 'LPA', 'MVPA']
-
 
     """
     Model evaluation statistics
@@ -79,57 +80,69 @@ def evaluate_models(data, status):
     print("LR Mean squared error [MET]: %.2f" % np.mean((lr_estimated_met - target_met) ** 2))
     print("LR Mean squared error [Category]: %.2f" % np.mean((lr_estimated_category - target_category) ** 2))
 
-    # The R squared score
-    print("LR R squared score [MET]: %.2f" % r2_score(target_met, lr_estimated_met))
-    print("LR R squared score [Category]: %.2f" % r2_score(target_category, lr_estimated_category))
-
-    # Precision and Recall for Linear Regression model
-    precision, recall, fscore, support = precision_recall_fscore_support(target_category, lr_estimated_category, average='macro')
-    print('LR overall precision: {}'.format(precision))
-    print('LR overall recall: {}'.format(recall))
-    print('LR overall fscore: {}'.format(fscore))
-    print('LR overall support: {}'.format(support))
-
-    precision, recall, fscore, support = precision_recall_fscore_support(target_category, lr_estimated_category)
-    print('LR precision: {}'.format(precision))
-    print('LR recall: {}'.format(recall))
-    print('LR fscore: {}'.format(fscore))
-    print('LR support: {}'.format(support))
-
     # Compute confusion matrix
     cnf_matrix = confusion_matrix(target_category, lr_estimated_category)
     np.set_printoptions(precision=2)
 
+    stats = statistical_extensions.GeneralStats.evaluation_statistics(cnf_matrix)
+    print('Accuracy', stats['accuracy'])
+    print('Sensitivity', stats['sensitivity'])
+    print('Specificity', stats['specificity'])
+
     # Plot non-normalized confusion matrix
     plt.figure(1)
-    plot_confusion_matrix(cnf_matrix, classes=class_names, title=status + ' Linear Regression')
-
-    plt.show()
+    plot_confusion_matrix(cnf_matrix, classes=class_names, title=status)
 
 
-print('Evaluation for non-filtered raw readings.')
+print('Start - Reading')
 
-experiment = 'LSM2'
+experiments = ['LSM1', 'LSM2']
 week = 'Week 1'
-day = 'Wednesday'
+days = ['Wednesday', 'Thursday']
+epoch = 'Epoch5'
+model_title = 'Staudenmayer Linear Regression (5 sec epoch)'
 
-input_file_path = ("D:/Accelerometer Data\Assessment\staudenmayer/"+experiment+"/"+week+"/"+day+"/Epoch5/").replace('\\', '/')
+start_reading = time.time()
 
-data = pd.DataFrame()
-input_filenames = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
-for file in input_filenames:
-    data = data.append(pd.read_csv(input_file_path + file), ignore_index=True)
+count = 0
+for experiment in experiments:
+    if count != 0:
+        break
+    for day in days:
+        if count != 0:
+            break
+        input_file_path = ("E:/Data/Accelerometer_Processed_Raw_Epoch_Data/"+experiment+"/"+week+"/"+day+"/"+epoch+"/").replace('\\', '/')
+        input_filenames = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
 
-    # # Verify if all the values are NON NAN
-    # temp = pd.read_csv(input_file_path + file)
-    # count = 0
-    # for val in temp['raw_wrist_mangle']:
-    #     if math.isnan(val):
-    #         print(file, count)
-    #     count += 1
+        for file in input_filenames:
+            dataframe = pd.read_csv(input_file_path + file)
+            dataframe['subject'] = file.split('_(2016')[0]
 
-del data['Unnamed: 0']
+            if count != 0:
+                results = results.append(dataframe, ignore_index=True)
+            else:
+                results = dataframe
+                count += 1
 
-print('Completed reading data.')
+        print('completed', experiment, day)
 
-evaluate_models(data, 'Staudenmayer LR - 15 sec')
+end_reading = time.time()
+
+print('Reading time', round(end_reading-start_reading, 2), '(s)\nStart - Assessment')
+
+
+"""Prediction"""
+results = predict(results)
+
+
+"""General Assessment"""
+evaluate_models(results, model_title)
+
+
+"""Bland Altman Plot"""
+results = statistical_extensions.BlandAltman.clean_data_points(results)
+statistical_extensions.BlandAltman.bland_altman_paired_plot_tested(results, model_title, 2, log_transformed=True, min_count_regularise=False)
+
+print('Assessment completed.')
+
+plt.show()

@@ -7,8 +7,10 @@ import matplotlib.pyplot as plt
 import winsound
 
 
-wrists = ['left_wrist', 'right_wrist']
-epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+wrists = ['left_wrist']
+epochs = ['Epoch15', 'Epoch30', 'Epoch60']
+# wrists = ['left_wrist', 'right_wrist']
+# epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
 experiments = ['LSM1', 'LSM2']
 week = 'Week 1'
 days = ['Wednesday', 'Thursday']

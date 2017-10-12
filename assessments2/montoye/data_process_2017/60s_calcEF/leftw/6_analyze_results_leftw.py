@@ -7,7 +7,7 @@ import itertools
 from os import listdir
 from os.path import isfile, join
 sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
-import bland_altman_extension as BA
+import statistical_extensions
 
 
 def plot_confusion_matrix(cm, classes,
@@ -45,8 +45,8 @@ def plot_confusion_matrix(cm, classes,
 
 
 wrist = 'left_wrist'
-# model = 'v1v2'
-model = 'v2'
+model = 'v1v2'
+# model = 'v2'
 model_title = 'Montoye 2017 ANN ' + model + ' ' + wrist
 print(model_title)
 
@@ -69,8 +69,8 @@ for file in result_data_files:
 
     count += 1
 
-results = BA.BlandAltman.clean_data_points(results)
-BA.BlandAltman.bland_altman_paired_plot_tested(results, model_title, 2, log_transformed=True, min_count_regularise=True)
+results = statistical_extensions.BlandAltman.clean_data_points(results)
+statistical_extensions.BlandAltman.bland_altman_paired_plot_tested(results, model_title, 2, log_transformed=True, min_count_regularise=True)
 
 target_intensity = results['actual_category']
 predicted_intensity = results['predicted_category']
@@ -103,6 +103,12 @@ print('support: {}'.format(support))
 
 # Compute confusion matrix for intensity
 cnf_matrix = confusion_matrix(target_intensity, predicted_intensity)
+
+stats = statistical_extensions.GeneralStats.evaluation_statistics(cnf_matrix)
+print('Accuracy', stats['accuracy'])
+print('Sensitivity', stats['sensitivity'])
+print('Specificity', stats['specificity'])
+
 np.set_printoptions(precision=2)
 
 # Plot non-normalized confusion matrix

@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
+import time
 import matplotlib.pyplot as plt
 import itertools, sys
 from sklearn.metrics import r2_score, confusion_matrix, precision_recall_fscore_support
 from os import listdir
 from os.path import isfile, join
+sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
+import statistical_extensions
 
 
 def plot_confusion_matrix(cm, classes,
@@ -41,13 +44,27 @@ def plot_confusion_matrix(cm, classes,
     plt.xlabel('Predicted label')
 
 
-def evaluate_models(data, status='Sirichana - 5 epochs'):
+def predict_ee_A(data):
 
     def update_met_based_on_mv(row):
-        met_value = data['lr_A_estimated_met'][row.name]
+        met_value = data['predicted_ee'][row.name]
         if met_value > 6:
             met_value = (data['svm'][row.name] - 1708.1) / 373.4
         return met_value
+
+    data['predicted_ee'] = (data['svm'] - 32.5) / 83.3
+    data['predicted_ee'] = data.apply(update_met_based_on_mv, axis=1)
+
+    return data
+
+
+def predict_ee_B(data):
+
+    data['predicted_ee'] = (data['svm'] + 12.7) / 105.3
+    return data
+
+
+def evaluate_models(data, status, plot_title):
 
     def transform_to_met_category(column, new_column):
         data.loc[data[column] < 1.5, new_column] = 1
@@ -57,102 +74,93 @@ def evaluate_models(data, status='Sirichana - 5 epochs'):
     # Freedson EE MET values -> convert activity intensity to 3 levels
     transform_to_met_category('waist_ee', 'target_met_category_freedson_intensity')
 
-    """
-    Linear Regression A
-    """
-    data['lr_A_estimated_met'] = (data['svm'] - 32.5) / 83.3
-    data['lr_A_estimated_met'] = data.apply(update_met_based_on_mv, axis=1)
-
-    """
-    Linear Regression B
-    """
-    data['lr_B_estimated_met'] = (data['svm'] + 12.7) / 105.3
-
-    transform_to_met_category('lr_A_estimated_met', 'lr_A_estimated_met_category')
-    transform_to_met_category('lr_B_estimated_met', 'lr_B_estimated_met_category')
+    transform_to_met_category('predicted_ee', 'lr_estimated_met_category')
 
     target_met_category = data['target_met_category_freedson_intensity']
-    lr_A_esitmated = data['lr_A_estimated_met_category']
-    lr_B_esitmated = data['lr_B_estimated_met_category']
+    lr_esitmated = data['lr_estimated_met_category']
 
     class_names = ['SB', 'LPA', 'MVPA']
 
     """
     Model evaluation statistics
     """
-    print("Linear Regression A")
+    print("Evaluation of", status)
 
     # The mean squared error
-    print("LR A Mean squared error: %.2f" % np.mean((lr_A_esitmated - target_met_category) ** 2))
-
-    # The R squared score
-    print("LR A R squared score: %.2f" % r2_score(target_met_category, lr_A_esitmated))
-
-    # Precision and Recall for Linear Regression model
-    precision, recall, fscore, support = precision_recall_fscore_support(target_met_category, lr_A_esitmated, average='macro')
-    print('LR A overall precision: {}'.format(precision))
-    print('LR A overall recall: {}'.format(recall))
-    print('LR A overall fscore: {}'.format(fscore))
-    print('LR A overall support: {}'.format(support))
-
-    precision, recall, fscore, support = precision_recall_fscore_support(target_met_category, lr_A_esitmated)
-    print('LR A precision: {}'.format(precision))
-    print('LR A recall: {}'.format(recall))
-    print('LR A fscore: {}'.format(fscore))
-    print('LR A support: {}'.format(support))
+    print("LR Mean squared error: %.2f" % np.mean((lr_esitmated - target_met_category) ** 2))
 
     # Compute confusion matrix
-    cnf_matrix = confusion_matrix(target_met_category, lr_A_esitmated)
+    cnf_matrix = confusion_matrix(target_met_category, lr_esitmated)
     np.set_printoptions(precision=2)
 
-    # Plot non-normalized confusion matrix
-    plt.figure(1)
-    plot_confusion_matrix(cnf_matrix, classes=class_names, title=status + ' Linear Regression - A')
-
-
-    print("Linear Regression B")
-
-    print("LR B Mean squared error: %.2f" % np.mean((lr_B_esitmated - target_met_category) ** 2))
-    print("LR B R squared score: %.2f" % r2_score(target_met_category, lr_B_esitmated))
-
-    # Precision and Recall for Linear Regression model
-    precision, recall, fscore, support = precision_recall_fscore_support(target_met_category, lr_B_esitmated, average='macro')
-    print('LR B overall precision: {}'.format(precision))
-    print('LR B overall recall: {}'.format(recall))
-    print('LR B overall fscore: {}'.format(fscore))
-    print('LR B overall support: {}'.format(support))
-
-    precision, recall, fscore, support = precision_recall_fscore_support(target_met_category, lr_B_esitmated)
-    print('LR B precision: {}'.format(precision))
-    print('LR B recall: {}'.format(recall))
-    print('LR B fscore: {}'.format(fscore))
-    print('LR B support: {}'.format(support))
-
-    # Compute confusion matrix
-    cnf_matrixB = confusion_matrix(target_met_category, lr_B_esitmated)
-    np.set_printoptions(precision=2)
+    stats = statistical_extensions.GeneralStats.evaluation_statistics(cnf_matrix)
+    print('Accuracy', stats['accuracy'])
+    print('Sensitivity', stats['sensitivity'])
+    print('Specificity', stats['specificity'])
 
     # Plot non-normalized confusion matrix
-    plt.figure(2)
-    plot_confusion_matrix(cnf_matrixB, classes=class_names, title=status + ' Linear Regression - B')
-
-    plt.show()
+    plt.figure(plot_title)
+    plot_confusion_matrix(cnf_matrix, classes=class_names, title=status)
 
 
 if __name__ == '__main__':
 
-    experiment = 'LSM2'
+    print('Start - Reading')
+
+    experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
-    day1 = 'Wednesday'
+    days = ['Wednesday', 'Thursday']
+    epoch = 'Epoch5'
+    model_title = 'Sirichana Linear Regression (5 sec epoch)'
 
-    # D:\Accelerometer Data\Assessment\sirichana\LSM2\Week 1\Wednesday\Epoch60
-    prediction_path = ("D:/Accelerometer Data\Assessment\sirichana/" + experiment + "/" + week + "/" + day1 + "/Epoch5/").replace('\\', '/')
+    start_reading = time.time()
 
-    prediction_files = [f for f in listdir(prediction_path) if isfile(join(prediction_path, f))]
+    count = 0
+    for experiment in experiments:
+        if count != 0:
+            break
+        for day in days:
+            if count != 0:
+                break
+            input_file_path = (
+            "E:/Data/Accelerometer_Processed_Raw_Epoch_Data/" + experiment + "/" + week + "/" + day + "/" + epoch + "/").replace(
+                '\\', '/')
+            input_filenames = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
 
-    predictions = pd.DataFrame()
-    for file in prediction_files:
-        predictions = predictions.append(pd.read_csv(prediction_path + file))
+            for file in input_filenames:
+                dataframe = pd.read_csv(input_file_path + file)
+                dataframe['subject'] = file.split('_(2016')[0]
 
-    predictions.index = np.arange(0, len(predictions))
-    evaluate_models(predictions)
+                if count != 0:
+                    results = results.append(dataframe, ignore_index=True)
+                else:
+                    results = dataframe
+                    count += 1
+
+            print('completed', experiment, day)
+
+    end_reading = time.time()
+
+    print('Reading time', round(end_reading - start_reading, 2), '(s)\nStart - Assessment')
+
+    print('\n\n')
+    """LR A"""
+    model_title = 'Sirichana Linear Regression A (5 sec epoch)'
+    results = predict_ee_A(results)
+    evaluate_models(results, model_title, 1)
+    results = statistical_extensions.BlandAltman.clean_data_points(results)
+    statistical_extensions.BlandAltman.bland_altman_paired_plot_tested(results, model_title, 2, log_transformed=True, min_count_regularise=False)
+
+    results.drop('predicted_ee', axis=1, inplace=True)
+
+    """LR B"""
+    print('\n\n')
+    model_title = 'Sirichana Linear Regression B (5 sec epoch)'
+    results = predict_ee_A(results)
+    evaluate_models(results, model_title, 4)
+    results = statistical_extensions.BlandAltman.clean_data_points(results)
+    statistical_extensions.BlandAltman.bland_altman_paired_plot_tested(results, model_title, 5, log_transformed=True, min_count_regularise=False)
+
+    plt.show()
+
+    print('Completed.')
