@@ -78,6 +78,8 @@ def process_correlation(user_current, res, target_label, predicted_label, filena
         print('\tIS NAN', filename)
         correlation_dict[filename].append(0)
 
+    # print(user_current, corr)
+
 
 correlation_dict_MET = {}
 correlation_dict_Intensity = {}
@@ -91,8 +93,8 @@ for result_folder in result_folders:
 
     result_data_files = [f for f in listdir(result_folder) if isfile(join(result_folder, f))]
 
-    count = 0
     prev_subj = ''
+    iter_count = 0
     for file in result_data_files:
 
         dataframe = pd.read_csv(result_folder + file)
@@ -100,23 +102,36 @@ for result_folder in result_folders:
         dataframe['subject'] = user
 
         if prev_subj != user:
-            prev_subj = user
 
-            if count > 0:
+            if prev_subj != '':
+                # Process data for the prev_subj
                 if 'predicted_ee' in results.columns:
                     target_label, predicted_label = 'waist_ee', 'predicted_ee'
-                    process_correlation(user, results, target_label, predicted_label, result_folder, correlation_dict_MET)
+                    process_correlation(prev_subj, results, target_label, predicted_label, result_folder, correlation_dict_MET)
                 else:
                     print('MET correlation not found in', file)
 
                 target_label, predicted_label = 'actual_category', 'predicted_category'
-                process_correlation(user, results, target_label, predicted_label, result_folder, correlation_dict_Intensity)
-                print(user)
+                process_correlation(prev_subj, results, target_label, predicted_label, result_folder, correlation_dict_Intensity)
+                print(prev_subj)
+
+            prev_subj = user
             results = dataframe
-            count = 0
+        elif iter_count == len(result_data_files)-1:
+                # Process data for the prev_subj in the last iteration
+                if 'predicted_ee' in results.columns:
+                    target_label, predicted_label = 'waist_ee', 'predicted_ee'
+                    process_correlation(prev_subj, results, target_label, predicted_label, result_folder, correlation_dict_MET)
+                else:
+                    print('MET correlation not found in', file)
+
+                target_label, predicted_label = 'actual_category', 'predicted_category'
+                process_correlation(prev_subj, results, target_label, predicted_label, result_folder, correlation_dict_Intensity)
+                print(prev_subj)
         else:
             results = results.append(dataframe, ignore_index=True)
-            count += 1
+
+        iter_count += 1
 
     total_completed += 1
     print('Completed\t', total_completed, '/', total_file_count)
