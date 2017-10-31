@@ -128,11 +128,11 @@ if __name__ == '__main__':
         evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
 
         """Bland Altman Plot"""
-        # results = SE.BlandAltman.clean_data_points(results)
+        results = SE.BlandAltman.clean_data_points(results)
         SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+2, log_transformed=True,
                                                        min_count_regularise=False, output_filename=output_folder_path+output_title)
 
-        plot_number += 4
+        plot_number += 10
 
         end_reading = time.time()
         print('Completed', output_title, 'in', round(end_reading-start_reading, 2), '(s)')

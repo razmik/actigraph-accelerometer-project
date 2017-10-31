@@ -21,17 +21,17 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
     target_ee = data['waist_ee']
     predicted_ee = data['predicted_ee']
 
-    # Pearson Correlation
-    if correlation_only:
-        # Pearson Correlation
-        corr, p_val = SE.GeneralStats.pearson_correlation(target_intensity, predicted_intensity)
-        print('\n', output_folder_path, output_title)
-        print('Categorical', corr, p_val)
-
-        corr, p_val = SE.GeneralStats.pearson_correlation(target_ee, predicted_ee)
-        print('MET', corr, p_val)
-
-        return
+    # # Pearson Correlation
+    # if correlation_only:
+    #     # Pearson Correlation
+    #     corr, p_val = SE.GeneralStats.pearson_correlation(target_intensity, predicted_intensity)
+    #     print('\n', output_folder_path, output_title)
+    #     print('Categorical', corr, p_val)
+    #
+    #     corr, p_val = SE.GeneralStats.pearson_correlation(target_ee, predicted_ee)
+    #     print('MET', corr, p_val)
+    #
+    #     return
 
     class_names = ['SED', 'LPA', 'MVPA']
 
@@ -104,14 +104,14 @@ if __name__ == '__main__':
                     count += 1
 
                 """General Assessment"""
-                evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=True)
+                evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)
 
                 """Bland Altman Plot"""
-                # results = SE.BlandAltman.clean_data_points(results)
-                # SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+1, log_transformed=True,
-                #                                                min_count_regularise=True, output_filename=output_folder_path+output_title)
+                results = SE.BlandAltman.clean_data_points(results)
+                SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+1, log_transformed=True,
+                                                               min_count_regularise=False, output_filename=output_folder_path+output_title)
 
-                plot_number += 4
+                plot_number += 10
 
                 end_reading = time.time()
                 print('Completed', output_title, 'in', round(end_reading-start_reading, 2), '(s)')

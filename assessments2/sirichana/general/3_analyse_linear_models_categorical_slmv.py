@@ -152,12 +152,12 @@ if __name__ == '__main__':
         # print('\n\n')
         model_titleB = output_title + '_B'
         result_B = predict_ee_B(result_B)
-        evaluate_models(result_B, model_titleB, plot_number+4, output_folder_path, model_titleB, correlation_only=False)
+        evaluate_models(result_B, model_titleB, plot_number+8, output_folder_path, model_titleB, correlation_only=False)
         result_B = SE.BlandAltman.clean_data_points(result_B)
-        SE.BlandAltman.bland_altman_paired_plot_tested(result_B, model_titleB, plot_number+5, log_transformed=True,
+        SE.BlandAltman.bland_altman_paired_plot_tested(result_B, model_titleB, plot_number+9, log_transformed=True,
                                                        min_count_regularise=False, output_filename=output_folder_path+model_titleB)
 
-        plot_number += 6
+        plot_number += 14
 
         end_reading = time.time()
         print('Completed', output_title, 'in', round(end_reading-start_reading, 2), '(s)')
