@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import math
 import itertools
 from scipy.stats.stats import pearsonr
 
@@ -76,6 +77,41 @@ class BlandAltman:
                 arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
 
     @staticmethod
+    def get_antilog(log_val):
+        return round(math.pow(10, log_val), 2)
+
+    @staticmethod
+    def plot_graph(plot_number, plot_title, x_values, y_values, upper_loa, mean_bias, lower_loa, output_filename):
+
+        x_label = 'Mean Energy Expenditure (MET)'
+        y_label = 'Energy Expenditure (log MET)'
+        x_lim = (1, 12)
+        y_lim = (-1.0, 1.2)
+        x_annotate_begin = 10.4
+        y_gap = 0.05
+
+        plt.figure(plot_number)
+        plt.title(plot_title)
+        plt.scatter(x_values, y_values)
+
+        plt.axhline(upper_loa, color='gray', linestyle='--')
+        plt.axhline(mean_bias, color='gray', linestyle='--')
+        plt.axhline(lower_loa, color='gray', linestyle='--')
+
+        plt.annotate(str(BlandAltman.get_antilog(upper_loa))+'(MET)', xy=(x_annotate_begin, (upper_loa + y_gap)))
+        plt.annotate(str(BlandAltman.get_antilog(mean_bias))+'(MET)', xy=(x_annotate_begin, (mean_bias + y_gap)))
+        plt.annotate(str(BlandAltman.get_antilog(lower_loa))+'(MET)', xy=(x_annotate_begin, (lower_loa + y_gap)))
+        # plt.annotate('Upper:'+str(BlandAltman.get_antilog(upper_loa_mvpa_freedson)), xy=(10, 1.05))
+        # plt.annotate('Mean :'+str(BlandAltman.get_antilog(mean_bias_mvpa_freedson)), xy=(10, 0.95))
+        # plt.annotate('Lower:'+str(BlandAltman.get_antilog(lower_loa_mvpa_freedson)), xy=(10, 0.85))
+        plt.xlim(x_lim)
+        plt.ylim(y_lim)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+
+        plt.savefig(output_filename)
+
+    @staticmethod
     def bland_altman_paired_plot_tested(dataframe, plot_title, plot_number, log_transformed=False, min_count_regularise=False, output_filename=''):
 
         """Define multiple dataframes based on the activity intensity"""
@@ -91,32 +127,17 @@ class BlandAltman:
 
         if len(dataframe_sb_freedson) > 0:
             dataframe_sb_freedson, mean_bias_sb_freedson, upper_loa_sb_freedson, lower_loa_sb_freedson = BlandAltman._bland_altman_analyse(dataframe_sb_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-
-            plt.figure(plot_number)
-            plt.title(plot_title + ' - SB - Freedson VM3 Combination (11)')
-            # plt.scatter(np.log10(dataframe['waist_ee_cleaned']), dataframe['diff'])
-            plt.scatter((dataframe_sb_freedson['mean']), dataframe_sb_freedson['diff'])
-            plt.axhline(mean_bias_sb_freedson, color='gray', linestyle='--')
-            plt.axhline(upper_loa_sb_freedson, color='gray', linestyle='--')
-            plt.axhline(lower_loa_sb_freedson, color='gray', linestyle='--')
-            plt.xlabel('Mean Energy Expenditure (MET)')
-            plt.ylabel('Difference between Energy Expenditure (MET)')
-
-            plt.savefig(output_filename + '_sb_freedson_bland_altman.png')
+            BlandAltman.plot_graph(plot_number, plot_title + ' - SB - Freedson VM3 Combination (11)',
+                                   dataframe_sb_freedson['mean'], dataframe_sb_freedson['diff'],
+                                   upper_loa_sb_freedson, mean_bias_sb_freedson, lower_loa_sb_freedson,
+                                   output_filename + '_sb_freedson_bland_altman.png')
 
         if len(dataframe_sb_williams) > 0:
             dataframe_sb_williams, mean_bias_sb_williams, upper_loa_sb_williams, lower_loa_sb_williams = BlandAltman._bland_altman_analyse(dataframe_sb_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-
-            plt.figure(plot_number+1)
-            plt.title(plot_title + ' - SB - Williams Work-Energy (98)')
-            plt.scatter((dataframe_sb_williams['mean']), dataframe_sb_williams['diff'])
-            plt.axhline(mean_bias_sb_williams, color='gray', linestyle='--')
-            plt.axhline(upper_loa_sb_williams, color='gray', linestyle='--')
-            plt.axhline(lower_loa_sb_williams, color='gray', linestyle='--')
-            plt.xlabel('Mean Energy Expenditure (MET)')
-            plt.ylabel('Difference between Energy Expenditure (MET)')
-
-            plt.savefig(output_filename + '_sb_williams_bland_altman.png')
+            BlandAltman.plot_graph(plot_number+1, plot_title + ' - SB - Williams Work-Energy (98)',
+                                   dataframe_sb_williams['mean'], dataframe_sb_williams['diff'],
+                                   upper_loa_sb_williams, mean_bias_sb_williams, lower_loa_sb_williams,
+                                   output_filename + '_sb_williams_bland_altman.png')
 
         """
         Process BA plot for LPA
@@ -126,32 +147,17 @@ class BlandAltman:
 
         if len(dataframe_lpa_freedson) > 0:
             dataframe_lpa_freedson, mean_bias_lpa_freedson, upper_loa_lpa_freedson, lower_loa_lpa_freedson = BlandAltman._bland_altman_analyse(dataframe_lpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-
-            plt.figure(plot_number + 2)
-            plt.title(plot_title + ' - LPA - Freedson VM3 Combination (11)')
-            # plt.scatter(np.log10(dataframe['waist_ee_cleaned']), dataframe['diff'])
-            plt.scatter((dataframe_lpa_freedson['mean']), dataframe_lpa_freedson['diff'])
-            plt.axhline(mean_bias_lpa_freedson, color='gray', linestyle='--')
-            plt.axhline(upper_loa_lpa_freedson, color='gray', linestyle='--')
-            plt.axhline(lower_loa_lpa_freedson, color='gray', linestyle='--')
-            plt.xlabel('Mean Energy Expenditure (MET)')
-            plt.ylabel('Difference between Energy Expenditure (MET)')
-
-            plt.savefig(output_filename + '_lpa_freedson_bland_altman.png')
+            BlandAltman.plot_graph(plot_number+2, plot_title + ' - LPA - Freedson VM3 Combination (11)',
+                                   dataframe_lpa_freedson['mean'], dataframe_lpa_freedson['diff'],
+                                   upper_loa_lpa_freedson, mean_bias_lpa_freedson, lower_loa_lpa_freedson,
+                                   output_filename + '_lpa_freedson_bland_altman.png')
 
         if len(dataframe_lpa_williams) > 0:
             dataframe_lpa_williams, mean_bias_lpa_williams, upper_loa_lpa_williams, lower_loa_lpa_williams = BlandAltman._bland_altman_analyse(dataframe_lpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-
-            plt.figure(plot_number + 3)
-            plt.title(plot_title + ' - LPA - Williams Work-Energy (98)')
-            plt.scatter((dataframe_lpa_williams['mean']), dataframe_lpa_williams['diff'])
-            plt.axhline(mean_bias_lpa_williams, color='gray', linestyle='--')
-            plt.axhline(upper_loa_lpa_williams, color='gray', linestyle='--')
-            plt.axhline(lower_loa_lpa_williams, color='gray', linestyle='--')
-            plt.xlabel('Mean Energy Expenditure (MET)')
-            plt.ylabel('Difference between Energy Expenditure (MET)')
-
-            plt.savefig(output_filename + '_lpa_williams_bland_altman.png')
+            BlandAltman.plot_graph(plot_number+3, plot_title + ' - LPA - Williams Work-Energy (98)',
+                                   dataframe_lpa_williams['mean'], dataframe_lpa_williams['diff'],
+                                   upper_loa_lpa_williams, mean_bias_lpa_williams, lower_loa_lpa_williams,
+                                   output_filename + '_lpa_williams_bland_altman.png')
 
         """
         Process BA plot for MVPA
@@ -161,32 +167,17 @@ class BlandAltman:
 
         if len(dataframe_mvpa_freedson) > 0:
             dataframe_mvpa_freedson, mean_bias_mvpa_freedson, upper_loa_mvpa_freedson, lower_loa_mvpa_freedson = BlandAltman._bland_altman_analyse(dataframe_mvpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-
-            plt.figure(plot_number + 4)
-            plt.title(plot_title + ' - MVPA - Freedson VM3 Combination (11)')
-            # plt.scatter(np.log10(dataframe['waist_ee_cleaned']), dataframe['diff'])
-            plt.scatter((dataframe_mvpa_freedson['mean']), dataframe_mvpa_freedson['diff'])
-            plt.axhline(mean_bias_mvpa_freedson, color='gray', linestyle='--')
-            plt.axhline(upper_loa_mvpa_freedson, color='gray', linestyle='--')
-            plt.axhline(lower_loa_mvpa_freedson, color='gray', linestyle='--')
-            plt.xlabel('Mean Energy Expenditure (MET)')
-            plt.ylabel('Difference between Energy Expenditure (MET)')
-
-            plt.savefig(output_filename + '_mvpa_freedson_bland_altman.png')
+            BlandAltman.plot_graph(plot_number+4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
+                                   dataframe_mvpa_freedson['mean'], dataframe_mvpa_freedson['diff'],
+                                   upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
+                                   output_filename + '_mvpa_freedson_bland_altman.png')
 
         if len(dataframe_mvpa_williams) > 0:
             dataframe_mvpa_williams, mean_bias_mvpa_williams, upper_loa_mvpa_williams, lower_loa_mvpa_williams = BlandAltman._bland_altman_analyse(dataframe_mvpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-
-            plt.figure(plot_number + 5)
-            plt.title(plot_title + ' - MVPA - Williams Work-Energy (98)')
-            plt.scatter((dataframe_mvpa_williams['mean']), dataframe_mvpa_williams['diff'])
-            plt.axhline(mean_bias_mvpa_williams, color='gray', linestyle='--')
-            plt.axhline(upper_loa_mvpa_williams, color='gray', linestyle='--')
-            plt.axhline(lower_loa_mvpa_williams, color='gray', linestyle='--')
-            plt.xlabel('Mean Energy Expenditure (MET)')
-            plt.ylabel('Difference between Energy Expenditure (MET)')
-
-            plt.savefig(output_filename + '_mvpa_williams_bland_altman.png')
+            BlandAltman.plot_graph(plot_number+5, plot_title + ' - MVPA - Williams Work-Energy (98)',
+                                   dataframe_mvpa_williams['mean'], dataframe_mvpa_williams['diff'],
+                                   upper_loa_mvpa_williams, mean_bias_mvpa_williams, lower_loa_mvpa_williams,
+                                   output_filename + '_mvpa_williams_bland_altman.png')
 
     @staticmethod
     def _bland_altman_analyse(dataframe, log_transformed=False, min_count_regularise=False):
@@ -201,6 +192,7 @@ class BlandAltman:
         dataframe = dataframe.assign(mean=np.mean([dataframe.as_matrix(columns=['waist_ee_cleaned']),
                                      dataframe.as_matrix(columns=['predicted_ee_cleaned'])], axis=0))
         dataframe = dataframe.assign(diff=dataframe['waist_ee_log_transformed'] - dataframe['predicted_ee_log_transformed'])
+        # dataframe = dataframe.assign(diff=dataframe['waist_ee_cleaned']/dataframe['predicted_ee_cleaned'])
 
         k = len(pd.unique(dataframe.subject))  # number of conditions
         N = len(dataframe.values)  # conditions times participants
