@@ -1,10 +1,5 @@
-import sys
-import numpy as np
 import pandas as pd
-from sklearn.metrics import r2_score, confusion_matrix
 import scipy.stats as stats
-import matplotlib.pyplot as plt
-import itertools
 from os import listdir
 from os.path import isfile, join
 import csv
@@ -12,41 +7,37 @@ import math
 import pickle
 
 result_folders = [
-    'E:\Data\Accelerometer_LR\staudenmayer\Epoch5'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\staudenmayer\Epoch15'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\staudenmayer\Epoch30'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\staudenmayer\Epoch60'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch5'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch15'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch30'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch60'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRB\Epoch5'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRB\Epoch15'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRB\Epoch30'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRB\Epoch60'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch5/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch5/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch15/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch15/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch30/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch30/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch60/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch60/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch5/v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch60/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch60/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch60/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch5'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch5'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch5/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch5/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch5/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch15'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch15'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch15/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch15/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch30'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch30'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch30/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch30/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch60'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch60'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch60/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch60/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch60/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch60/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch60/v2/combined'.replace('\\', '/'),
     'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch60/v2/combined'.replace('\\', '/')
 ]
 
@@ -77,6 +68,16 @@ def wrist_to_csv(filename, data):
         writer = csv.writer(outfile, lineterminator='\n')
         writer.writerow(data.keys())
         writer.writerows(zip(*data.values()))
+
+
+def clean_data_points(data):
+    # Remove row if reference MET value is less than 1
+    # data = data[data.waist_ee >= 1]
+
+    # Shift predicted EE to 1, if it's less than 1
+    data.loc[(data['predicted_ee'] < 1), 'predicted_ee'] = 1
+
+    return data
 
 
 def initiate_dicts(folder_name):
@@ -125,6 +126,9 @@ def divide_results(dataframe):
 
 
 def process_correlations(current_results):
+
+    current_results = clean_data_points(current_results)
+
     results_sb, results_lpa, results_mvpa = divide_results(current_results)
 
     # Process data for the prev_subj
@@ -139,7 +143,7 @@ def process_correlations(current_results):
         find_correlation(prev_subj, results_mvpa, target_label, predicted_label, result_folder,
                          correlation_dict_MET_mvpa, pvalue_dict_MET_mvpa, method='pearson')
     else:
-        print('MET correlation not found in', file)
+        print('MET correlation not found in', prev_subj)
 
     target_label, predicted_label = 'actual_category', 'predicted_category'
     find_correlation(prev_subj, results, target_label, predicted_label, result_folder, correlation_dict_Intensity,
@@ -201,7 +205,7 @@ if __name__ == '__main__':
 
                 prev_subj = user
                 results = dataframe
-            elif iter_count == len(result_data_files) - 1:
+            elif iter_count == (len(result_data_files) - 1):
                 process_correlations(results)
             else:
                 results = results.append(dataframe, ignore_index=True)

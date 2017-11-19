@@ -71,23 +71,24 @@ if __name__ == '__main__':
 
     print('Start - Reading')
 
-    # experiments = ['LSM1', 'LSM2']
-    # week = 'Week 1'
-    # days = ['Wednesday', 'Thursday']
-    # wrists = ['left_wrist', 'right_wrist']
-    # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
-    # models = ['v2', 'v1v2']
-    # model_title = 'Montoye ANN 2017 '
-    # plot_number = 1
-
-    experiments = ['LSM1']
+    experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
-    days = ['Wednesday']
-    wrists = ['left_wrist']
-    epochs = ['Epoch5']
-    models = ['v1v2']
+    days = ['Wednesday', 'Thursday']
+    wrists = ['left_wrist', 'right_wrist']
+    # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+    epochs = ['Epoch30']
+    models = ['v2', 'v1v2']
     model_title = 'Montoye ANN 2017 '
     plot_number = 1
+
+    # experiments = ['LSM1']
+    # week = 'Week 1'
+    # days = ['Wednesday']
+    # wrists = ['left_wrist']
+    # epochs = ['Epoch5']
+    # models = ['v1v2']
+    # model_title = 'Montoye ANN 2017 '
+    # plot_number = 1
 
     for model in models:
         for epoch in epochs:
@@ -104,9 +105,6 @@ if __name__ == '__main__':
                 for file in input_filenames:
                     dataframe = pd.read_csv(input_file_path + file)
                     dataframe['subject'] = file.split('_(2016')[0]
-
-                    # if count == 40:
-                    #     break
 
                     if count != 0:
                         results = results.append(dataframe, ignore_index=True)

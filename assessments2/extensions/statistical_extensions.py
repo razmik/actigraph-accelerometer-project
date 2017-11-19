@@ -84,26 +84,25 @@ class BlandAltman:
     def plot_graph(plot_number, plot_title, x_values, y_values, upper_loa, mean_bias, lower_loa, output_filename):
 
         x_label = 'Mean Energy Expenditure (MET)'
-        y_label = 'Energy Expenditure (log MET)'
+        y_label = 'Difference (Prediction - Reference) (log MET)'
         x_lim = (1, 12)
-        y_lim = (-1.0, 1.2)
+        y_lim = (-1.2, 1.0)
         x_annotate_begin = 10.4
         y_gap = 0.05
+        ratio_suffix = ''
 
         plt.figure(plot_number)
-        plt.title(plot_title)
+        # plt.title(plot_title)
         plt.scatter(x_values, y_values)
 
         plt.axhline(upper_loa, color='gray', linestyle='--')
         plt.axhline(mean_bias, color='gray', linestyle='--')
         plt.axhline(lower_loa, color='gray', linestyle='--')
 
-        plt.annotate(str(BlandAltman.get_antilog(upper_loa))+'(MET)', xy=(x_annotate_begin, (upper_loa + y_gap)))
-        plt.annotate(str(BlandAltman.get_antilog(mean_bias))+'(MET)', xy=(x_annotate_begin, (mean_bias + y_gap)))
-        plt.annotate(str(BlandAltman.get_antilog(lower_loa))+'(MET)', xy=(x_annotate_begin, (lower_loa + y_gap)))
-        # plt.annotate('Upper:'+str(BlandAltman.get_antilog(upper_loa_mvpa_freedson)), xy=(10, 1.05))
-        # plt.annotate('Mean :'+str(BlandAltman.get_antilog(mean_bias_mvpa_freedson)), xy=(10, 0.95))
-        # plt.annotate('Lower:'+str(BlandAltman.get_antilog(lower_loa_mvpa_freedson)), xy=(10, 0.85))
+        # plt.annotate(str(BlandAltman.get_antilog(upper_loa))+ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
+        # plt.annotate(str(BlandAltman.get_antilog(mean_bias))+ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
+        # plt.annotate(str(BlandAltman.get_antilog(lower_loa))+ratio_suffix, xy=(x_annotate_begin, (lower_loa + y_gap)))
+
         plt.xlim(x_lim)
         plt.ylim(y_lim)
         plt.xlabel(x_label)
@@ -125,12 +124,12 @@ class BlandAltman:
         dataframe_sb_freedson = dataframe_sb.loc[dataframe_sb['waist_vm_cpm'] > 2453]
         dataframe_sb_williams = dataframe_sb.loc[dataframe_sb['waist_vm_cpm'] <= 2453]
 
-        if len(dataframe_sb_freedson) > 0:
-            dataframe_sb_freedson, mean_bias_sb_freedson, upper_loa_sb_freedson, lower_loa_sb_freedson = BlandAltman._bland_altman_analyse(dataframe_sb_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-            BlandAltman.plot_graph(plot_number, plot_title + ' - SB - Freedson VM3 Combination (11)',
-                                   dataframe_sb_freedson['mean'], dataframe_sb_freedson['diff'],
-                                   upper_loa_sb_freedson, mean_bias_sb_freedson, lower_loa_sb_freedson,
-                                   output_filename + '_sb_freedson_bland_altman.png')
+        # if len(dataframe_sb_freedson) > 0:
+        #     dataframe_sb_freedson, mean_bias_sb_freedson, upper_loa_sb_freedson, lower_loa_sb_freedson = BlandAltman._bland_altman_analyse(dataframe_sb_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+        #     BlandAltman.plot_graph(plot_number, plot_title + ' - SB - Freedson VM3 Combination (11)',
+        #                            dataframe_sb_freedson['mean'], dataframe_sb_freedson['diff'],
+        #                            upper_loa_sb_freedson, mean_bias_sb_freedson, lower_loa_sb_freedson,
+        #                            output_filename + '_sb_freedson_bland_altman.png')
 
         if len(dataframe_sb_williams) > 0:
             dataframe_sb_williams, mean_bias_sb_williams, upper_loa_sb_williams, lower_loa_sb_williams = BlandAltman._bland_altman_analyse(dataframe_sb_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
@@ -145,12 +144,12 @@ class BlandAltman:
         dataframe_lpa_freedson = dataframe_lpa.loc[dataframe_lpa['waist_vm_cpm'] > 2453]
         dataframe_lpa_williams = dataframe_lpa.loc[dataframe_lpa['waist_vm_cpm'] <= 2453]
 
-        if len(dataframe_lpa_freedson) > 0:
-            dataframe_lpa_freedson, mean_bias_lpa_freedson, upper_loa_lpa_freedson, lower_loa_lpa_freedson = BlandAltman._bland_altman_analyse(dataframe_lpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-            BlandAltman.plot_graph(plot_number+2, plot_title + ' - LPA - Freedson VM3 Combination (11)',
-                                   dataframe_lpa_freedson['mean'], dataframe_lpa_freedson['diff'],
-                                   upper_loa_lpa_freedson, mean_bias_lpa_freedson, lower_loa_lpa_freedson,
-                                   output_filename + '_lpa_freedson_bland_altman.png')
+        # if len(dataframe_lpa_freedson) > 0:
+        #     dataframe_lpa_freedson, mean_bias_lpa_freedson, upper_loa_lpa_freedson, lower_loa_lpa_freedson = BlandAltman._bland_altman_analyse(dataframe_lpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+        #     BlandAltman.plot_graph(plot_number+2, plot_title + ' - LPA - Freedson VM3 Combination (11)',
+        #                            dataframe_lpa_freedson['mean'], dataframe_lpa_freedson['diff'],
+        #                            upper_loa_lpa_freedson, mean_bias_lpa_freedson, lower_loa_lpa_freedson,
+        #                            output_filename + '_lpa_freedson_bland_altman.png')
 
         if len(dataframe_lpa_williams) > 0:
             dataframe_lpa_williams, mean_bias_lpa_williams, upper_loa_lpa_williams, lower_loa_lpa_williams = BlandAltman._bland_altman_analyse(dataframe_lpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
@@ -172,12 +171,12 @@ class BlandAltman:
                                    upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
                                    output_filename + '_mvpa_freedson_bland_altman.png')
 
-        if len(dataframe_mvpa_williams) > 0:
-            dataframe_mvpa_williams, mean_bias_mvpa_williams, upper_loa_mvpa_williams, lower_loa_mvpa_williams = BlandAltman._bland_altman_analyse(dataframe_mvpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-            BlandAltman.plot_graph(plot_number+5, plot_title + ' - MVPA - Williams Work-Energy (98)',
-                                   dataframe_mvpa_williams['mean'], dataframe_mvpa_williams['diff'],
-                                   upper_loa_mvpa_williams, mean_bias_mvpa_williams, lower_loa_mvpa_williams,
-                                   output_filename + '_mvpa_williams_bland_altman.png')
+        # if len(dataframe_mvpa_williams) > 0:
+        #     dataframe_mvpa_williams, mean_bias_mvpa_williams, upper_loa_mvpa_williams, lower_loa_mvpa_williams = BlandAltman._bland_altman_analyse(dataframe_mvpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+        #     BlandAltman.plot_graph(plot_number+5, plot_title + ' - MVPA - Williams Work-Energy (98)',
+        #                            dataframe_mvpa_williams['mean'], dataframe_mvpa_williams['diff'],
+        #                            upper_loa_mvpa_williams, mean_bias_mvpa_williams, lower_loa_mvpa_williams,
+        #                            output_filename + '_mvpa_williams_bland_altman.png')
 
     @staticmethod
     def _bland_altman_analyse(dataframe, log_transformed=False, min_count_regularise=False):
@@ -191,7 +190,7 @@ class BlandAltman:
 
         dataframe = dataframe.assign(mean=np.mean([dataframe.as_matrix(columns=['waist_ee_cleaned']),
                                      dataframe.as_matrix(columns=['predicted_ee_cleaned'])], axis=0))
-        dataframe = dataframe.assign(diff=dataframe['waist_ee_log_transformed'] - dataframe['predicted_ee_log_transformed'])
+        dataframe = dataframe.assign(diff=dataframe['predicted_ee_log_transformed'] - dataframe['waist_ee_log_transformed'])
         # dataframe = dataframe.assign(diff=dataframe['waist_ee_cleaned']/dataframe['predicted_ee_cleaned'])
 
         k = len(pd.unique(dataframe.subject))  # number of conditions
@@ -241,8 +240,6 @@ class BlandAltman:
 
         MSbetween = SSbetween / DFbetween
         MSwithin = SSwithin / DFwithin
-        # F = MSbetween / MSwithin
-        # p = stats.f.sf(F, DFbetween, DFwithin)
 
         n = DFbetween + 1
         m = DFtotal + 1
@@ -261,10 +258,6 @@ class BlandAltman:
         upper_loa = mean_bias + (1.96 * sd)
         lower_loa = mean_bias - (1.96 * sd)
 
-        # print('Upper LOA:', upper_loa)
-        # print('Mean LOA:', mean_bias)
-        # print('Lower LOA:', lower_loa)
-
         return dataframe, mean_bias, upper_loa, lower_loa
 
 
@@ -276,7 +269,6 @@ class BlandAltman:
         data = data.assign(waist_ee_cleaned=data['waist_ee'])
         data = data.assign(predicted_ee_cleaned=data['predicted_ee'])
 
-        # data.loc[(data['waist_ee'] < 1), 'waist_ee_cleaned'] = 1
         data.loc[(data['predicted_ee'] < 1), 'predicted_ee_cleaned'] = 1
 
         return data
