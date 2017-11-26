@@ -25,10 +25,10 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
 
         return
 
-    class_names = ['SED', 'LPA', 'MVPA']
+    class_names = ['SB', 'LPA', 'MVPA']
 
     # The mean squared error
-    int_mse = "Montoye 2017 ANN (Instensity) Mean squared error: %.2f" % np.mean(
+    int_mse = "Montoye 2016 ANN (Instensity) Mean squared error: %.2f" % np.mean(
         (predicted_intensity - target_intensity) ** 2)
     # print(int_mse)
     assessment_result += int_mse + '\n\n'
@@ -43,9 +43,11 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
     # print('Specificity', stats['specificity'])
 
     assessment_result += 'Classes' + '\t' + str(class_names) + '\t' + '\n'
-    assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\n'
+    assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
     assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
+    assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
     assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
+    assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
 
     results_output_filename = output_folder_path + output_title + '_stat_assessment.txt'
     SE.Utils.print_assessment_results(results_output_filename, assessment_result)
@@ -64,7 +66,8 @@ if __name__ == '__main__':
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
     wrists = ['left_wrist', 'right_wrist']
-    epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+    # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+    epochs = ['Epoch30']
     model_title = 'Montoye ANN 2016'
     plot_number = 1
 

@@ -83,21 +83,22 @@ class BlandAltman:
     @staticmethod
     def plot_graph(plot_number, plot_title, x_values, y_values, upper_loa, mean_bias, lower_loa, output_filename):
 
-        x_label = 'Mean Energy Expenditure (MET)'
-        y_label = 'Difference (Prediction - Reference) (log MET)'
+        x_label = 'Mean Energy Expenditure (METs)'
+        y_label = 'Difference (Prediction - Reference) (log METs)'
         x_lim = (1, 12)
         y_lim = (-1.2, 1.0)
         x_annotate_begin = 10.4
         y_gap = 0.05
         ratio_suffix = ''
 
-        plt.figure(plot_number)
+        plt.figure(plot_number, dpi=1200)
         # plt.title(plot_title)
         plt.scatter(x_values, y_values)
 
-        plt.axhline(upper_loa, color='gray', linestyle='--')
+        # Black: #000000
+        plt.axhline(upper_loa, color='gray', linestyle='dotted')
         plt.axhline(mean_bias, color='gray', linestyle='--')
-        plt.axhline(lower_loa, color='gray', linestyle='--')
+        plt.axhline(lower_loa, color='gray', linestyle='dotted')
 
         # plt.annotate(str(BlandAltman.get_antilog(upper_loa))+ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
         # plt.annotate(str(BlandAltman.get_antilog(mean_bias))+ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
@@ -108,7 +109,13 @@ class BlandAltman:
         plt.xlabel(x_label)
         plt.ylabel(y_label)
 
-        plt.savefig(output_filename)
+        # http://www.anjuke.tech/questions/843083/matplotlib-savefig-in-jpeg-format
+
+        plt.savefig(output_filename+'.jpg', dpi=1200)
+        # plt.savefig(output_filename+'.png', dpi=1200)
+        # plt.savefig(output_filename+'.eps')
+        # plt.savefig(output_filename+'.pdf')
+        # plt.savefig(output_filename+'.svg', format='svg')
 
     @staticmethod
     def bland_altman_paired_plot_tested(dataframe, plot_title, plot_number, log_transformed=False, min_count_regularise=False, output_filename=''):
@@ -121,7 +128,7 @@ class BlandAltman:
         """
         Process BA plot for SB
         """
-        dataframe_sb_freedson = dataframe_sb.loc[dataframe_sb['waist_vm_cpm'] > 2453]
+        # dataframe_sb_freedson = dataframe_sb.loc[dataframe_sb['waist_vm_cpm'] > 2453]
         dataframe_sb_williams = dataframe_sb.loc[dataframe_sb['waist_vm_cpm'] <= 2453]
 
         # if len(dataframe_sb_freedson) > 0:
@@ -136,12 +143,12 @@ class BlandAltman:
             BlandAltman.plot_graph(plot_number+1, plot_title + ' - SB - Williams Work-Energy (98)',
                                    dataframe_sb_williams['mean'], dataframe_sb_williams['diff'],
                                    upper_loa_sb_williams, mean_bias_sb_williams, lower_loa_sb_williams,
-                                   output_filename + '_sb_williams_bland_altman.png')
+                                   output_filename + '_sb')
 
         """
         Process BA plot for LPA
         """
-        dataframe_lpa_freedson = dataframe_lpa.loc[dataframe_lpa['waist_vm_cpm'] > 2453]
+        # dataframe_lpa_freedson = dataframe_lpa.loc[dataframe_lpa['waist_vm_cpm'] > 2453]
         dataframe_lpa_williams = dataframe_lpa.loc[dataframe_lpa['waist_vm_cpm'] <= 2453]
 
         # if len(dataframe_lpa_freedson) > 0:
@@ -156,20 +163,20 @@ class BlandAltman:
             BlandAltman.plot_graph(plot_number+3, plot_title + ' - LPA - Williams Work-Energy (98)',
                                    dataframe_lpa_williams['mean'], dataframe_lpa_williams['diff'],
                                    upper_loa_lpa_williams, mean_bias_lpa_williams, lower_loa_lpa_williams,
-                                   output_filename + '_lpa_williams_bland_altman.png')
+                                   output_filename + '_lpa')
 
         """
         Process BA plot for MVPA
         """
         dataframe_mvpa_freedson = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] > 2453]
-        dataframe_mvpa_williams = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] <= 2453]
+        # dataframe_mvpa_williams = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] <= 2453]
 
         if len(dataframe_mvpa_freedson) > 0:
             dataframe_mvpa_freedson, mean_bias_mvpa_freedson, upper_loa_mvpa_freedson, lower_loa_mvpa_freedson = BlandAltman._bland_altman_analyse(dataframe_mvpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
             BlandAltman.plot_graph(plot_number+4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
                                    dataframe_mvpa_freedson['mean'], dataframe_mvpa_freedson['diff'],
                                    upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
-                                   output_filename + '_mvpa_freedson_bland_altman.png')
+                                   output_filename + '_mvpa')
 
         # if len(dataframe_mvpa_williams) > 0:
         #     dataframe_mvpa_williams, mean_bias_mvpa_williams, upper_loa_mvpa_williams, lower_loa_mvpa_williams = BlandAltman._bland_altman_analyse(dataframe_mvpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
@@ -292,6 +299,13 @@ class BlandAltman:
 
 class GeneralStats:
 
+    """
+    Confidence Interval:
+        https://github.com/cmrivers/epipy/blob/master/epipy/analyses.py
+        https://www.medcalc.org/calc/diagnostic_test.php
+        https://www.wikihow.com/Calculate-95%25-Confidence-Interval-for-a-Test%27s-Sensitivity
+    """
+
     @staticmethod
     def evaluation_statistics(confusion_matrix):
 
@@ -309,43 +323,69 @@ class GeneralStats:
         # Calculate accuracy for label 1
         total_classifications = sum(sum(confusion_matrix))
         accuracy = (tpa + tpb + tpc) / total_classifications
+        accuracy_se = np.sqrt((accuracy * (1 - accuracy)) / total_classifications)
+        accuracy_confidence_interval = (accuracy - (1.96 * accuracy_se), accuracy + (1.96 * accuracy_se))
 
         # Calculate Precision for label 1
         precisionA = tpa / (tpa + eba + eca)
 
         # Calculate Sensitivity for label 1
         sensitivityA = tpa / (tpa + eab + eac)
+        senA_se = np.sqrt((sensitivityA * (1 - sensitivityA)) / (tpa + eab + eac))
+        sensitivityA_confidence_interval = (sensitivityA - (1.96 * senA_se), sensitivityA + (1.96 * senA_se))
 
         # Calculate Specificity for label 1
         tna = tpb + ebc + ecb + tpc
         specificityA = tna / (tna + eba + eca)
+        specA_se = np.sqrt((specificityA * (1 - specificityA)) / (tna + eba + eca))
+        specificityA_confidence_interval = (specificityA - (1.96 * specA_se), specificityA + (1.96 * specA_se))
 
         # Calculate Precision for label 2
         precisionB = tpb / (tpb + eab + ecb)
 
         # Calculate Sensitivity for label 2
         sensitivityB = tpb / (tpb + eba + ebc)
+        senB_se = np.sqrt((sensitivityB * (1 - sensitivityB)) / (tpb + eba + ebc))
+        sensitivityB_confidence_interval = (sensitivityB - (1.96 * senB_se), sensitivityB + (1.96 * senB_se))
 
         # Calculate Specificity for label 2
         tnb = tpa + eac + eca + tpc
         specificityB = tnb / (tnb + eab + ecb)
+        specB_se = np.sqrt((specificityB * (1 - specificityB)) / (tnb + eab + ecb))
+        specificityB_confidence_interval = (specificityB - (1.96 * specB_se), specificityB + (1.96 * specB_se))
 
         # Calculate Precision for label 2
         precisionC = tpc / (tpc + eac + ebc)
 
         # Calculate Sensitivity for label 2
         sensitivityC = tpc / (tpc + eca + ecb)
+        senC_se = np.sqrt((sensitivityC * (1 - sensitivityC)) / (tpc + eca + ecb))
+        sensitivityC_confidence_interval = (sensitivityC - (1.96 * senC_se), sensitivityC + (1.96 * senC_se))
 
         # Calculate Specificity for label 2
         tnc = tpa + eab + eba + tpb
         specificityC = tnc / (tnc + eac + ebc)
+        specC_se = np.sqrt((specificityC * (1 - specificityC)) / (tnc + eac + ebc))
+        specificityC_confidence_interval = (specificityC - (1.96 * specC_se), specificityC + (1.96 * specC_se))
+
+        round_digits = 5
+
+        sensitivityA_confidence_interval = (round(sensitivityA_confidence_interval[0], round_digits), round(sensitivityA_confidence_interval[1], round_digits))
+        sensitivityB_confidence_interval = (round(sensitivityB_confidence_interval[0], round_digits), round(sensitivityB_confidence_interval[1], round_digits))
+        sensitivityC_confidence_interval = (round(sensitivityC_confidence_interval[0], round_digits), round(sensitivityC_confidence_interval[1], round_digits))
+        specificityA_confidence_interval = (round(specificityA_confidence_interval[0], round_digits), round(specificityA_confidence_interval[1], round_digits))
+        specificityB_confidence_interval = (round(specificityB_confidence_interval[0], round_digits), round(specificityB_confidence_interval[1], round_digits))
+        specificityC_confidence_interval = (round(specificityC_confidence_interval[0], round_digits), round(specificityC_confidence_interval[1], round_digits))
 
         return {
-            'accuracy': accuracy,
-            'precision': [precisionA, precisionB, precisionC],
-            'recall': [sensitivityA, sensitivityB, sensitivityC],
-            'sensitivity': [sensitivityA, sensitivityB, sensitivityC],
-            'specificity': [specificityA, specificityB, specificityC]
+            'accuracy': round(accuracy, round_digits),
+            'accuracy_ci': (round(accuracy_confidence_interval[0], round_digits), round(accuracy_confidence_interval[1], round_digits)),
+            'precision': [round(precisionA, round_digits), round(precisionB, round_digits), round(precisionC, round_digits)],
+            'recall': [round(sensitivityA, round_digits), round(sensitivityB, round_digits), round(sensitivityC, round_digits)],
+            'sensitivity': [round(sensitivityA, round_digits), round(sensitivityB, round_digits), round(sensitivityC, round_digits)],
+            'specificity': [round(specificityA, round_digits), round(specificityB, round_digits), round(specificityC, round_digits)],
+            'sensitivity_ci': [sensitivityA_confidence_interval, sensitivityB_confidence_interval, sensitivityC_confidence_interval],
+            'specificity_ci': [specificityA_confidence_interval, specificityB_confidence_interval, specificityC_confidence_interval]
         }
 
     @staticmethod
@@ -379,7 +419,7 @@ class GeneralStats:
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
 
-        plt.savefig(output_filename)
+        plt.savefig(output_filename, dpi=1200)
 
     """
      Parameters

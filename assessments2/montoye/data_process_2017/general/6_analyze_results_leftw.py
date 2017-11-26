@@ -54,9 +54,11 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
     # print('Specificity', stats['specificity'])
 
     assessment_result += 'Classes' + '\t' + str(class_names) + '\t' + '\n'
-    assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\n'
+    assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
     assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
+    assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
     assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
+    assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
 
     results_output_filename = output_folder_path + output_title + '_stat_assessment.txt'
     SE.Utils.print_assessment_results(results_output_filename, assessment_result)
