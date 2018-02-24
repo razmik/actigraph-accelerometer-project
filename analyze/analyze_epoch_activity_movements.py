@@ -59,4 +59,5 @@ plt.title('Energy Expenditure for 1 hour epochs')
 plt.plot(x_range, normalized_enrgy, 'r', x_range, normalized_wrist_vm, 'b', x_range, normalized_waist_vm, 'g')
 plt.xlabel('Red - Energy Expenditure,    Blue - Wrist Acc.,    Green - Waist Acc.')
 
+# plt.imsave('output.jpeg')
 plt.show()

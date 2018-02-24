@@ -9,9 +9,9 @@ This file is configured for 15 seconds epochs
 
 experiment = 'LSM1'
 week = 'Week 1'
-day = 'Thursday'
-user = 'LSM172'
-date = '(2016-10-06)'
+day = 'Wednesday'
+user = 'LSM110'  # Good - 101, 106, 110
+date = '(2016-10-05)'
 device = 'Waist'
 epoch = 'Epoch15'
 
@@ -75,4 +75,5 @@ plt.title('Red - Activity Intensity, Blue - Energy Expenditure, Green - Waist VM
 plt.plot(x_range, normalize_intensity, 'r', x_range, normalize_energy_expenditure, 'b')
 # plt.plot(x_range, normalize_intensity, 'r', x_range, normalize_energy_expenditure, 'b', x_range, normalize_waist_vm_60, 'g')
 
+# plt.imsave('output.jpeg')
 plt.show()
