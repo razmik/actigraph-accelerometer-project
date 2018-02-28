@@ -12,7 +12,7 @@ import statistical_extensions as SE
 
 
 def predict(data):
-    data['predicted_ee'] = 1.89378 + (5.50821 * data['raw_wrist_sdvm']) - (0.02705 * data['raw_wrist_mangle'])
+    data['predicted_ee'] = ((0.0320 * data['enmo']) + 7.28) / 3.5
     return data
 
 
@@ -65,9 +65,6 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
     np.set_printoptions(precision=2)
 
     stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
-    # print('Accuracy', stats['accuracy'])
-    # print('Sensitivity', stats['sensitivity'])
-    # print('Specificity', stats['specificity'])
 
     assessment_result += 'Classes' + '\t' + str(class_names) + '\t' + '\n'
     assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
@@ -88,31 +85,6 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 def evaluate_average_measures(data, epoch, output_title):
     SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
 
-    # def get_averaged_df(dataset, count_field, new_col, multiplyer):
-    #     dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
-    #     dataset_count[new_col] *= multiplyer
-    #     return dataset_count
-    #
-    # def get_average_counted_df(data_actual, data_predict, mul):
-    #     return pd.merge(get_averaged_df(data_actual, 'waist_ee', 'actual_time', mul),
-    #                     get_averaged_df(data_predict, 'predicted_ee', 'predicted_time', mul),
-    #                     on='subject', how='outer')
-    #
-    # mul = int(epoch.split('Epoch')[1])
-    #
-    # # Evaluate SB
-    # df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_ee'] <= 1.5], mul)
-    # df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
-    #
-    # # Evaluate LPA
-    # df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
-    #                                 data.loc[(data['predicted_ee'] > 1.5) & (data['predicted_ee'] < 3)], mul)
-    # df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
-    #
-    # # Evaluate MVPA
-    # df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
-    # df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
-
 
 if __name__ == '__main__':
 
@@ -122,14 +94,14 @@ if __name__ == '__main__':
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
     # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
-    epochs = ['Epoch15']
-    model_title = 'Staudenmayer Linear Regression'
+    epochs = ['Epoch1']
+    model_title = 'Hilderbrand Linear Regression'
     plot_number = 1
 
     for epoch in epochs:
 
         output_title = model_title + '_' + epoch
-        output_folder_path = ('E:\Data\Accelerometer_Results/Staudenmayer/').replace('\\', '/')
+        output_folder_path = ('E:\Data\Accelerometer_Results/Hilderbrand/').replace('\\', '/')
 
         start_reading = time.time()
 
@@ -152,15 +124,6 @@ if __name__ == '__main__':
                     count += 1
 
                 print('Completed', experiment, day)
-
-        ## Analysis
-        # results = results.loc[results['waist_ee'] > 0.0]
-        #
-        # fig, ax = plt.subplots()
-        # results.hist(column='waist_ee', ax=ax, bins=75)
-        # fig.savefig('example.png')
-        #
-        # sys.exit(0)
 
         """Prediction"""
         results = predict(results)

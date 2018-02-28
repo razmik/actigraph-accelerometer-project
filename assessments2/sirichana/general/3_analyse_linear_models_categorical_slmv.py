@@ -97,6 +97,10 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
     SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title=status, output_filename=conf_mat_output_filename)
 
 
+def evaluate_average_measures(data, epoch, output_title):
+    SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+
+
 if __name__ == '__main__':
 
     print('Start - Reading')
@@ -151,6 +155,10 @@ if __name__ == '__main__':
         """LR A"""
         model_titleA = output_title + '_A'
         results = predict_ee_A(results)
+
+        """Evaluate Average Measures"""
+        evaluate_average_measures(results, epoch, output_title)
+
         evaluate_models(results, model_titleA, plot_number+1, output_folder_path, model_titleA, correlation_only=False)
         results = SE.BlandAltman.clean_data_points(results)
         SE.BlandAltman.bland_altman_paired_plot_tested(results, model_titleA, plot_number+2, log_transformed=True,

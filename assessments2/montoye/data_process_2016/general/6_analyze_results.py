@@ -58,6 +58,10 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
     SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title=status, output_filename=conf_mat_output_filename)
 
 
+def evaluate_average_measures(data, epoch, output_title):
+    SE.Average_Stats.evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path)
+
+
 if __name__ == '__main__':
 
     print('Start - Reading')
@@ -93,6 +97,9 @@ if __name__ == '__main__':
                     results = dataframe
 
                 count += 1
+
+            """Evaluate Average Measures"""
+            evaluate_average_measures(results, epoch, output_title)
 
             """General Assessment"""
             evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)

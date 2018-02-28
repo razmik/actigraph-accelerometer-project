@@ -28,7 +28,7 @@ if __name__ == '__main__':
     lsm2_user_list = [user.split(' ')[0] for user in df_lsm2_at['Subject'].unique()]
 
     # Master list of users
-    columns = ['gender', 'age', 'height', 'weight']
+    columns = ['gender', 'age', 'height', 'weight', 'bmi']
     df_lsm1 = pd.DataFrame(index=lsm1_user_list, columns=columns)
     df_lsm2 = pd.DataFrame(index=lsm2_user_list, columns=columns)
 
@@ -53,6 +53,7 @@ if __name__ == '__main__':
         if index in df_add_data.index and row['height'] != '' and row['weight'] != '':
             df_lsm1.loc[index, 'height'] = df_add_data.loc[index, 'height']
             df_lsm1.loc[index, 'weight'] = df_add_data.loc[index, 'weight']
+            df_lsm1.loc[index, 'bmi'] = df_add_data.loc[index, 'bmi']
         else:
             print('HW error:', index)
 
@@ -60,6 +61,7 @@ if __name__ == '__main__':
         if index in df_add_data.index and row['height'] != '' and row['weight'] != '':
             df_lsm2.loc[index, 'height'] = df_add_data.loc[index, 'height']
             df_lsm2.loc[index, 'weight'] = df_add_data.loc[index, 'weight']
+            df_lsm2.loc[index, 'bmi'] = df_add_data.loc[index, 'bmi']
         else:
             print('HW error:', index)
 
@@ -86,5 +88,6 @@ if __name__ == '__main__':
     numeric_sequence_characteristics('age')
     numeric_sequence_characteristics('height')
     numeric_sequence_characteristics('weight')
+    numeric_sequence_characteristics('bmi')
 
     print('\n Completed.')

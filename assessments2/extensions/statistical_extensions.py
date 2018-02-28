@@ -436,6 +436,63 @@ class GeneralStats:
         return pearsonr(x, y)
 
 
+class Average_Stats:
+
+    @staticmethod
+    def evaluate_average_measures(data, epoch, output_title, output_folder_path):
+        def get_averaged_df(dataset, count_field, new_col, multiplyer):
+            dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
+            dataset_count[new_col] *= (multiplyer / (60 * 60))
+            return dataset_count
+
+        def get_average_counted_df(data_actual, data_predict, mul):
+            return pd.merge(get_averaged_df(data_actual, 'waist_ee', 'actual_time', mul),
+                            get_averaged_df(data_predict, 'predicted_ee', 'predicted_time', mul),
+                            on='subject', how='outer')
+
+        mul = int(epoch.split('Epoch')[1])
+
+        # Evaluate SB
+        df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_ee'] <= 1.5], mul)
+        df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+
+        # Evaluate LPA
+        df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
+                                        data.loc[(data['predicted_ee'] > 1.5) & (data['predicted_ee'] < 3)], mul)
+        df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+
+        # Evaluate MVPA
+        df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
+        df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
+
+    @staticmethod
+    def evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path):
+        def get_averaged_df(dataset, count_field, new_col, multiplyer):
+            dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
+            dataset_count[new_col] *= (multiplyer / (60 * 60))
+            return dataset_count
+
+        def get_average_counted_df(data_actual, data_predict, mul):
+            return pd.merge(get_averaged_df(data_actual, 'waist_ee', 'actual_time', mul),
+                            get_averaged_df(data_predict, 'predicted_category', 'predicted_time', mul),
+                            on='subject', how='outer')
+
+        mul = int(epoch.split('Epoch')[1])
+
+        # Evaluate SB
+        df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_category'] == 1], mul)
+        df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+
+        # Evaluate LPA
+        df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
+                                        data.loc[data['predicted_category'] == 2], mul)
+        df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+
+        # Evaluate MVPA
+        df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_category'] == 3], mul)
+        df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
+
+
 class Utils:
 
     @staticmethod

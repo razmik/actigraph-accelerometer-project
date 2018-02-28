@@ -6,10 +6,10 @@ import sys, time
 
 process_start_time = time.time()
 
-time_epoch = 5
+time_epoch = 1
 multiplication_factor = int(60 / time_epoch)
 
-experiment = 'LSM1'
+experiment = 'LSM2'
 week = 'Week 1'
 day = 'Wednesday'
 
