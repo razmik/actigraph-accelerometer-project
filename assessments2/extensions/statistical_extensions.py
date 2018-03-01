@@ -455,15 +455,23 @@ class Average_Stats:
         # Evaluate SB
         df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_ee'] <= 1.5], mul)
         df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+        sb_actual_avg = str(df_sb['actual_time'].mean()) + "+-" + str(df_sb['actual_time'].std())
+        sb_predicted_avg = str(df_sb['predicted_time'].mean()) + "+-" + str(df_sb['predicted_time'].std())
 
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[(data['predicted_ee'] > 1.5) & (data['predicted_ee'] < 3)], mul)
         df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+        lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
+        lpa_predicted_avg = str(df_lpa['predicted_time'].mean()) + "+-" + str(df_lpa['predicted_time'].std())
 
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
         df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
+        mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
+        mvpa_predicted_avg = str(df_mvpa['predicted_time'].mean()) + "+-" + str(df_mvpa['predicted_time'].std())
+
+        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
 
     @staticmethod
     def evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path):
@@ -482,15 +490,23 @@ class Average_Stats:
         # Evaluate SB
         df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_category'] == 1], mul)
         df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+        sb_actual_avg = str(df_sb['actual_time'].mean()) + "+-" + str(df_sb['actual_time'].std())
+        sb_predicted_avg = str(df_sb['predicted_time'].mean()) + "+-" + str(df_sb['predicted_time'].std())
 
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[data['predicted_category'] == 2], mul)
         df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+        lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
+        lpa_predicted_avg = str(df_lpa['predicted_time'].mean()) + "+-" + str(df_lpa['predicted_time'].std())
 
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_category'] == 3], mul)
         df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
+        mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
+        mvpa_predicted_avg = str(df_mvpa['predicted_time'].mean()) + "+-" + str(df_mvpa['predicted_time'].std())
+
+        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
 
 
 class Utils:

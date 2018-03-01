@@ -70,7 +70,18 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
 
 
 def evaluate_average_measures(data, epoch, output_title):
-    SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+    sb, lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+
+    assessment_result = 'Assessment of Average time\n\n'
+    assessment_result += 'SB actual:\t' + sb[0] + '\n'
+    assessment_result += 'SB predicted:\t' + sb[1] + '\n'
+    assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
+    assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
+    assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
+    assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
+
+    results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
+    SE.Utils.print_assessment_results(results_output_filename, assessment_result)
 
 
 if __name__ == '__main__':
@@ -86,15 +97,6 @@ if __name__ == '__main__':
     models = ['v2', 'v1v2']
     model_title = 'Montoye ANN 2017 '
     plot_number = 1
-
-    # experiments = ['LSM1']
-    # week = 'Week 1'
-    # days = ['Wednesday']
-    # wrists = ['left_wrist']
-    # epochs = ['Epoch5']
-    # models = ['v1v2']
-    # model_title = 'Montoye ANN 2017 '
-    # plot_number = 1
 
     for model in models:
         for epoch in epochs:
@@ -119,18 +121,18 @@ if __name__ == '__main__':
 
                     count += 1
 
-                    break
-
                 """Evaluate Average Measures"""
                 evaluate_average_measures(results, epoch, output_title)
+                # print('completed average measure')
+                # sys.exit(0)
 
                 """General Assessment"""
-                evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)
+                # evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)
 
                 """Bland Altman Plot"""
-                results = SE.BlandAltman.clean_data_points(results)
-                SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+1, log_transformed=True,
-                                                               min_count_regularise=False, output_filename=output_folder_path+output_title)
+                # results = SE.BlandAltman.clean_data_points(results)
+                # SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+1, log_transformed=True,
+                #                                                min_count_regularise=False, output_filename=output_folder_path+output_title)
 
                 plot_number += 10
 

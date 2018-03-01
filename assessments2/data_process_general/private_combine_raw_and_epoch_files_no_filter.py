@@ -54,6 +54,7 @@ def process_without_filter(starting_row, end_row, experiment, week, day, user, d
 
     # Calculate ENMO (Euclidean Norm Minus One) reguired for Hilderbrand model
     raw_data_wrist['enmo'] = np.sqrt([(raw_data_wrist.X ** 2) + (raw_data_wrist.Y ** 2) + (raw_data_wrist.Z ** 2)])[0] - 1
+    raw_data_wrist.loc[raw_data_wrist.enmo < 0, 'enmo'] = 0
 
     # SVM needs for calculation in Sirichana model
     # raw_data_wrist['svm'] = raw_data_wrist['vm'] - 1

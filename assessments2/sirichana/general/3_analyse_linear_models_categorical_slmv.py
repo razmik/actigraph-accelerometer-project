@@ -98,7 +98,18 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
 
 def evaluate_average_measures(data, epoch, output_title):
-    SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+    sb, lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+
+    assessment_result = 'Assessment of Average time\n\n'
+    assessment_result += 'SB actual:\t' + sb[0] + '\n'
+    assessment_result += 'SB predicted:\t' + sb[1] + '\n'
+    assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
+    assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
+    assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
+    assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
+
+    results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
+    SE.Utils.print_assessment_results(results_output_filename, assessment_result)
 
 
 if __name__ == '__main__':
@@ -112,13 +123,6 @@ if __name__ == '__main__':
     epochs = ['Epoch60']
     model_title = 'Sirichana Linear Regression'
     plot_number = 1
-
-    # experiments = ['LSM1']
-    # week = 'Week 1'
-    # days = ['Wednesday']
-    # epochs = ['Epoch60']
-    # model_title = 'Sirichana Linear Regression'
-    # plot_number = 1
 
     for epoch in epochs:
 
@@ -158,6 +162,8 @@ if __name__ == '__main__':
 
         """Evaluate Average Measures"""
         evaluate_average_measures(results, epoch, output_title)
+        print('completed average measure')
+        sys.exit(0)
 
         evaluate_models(results, model_titleA, plot_number+1, output_folder_path, model_titleA, correlation_only=False)
         results = SE.BlandAltman.clean_data_points(results)

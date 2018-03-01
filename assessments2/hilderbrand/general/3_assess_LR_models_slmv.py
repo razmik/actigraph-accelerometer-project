@@ -12,7 +12,8 @@ import statistical_extensions as SE
 
 
 def predict(data):
-    data['predicted_ee'] = ((0.0320 * data['enmo']) + 7.28) / 3.5
+    # ENMO is acceleration in milig's
+    data['predicted_ee'] = ((0.0320 * data['enmo'] * 1000) + 7.28) / 3.5
     return data
 
 
@@ -83,7 +84,18 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
 
 def evaluate_average_measures(data, epoch, output_title):
-    SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+    sb, lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+
+    assessment_result = 'Assessment of Average time\n\n'
+    assessment_result += 'SB actual:\t' + sb[0] + '\n'
+    assessment_result += 'SB predicted:\t' + sb[1] + '\n'
+    assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
+    assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
+    assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
+    assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
+
+    results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
+    SE.Utils.print_assessment_results(results_output_filename, assessment_result)
 
 
 if __name__ == '__main__':
@@ -93,7 +105,6 @@ if __name__ == '__main__':
     experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
-    # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
     epochs = ['Epoch1']
     model_title = 'Hilderbrand Linear Regression'
     plot_number = 1

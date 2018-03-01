@@ -86,32 +86,18 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
 
 def evaluate_average_measures(data, epoch, output_title):
-    SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+    sb, lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
 
-    # def get_averaged_df(dataset, count_field, new_col, multiplyer):
-    #     dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
-    #     dataset_count[new_col] *= multiplyer
-    #     return dataset_count
-    #
-    # def get_average_counted_df(data_actual, data_predict, mul):
-    #     return pd.merge(get_averaged_df(data_actual, 'waist_ee', 'actual_time', mul),
-    #                     get_averaged_df(data_predict, 'predicted_ee', 'predicted_time', mul),
-    #                     on='subject', how='outer')
-    #
-    # mul = int(epoch.split('Epoch')[1])
-    #
-    # # Evaluate SB
-    # df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_ee'] <= 1.5], mul)
-    # df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
-    #
-    # # Evaluate LPA
-    # df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
-    #                                 data.loc[(data['predicted_ee'] > 1.5) & (data['predicted_ee'] < 3)], mul)
-    # df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
-    #
-    # # Evaluate MVPA
-    # df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
-    # df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
+    assessment_result = 'Assessment of Average time\n\n'
+    assessment_result += 'SB actual:\t' + sb[0] + '\n'
+    assessment_result += 'SB predicted:\t' + sb[1] + '\n'
+    assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
+    assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
+    assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
+    assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
+
+    results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
+    SE.Utils.print_assessment_results(results_output_filename, assessment_result)
 
 
 if __name__ == '__main__':
@@ -153,20 +139,13 @@ if __name__ == '__main__':
 
                 print('Completed', experiment, day)
 
-        ## Analysis
-        # results = results.loc[results['waist_ee'] > 0.0]
-        #
-        # fig, ax = plt.subplots()
-        # results.hist(column='waist_ee', ax=ax, bins=75)
-        # fig.savefig('example.png')
-        #
-        # sys.exit(0)
-
         """Prediction"""
         results = predict(results)
 
         """Evaluate Average Measures"""
         evaluate_average_measures(results, epoch, output_title)
+        print('completed average measure')
+        sys.exit(0)
 
         """General Assessment"""
         evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)

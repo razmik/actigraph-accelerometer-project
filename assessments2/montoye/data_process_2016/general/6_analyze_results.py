@@ -59,7 +59,18 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
 
 
 def evaluate_average_measures(data, epoch, output_title):
-    SE.Average_Stats.evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path)
+    sb, lpa, mvpa = SE.Average_Stats.evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path)
+
+    assessment_result = 'Assessment of Average time\n\n'
+    assessment_result += 'SB actual:\t' + sb[0] + '\n'
+    assessment_result += 'SB predicted:\t' + sb[1] + '\n'
+    assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
+    assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
+    assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
+    assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
+
+    results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
+    SE.Utils.print_assessment_results(results_output_filename, assessment_result)
 
 
 if __name__ == '__main__':
@@ -102,7 +113,7 @@ if __name__ == '__main__':
             evaluate_average_measures(results, epoch, output_title)
 
             """General Assessment"""
-            evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)
+            # evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)
 
             plot_number += 1
 
