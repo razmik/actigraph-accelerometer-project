@@ -420,32 +420,33 @@ class Average_Stats:
                             get_averaged_df(data_predict, 'predicted_ee', 'predicted_time', mul),
                             on='subject', how='outer')
 
+        round_digits = 2
         mul = int(epoch.split('Epoch')[1])
 
         # Evaluate SB
         df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_ee'] <= 1.5], mul)
         df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
-        sb_actual_avg = str(df_sb['actual_time'].mean()) + "+-" + str(df_sb['actual_time'].std())
-        sb_predicted_avg = str(df_sb['predicted_time'].mean()) + "+-" + str(df_sb['predicted_time'].std())
+        sb_actual_avg = str(round(df_sb['actual_time'].mean(), round_digits)) + "+-" + str(round(df_sb['actual_time'].std(), round_digits))
+        sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb['predicted_time'].std(), round_digits))
 
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[(data['predicted_ee'] > 1.5) & (data['predicted_ee'] < 3)], mul)
         df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
-        lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
-        lpa_predicted_avg = str(df_lpa['predicted_time'].mean()) + "+-" + str(df_lpa['predicted_time'].std())
+        lpa_actual_avg = str(round(df_lpa['actual_time'].mean(), round_digits)) + "+-" + str(round(df_lpa['actual_time'].std(), round_digits))
+        lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate SB+LPA
         df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_ee'] < 3)], mul)
         df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
         sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
-        sb_lpa_predicted_avg = str(df_sb_lpa['predicted_time'].mean()) + "+-" + str(df_sb_lpa['predicted_time'].std())
+        sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
         df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
-        mvpa_predicted_avg = str(df_mvpa['predicted_time'].mean()) + "+-" + str(df_mvpa['predicted_time'].std())
+        mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_mvpa['predicted_time'].std(), round_digits))
 
         return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg, sb_lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
 
@@ -461,32 +462,33 @@ class Average_Stats:
                             get_averaged_df(data_predict, 'predicted_category', 'predicted_time', mul),
                             on='subject', how='outer')
 
+        round_digits = 2
         mul = int(epoch.split('Epoch')[1])
 
         # Evaluate SB
         df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_category'] == 1], mul)
         df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
         sb_actual_avg = str(df_sb['actual_time'].mean()) + "+-" + str(df_sb['actual_time'].std())
-        sb_predicted_avg = str(df_sb['predicted_time'].mean()) + "+-" + str(df_sb['predicted_time'].std())
+        sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb['predicted_time'].std(), round_digits))
 
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[data['predicted_category'] == 2], mul)
         df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
         lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
-        lpa_predicted_avg = str(df_lpa['predicted_time'].mean()) + "+-" + str(df_lpa['predicted_time'].std())
+        lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate SB+LPA
         df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_ee'] < 3)], mul)
         df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
         sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
-        sb_lpa_predicted_avg = str(df_sb_lpa['predicted_time'].mean()) + "+-" + str(df_sb_lpa['predicted_time'].std())
+        sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_category'] == 3], mul)
         df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
-        mvpa_predicted_avg = str(df_mvpa['predicted_time'].mean()) + "+-" + str(df_mvpa['predicted_time'].std())
+        mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_mvpa['predicted_time'].std(), round_digits))
 
         return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg, sb_lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
 
