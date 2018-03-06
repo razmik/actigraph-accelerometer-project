@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2c4c84ba-6615-4f44-a5f7-cbd158c9e2f0" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/pc.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/pc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py" afterPath="$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py" />
+      <change beforePath="$PROJECT_DIR$/analyze/analyze_correlation.py" afterPath="$PROJECT_DIR$/analyze/analyze_correlation.py" />
+      <change beforePath="$PROJECT_DIR$/analyze/analyze_user_characteristics.py" afterPath="$PROJECT_DIR$/analyze/analyze_user_characteristics.py" />
+      <change beforePath="$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py" afterPath="$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py" />
       <change beforePath="$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py" afterPath="$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py" />
       <change beforePath="$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py" afterPath="$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py" />
-      <change beforePath="$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py" afterPath="$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py" />
-      <change beforePath="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py" afterPath="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py" />
+      <change beforePath="$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py" afterPath="$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py" />
       <change beforePath="$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py" afterPath="$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py" />
-      <change beforePath="$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv.py" afterPath="$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,7 +33,7 @@
     <SUITE FILE_PATH="coverage/accelerometer_project$overall_distribution.coverage" NAME="overall_distribution Coverage Results" MODIFIED="1508809567525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/overall" />
     <SUITE FILE_PATH="coverage/accelerometer_project$6_analyze_results_leftw__1_.coverage" NAME="6_analyze_results_leftw (1) Coverage Results" MODIFIED="1519785065827" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general" />
     <SUITE FILE_PATH="coverage/accelerometer_project$bland_altman.coverage" NAME="bland_altman Coverage Results" MODIFIED="1510449656693" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/extensions/codeplay" />
-    <SUITE FILE_PATH="coverage/accelerometer_project$3_assess_LR_models_slmv.coverage" NAME="3_assess_LR_models_slmv Coverage Results" MODIFIED="1519797102212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/hilderbrand/general" />
+    <SUITE FILE_PATH="coverage/accelerometer_project$3_assess_LR_models_slmv.coverage" NAME="3_assess_LR_models_slmv Coverage Results" MODIFIED="1520328131121" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/hilderbrand/general" />
     <SUITE FILE_PATH="coverage/accelerometer_project$analyze_user_characteristics.coverage" NAME="analyze_user_characteristics Coverage Results" MODIFIED="1519715474878" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
     <SUITE FILE_PATH="coverage/accelerometer_project$3_process_input_leftw__2_.coverage" NAME="3_process_input_leftw (2) Coverage Results" MODIFIED="1500532228443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/montoye/data_process_2017/30s_calcEF/leftw" />
     <SUITE FILE_PATH="coverage/accelerometer_project$dt.coverage" NAME="dt Coverage Results" MODIFIED="1496995874829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments/staudenmayer" />
@@ -44,7 +43,7 @@
     <SUITE FILE_PATH="coverage/accelerometer_project$3_process_input_rightw__2_.coverage" NAME="3_process_input_rightw (2) Coverage Results" MODIFIED="1500532231363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/montoye/data_process_2017/30s_calcEF/rightw" />
     <SUITE FILE_PATH="coverage/accelerometer_project$2_assess_models.coverage" NAME="2_assess_models Coverage Results" MODIFIED="1500350274068" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/staudenmayer/data_process/epcoh_15s" />
     <SUITE FILE_PATH="coverage/accelerometer_project$process.coverage" NAME="process Coverage Results" MODIFIED="1498638078942" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments/montoye" />
-    <SUITE FILE_PATH="coverage/accelerometer_project$2_combine_raw_epoch_main.coverage" NAME="2_combine_raw_epoch_main Coverage Results" MODIFIED="1519866298589" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/data_process_general" />
+    <SUITE FILE_PATH="coverage/accelerometer_project$2_combine_raw_epoch_main.coverage" NAME="2_combine_raw_epoch_main Coverage Results" MODIFIED="1520302895944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/data_process_general" />
     <SUITE FILE_PATH="coverage/accelerometer_project$3_analyse_linear_models_categorical_slmv__1_.coverage" NAME="3_analyse_linear_models_categorical_slmv (1) Coverage Results" MODIFIED="1500548575261" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/sirichana/epoch15" />
     <SUITE FILE_PATH="coverage/AccelerometerProject$dieu.coverage" NAME="dieu Coverage Results" MODIFIED="1496018768090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/accelerometer_project$5_combine_results_leftw__2_.coverage" NAME="5_combine_results_leftw (2) Coverage Results" MODIFIED="1500529009325" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/montoye/data_process_2016/60s_calcEF/leftw" />
@@ -54,7 +53,7 @@
     <SUITE FILE_PATH="coverage/accelerometer_project$3_process_input_2015.coverage" NAME="3_process_input_2015 Coverage Results" MODIFIED="1500360480119" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/montoye/data_process_2015/30s_directFE" />
     <SUITE FILE_PATH="coverage/accelerometer_project$4_analyse_linear_models_numerical.coverage" NAME="4_analyse_linear_models_numerical Coverage Results" MODIFIED="1502513170956" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/sirichana/epoch60" />
     <SUITE FILE_PATH="coverage/accelerometer_project$2_process_epoch_reference.coverage" NAME="2_process_epoch_reference Coverage Results" MODIFIED="1500360061511" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/montoye/data_process_2015/30s_directFE" />
-    <SUITE FILE_PATH="coverage/accelerometer_project$analyze_correlation.coverage" NAME="analyze_correlation Coverage Results" MODIFIED="1510700030828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
+    <SUITE FILE_PATH="coverage/accelerometer_project$analyze_correlation.coverage" NAME="analyze_correlation Coverage Results" MODIFIED="1519998230226" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
     <SUITE FILE_PATH="coverage/accelerometer_project$convert_filter.coverage" NAME="convert_filter Coverage Results" MODIFIED="1496984054845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_process" />
     <SUITE FILE_PATH="coverage/accelerometer_project$4_assess_DT_models_sl_mv__1_.coverage" NAME="4_assess_DT_models_sl_mv (1) Coverage Results" MODIFIED="1500517981363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/staudenmayer/data_process/epoch_60s" />
     <SUITE FILE_PATH="coverage/accelerometer_project$6_analyze_results_rightw__1_.coverage" NAME="6_analyze_results_rightw (1) Coverage Results" MODIFIED="1502509786863" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/montoye/data_process_2017/30s_calcEF/rightw" />
@@ -103,7 +102,7 @@
     <SUITE FILE_PATH="coverage/accelerometer_project$1_combine_actilife_files_1minref__1_.coverage" NAME="1_combine_actilife_files_1minref (1) Coverage Results" MODIFIED="1505281367739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/staudenmayer/data_process/epoch_30s" />
     <SUITE FILE_PATH="coverage/accelerometer_project$4_analyse_linear_models_numerical__2_.coverage" NAME="4_analyse_linear_models_numerical (2) Coverage Results" MODIFIED="1500548879998" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/sirichana/epoch30" />
     <SUITE FILE_PATH="coverage/AccelerometerProject$correlation.coverage" NAME="correlation Coverage Results" MODIFIED="1495691372051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/accelerometer_project$4_combine_predictions.coverage" NAME="4_combine_predictions Coverage Results" MODIFIED="1519862012916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/hilderbrand/general" />
+    <SUITE FILE_PATH="coverage/accelerometer_project$4_combine_predictions.coverage" NAME="4_combine_predictions Coverage Results" MODIFIED="1520330225611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/hilderbrand/general" />
     <SUITE FILE_PATH="coverage/accelerometer_project$analyze_epoch_activity_movements_copy.coverage" NAME="analyze_epoch_activity_movements_copy Coverage Results" MODIFIED="1498031669738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
     <SUITE FILE_PATH="coverage/accelerometer_project$combine_results_2015.coverage" NAME="combine_results_2015 Coverage Results" MODIFIED="1498630174449" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments/montoye/data_process" />
     <SUITE FILE_PATH="coverage/accelerometer_project$analyze_raw_epoch_activity.coverage" NAME="analyze_raw_epoch_activity Coverage Results" MODIFIED="1497354005273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analyze" />
@@ -159,41 +158,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="3_assess_LR_models_slmv.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv.py">
+      <file leaf-file-name="2_combine_raw_epoch_main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="139" column="51" lean-forward="true" selection-start-line="139" selection-start-column="51" selection-end-line="139" selection-end-column="51" />
+            <state relative-caret-position="800">
+              <caret line="23" column="14" lean-forward="false" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="3_analyse_linear_models_categorical_slmv.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py">
+      <file leaf-file-name="private_combine_raw_and_epoch_files_no_filter.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1920">
-              <caret line="157" column="23" lean-forward="true" selection-start-line="157" selection-start-column="23" selection-end-line="157" selection-end-column="23" />
+            <state relative-caret-position="5800">
+              <caret line="148" column="67" lean-forward="false" selection-start-line="148" selection-start-column="67" selection-end-line="148" selection-end-column="67" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="6_analyze_results.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py">
+      <file leaf-file-name="3_assess_LR_models_slmv.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="105" column="0" lean-forward="true" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+            <state relative-caret-position="4000">
+              <caret line="108" column="36" lean-forward="false" selection-start-line="108" selection-start-column="36" selection-end-line="109" selection-end-column="56" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="4_combine_predictions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="658">
+              <caret line="45" column="44" lean-forward="false" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="6_analyze_results.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py">
+      <file leaf-file-name="statistical_extensions.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="64" column="54" lean-forward="true" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
+            <state relative-caret-position="1458">
+              <caret line="420" column="54" lean-forward="true" selection-start-line="420" selection-start-column="54" selection-end-line="420" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -227,6 +238,7 @@
       <find>Accelerometer_Processed_Raw_Epoch_Data</find>
       <find>raw_wrist</find>
       <find>wrist</find>
+      <find>bland_altman_paired_plot_tested</find>
     </findStrings>
     <replaceStrings>
       <replace>aggregated_wrist</replace>
@@ -284,7 +296,6 @@
         <option value="$PROJECT_DIR$/assessments2/overall/overall_distribution.py" />
         <option value="$PROJECT_DIR$/analyze/analyze_overalldistribution.py" />
         <option value="$PROJECT_DIR$/assessments2/extensions/codeplay/bland_altman.py" />
-        <option value="$PROJECT_DIR$/analyze/analyze_correlation.py" />
         <option value="$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results_leftw.py" />
         <option value="$PROJECT_DIR$/unsupervised_learning/data_process/1_combine_actilife_files.py" />
         <option value="$PROJECT_DIR$/analyze/analyze_epoch_activity_timeline.py" />
@@ -293,18 +304,19 @@
         <option value="$PROJECT_DIR$/unsupervised_learning/data_process/3_finalise_feature_vector.py" />
         <option value="$PROJECT_DIR$/unsupervised_learning/analysis/multivariate_timeseries_lstm.py" />
         <option value="$PROJECT_DIR$/analyze/analyze_epoch_activity_movements.py" />
-        <option value="$PROJECT_DIR$/analyze/analyze_user_characteristics.py" />
         <option value="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results_leftw.py" />
-        <option value="$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py" />
         <option value="$PROJECT_DIR$/assessments2/staudenmayer/data_process/1_combine_actilife_files_1minref.py" />
-        <option value="$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py" />
         <option value="$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py" />
-        <option value="$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py" />
-        <option value="$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py" />
         <option value="$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv.py" />
-        <option value="$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py" />
         <option value="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py" />
         <option value="$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py" />
+        <option value="$PROJECT_DIR$/analyze/analyze_correlation.py" />
+        <option value="$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py" />
+        <option value="$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py" />
+        <option value="$PROJECT_DIR$/analyze/analyze_user_characteristics.py" />
+        <option value="$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py" />
+        <option value="$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py" />
+        <option value="$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py" />
       </list>
     </option>
   </component>
@@ -315,9 +327,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1906" />
-    <option name="width" value="1948" />
-    <option name="height" value="2074" />
+    <option name="x" value="-16" />
+    <option name="y" value="-16" />
+    <option name="width" value="3872" />
+    <option name="height" value="2092" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -338,6 +351,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -349,6 +363,12 @@
               <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
               <item name="analyze" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
+              <item name="analyze" type="462c0819:PsiDirectoryNode" />
+              <item name="backup" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
@@ -384,40 +404,6 @@
               <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
               <item name="assessments2" type="462c0819:PsiDirectoryNode" />
-              <item name="montoye" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
-              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
-              <item name="montoye" type="462c0819:PsiDirectoryNode" />
-              <item name="data_process_2016" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
-              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
-              <item name="montoye" type="462c0819:PsiDirectoryNode" />
-              <item name="data_process_2016" type="462c0819:PsiDirectoryNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
-              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
-              <item name="sirichana" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
-              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
-              <item name="sirichana" type="462c0819:PsiDirectoryNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="accelerometer-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="accelerometer-project" type="462c0819:PsiDirectoryNode" />
-              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
               <item name="staudenmayer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -435,7 +421,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -471,7 +456,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.6_analyze_results (1)">
+  <component name="RunManager" selected="Python.4_combine_predictions">
     <configuration name="2_combine_raw_epoch_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -491,39 +476,39 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="3_analyse_linear_models_categorical_slmv" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="3_assess_LR_models_slmv" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assessments2/sirichana/general" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assessments2/hilderbrand/general" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="AccelerometerProject" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="3_assess_LR_models_slmv (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="4_combine_predictions" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assessments2/staudenmayer/general" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assessments2/hilderbrand/general" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="AccelerometerProject" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -548,20 +533,20 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="6_analyze_results" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="analyze_correlation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/analyze" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="AccelerometerProject" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analyze/analyze_correlation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -723,19 +708,19 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.2_combine_raw_epoch_main" />
-      <item index="1" class="java.lang.String" itemvalue="Python.3_assess_LR_models_slmv (1)" />
-      <item index="2" class="java.lang.String" itemvalue="Python.3_analyse_linear_models_categorical_slmv" />
-      <item index="3" class="java.lang.String" itemvalue="Python.6_analyze_results" />
-      <item index="4" class="java.lang.String" itemvalue="Python.6_analyze_results (1)" />
+      <item index="0" class="java.lang.String" itemvalue="Python.6_analyze_results (1)" />
+      <item index="1" class="java.lang.String" itemvalue="Python.3_assess_LR_models_slmv" />
+      <item index="2" class="java.lang.String" itemvalue="Python.analyze_correlation" />
+      <item index="3" class="java.lang.String" itemvalue="Python.4_combine_predictions" />
+      <item index="4" class="java.lang.String" itemvalue="Python.2_combine_raw_epoch_main" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.6_analyze_results (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Python.6_analyze_results" />
-        <item index="2" class="java.lang.String" itemvalue="Python.3_analyse_linear_models_categorical_slmv" />
-        <item index="3" class="java.lang.String" itemvalue="Python.3_assess_LR_models_slmv (1)" />
-        <item index="4" class="java.lang.String" itemvalue="Python.2_combine_raw_epoch_main" />
+        <item index="0" class="java.lang.String" itemvalue="Python.4_combine_predictions" />
+        <item index="1" class="java.lang.String" itemvalue="Python.3_assess_LR_models_slmv" />
+        <item index="2" class="java.lang.String" itemvalue="Python.2_combine_raw_epoch_main" />
+        <item index="3" class="java.lang.String" itemvalue="Python.analyze_correlation" />
+        <item index="4" class="java.lang.String" itemvalue="Python.6_analyze_results (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -956,7 +941,14 @@
       <option name="project" value="LOCAL" />
       <updated>1519791558337</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Update Hilderbrand model">
+      <created>1519878198451</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1519878198451</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -974,9 +966,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3244318" sideWeight="0.50104165" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30113637" sideWeight="0.47263947" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4431818" sideWeight="0.47263947" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23980686" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28031117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="R Graphics" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1079,11 +1071,6 @@
           <url>file://$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py</url>
           <line>163</line>
           <option name="timeStamp" value="191" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py</url>
-          <line>139</line>
-          <option name="timeStamp" value="198" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -1303,20 +1290,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analyze/analyze_correlation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="107" column="36" lean-forward="false" selection-start-line="107" selection-start-column="27" selection-end-line="107" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analyze/temp.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/temp.csv" />
     <entry file="file://$PROJECT_DIR$/unsupervised_learning/data_process/private_combine_raw_and_epoch_files_no_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2640">
@@ -1384,13 +1358,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analyze/analyze_user_characteristics.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3120">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assessments2/sirichana/general/4_combine_predictions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -1436,6 +1403,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2280">
+          <caret line="64" column="54" lean-forward="false" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="105" column="0" lean-forward="false" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/analyze_correlation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="125" column="54" lean-forward="false" selection-start-line="125" selection-start-column="54" selection-end-line="125" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="950">
+          <caret line="164" column="42" lean-forward="false" selection-start-line="164" selection-start-column="42" selection-end-line="164" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/1_combine_actilife_files_1minref.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="720">
@@ -1443,34 +1439,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py">
+    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="674">
-          <caret line="476" column="49" lean-forward="false" selection-start-line="476" selection-start-column="8" selection-end-line="476" selection-end-column="49" />
+        <state relative-caret-position="5800">
+          <caret line="148" column="67" lean-forward="false" selection-start-line="148" selection-start-column="67" selection-end-line="148" selection-end-column="67" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/analyze_user_characteristics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="83" column="69" lean-forward="false" selection-start-line="83" selection-start-column="69" selection-end-line="83" selection-end-column="69" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1040">
-          <caret line="32" column="31" lean-forward="false" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+        <state relative-caret-position="800">
+          <caret line="23" column="14" lean-forward="false" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py">
+    <entry file="file://$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2685">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="480">
+          <caret line="23" column="39" lean-forward="true" selection-start-line="23" selection-start-column="39" selection-end-line="24" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="15" column="72" lean-forward="true" selection-start-line="15" selection-start-column="72" selection-end-line="15" selection-end-column="72" />
+        <state relative-caret-position="4000">
+          <caret line="108" column="36" lean-forward="false" selection-start-line="108" selection-start-column="36" selection-end-line="109" selection-end-column="56" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
@@ -1479,40 +1481,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assessments2/hilderbrand/general/4_combine_predictions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="28" column="19" lean-forward="true" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="19" />
+        <state relative-caret-position="658">
+          <caret line="45" column="44" lean-forward="false" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py">
+    <entry file="file://$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="105" column="0" lean-forward="true" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="64" column="54" lean-forward="true" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1920">
-          <caret line="157" column="23" lean-forward="true" selection-start-line="157" selection-start-column="23" selection-end-line="157" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="139" column="51" lean-forward="true" selection-start-line="139" selection-start-column="51" selection-end-line="139" selection-end-column="51" />
+        <state relative-caret-position="1458">
+          <caret line="420" column="54" lean-forward="true" selection-start-line="420" selection-start-column="54" selection-end-line="420" selection-end-column="54" />
           <folding />
         </state>
       </provider>

@@ -78,6 +78,17 @@ if __name__ == '__main__':
     master_user_list.age = master_user_list.age.astype(np.float32)
     # master_user_list.to_csv('temp.csv')
 
+    """
+    Required classifications
+    1. Sex
+    2. BMI - http://apps.who.int/bmi/index.jsp?introPage=intro_3.html
+            BMI	    Classification
+        < 18.5	    underweight
+        18.5–24.9	normal weight
+        25.0–29.9	overweight
+        30.0 <	obesity
+    """
+
     # Results
     grouped_users = master_user_list.groupby('gender')
     print('Total number of participants')

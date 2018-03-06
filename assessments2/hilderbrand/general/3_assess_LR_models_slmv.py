@@ -27,7 +27,7 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
     def met_to_intensity_lr_estimated_ee(row):
         ee = data['predicted_ee'][row.name]
-        return 1 if ee <= 1.5 else 2 if ee < 3 else 3
+        return 1 if ee <= 2.1 else 2 if ee < 3 else 3
 
     # convert activity intensity to 3 levels - SB, LPA, MVPA
     data['target_met_category'] = data.apply(met_to_intensity_waist_ee, axis=1)
@@ -84,13 +84,15 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
 
 def evaluate_average_measures(data, epoch, output_title):
-    sb, lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+    sb, lpa, sb_lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
 
     assessment_result = 'Assessment of Average time\n\n'
     assessment_result += 'SB actual:\t' + sb[0] + '\n'
     assessment_result += 'SB predicted:\t' + sb[1] + '\n'
     assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
     assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
+    assessment_result += 'SB+LPA actual:\t' + sb_lpa[0] + '\n'
+    assessment_result += 'SB+LPA predicted:\t' + sb_lpa[1] + '\n'
     assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
     assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
 
@@ -105,7 +107,7 @@ if __name__ == '__main__':
     experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
-    epochs = ['Epoch1']
+    epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
     model_title = 'Hilderbrand Linear Regression'
     plot_number = 1
 

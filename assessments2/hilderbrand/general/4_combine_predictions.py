@@ -7,7 +7,8 @@ sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
 
 
 def predict(data):
-    data['predicted_ee'] = ((0.0320 * data['enmo']) + 7.28) / 3.5
+    # ENMO is acceleration in milig's
+    data['predicted_ee'] = ((0.0320 * data['enmo'] * 1000) + 7.28) / 3.5
     return data
 
 
@@ -18,7 +19,7 @@ def met_to_intensity_waist_ee(row):
 
 def met_to_intensity_lr_estimated_ee(row):
     ee = results['predicted_ee'][row.name]
-    return 1 if ee <= 1.5 else 2 if ee < 3 else 3
+    return 1 if ee <= 2.1 else 2 if ee < 3 else 3
 
 
 if __name__ == '__main__':
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
-    epochs = ['Epoch1']
+    epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
     model_title = 'Hilderband Linear Regression'
 
     for epoch in epochs:

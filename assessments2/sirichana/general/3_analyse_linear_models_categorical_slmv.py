@@ -163,7 +163,6 @@ if __name__ == '__main__':
         """Evaluate Average Measures"""
         evaluate_average_measures(results, epoch, output_title)
         print('completed average measure')
-        sys.exit(0)
 
         evaluate_models(results, model_titleA, plot_number+1, output_folder_path, model_titleA, correlation_only=False)
         results = SE.BlandAltman.clean_data_points(results)

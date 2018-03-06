@@ -17,11 +17,11 @@ input_detail_filenames_list = [
     "D:\Accelerometer Data\Processed/LSM2_ActiveTimeline_Details_v1.csv".replace('\\', '/')
 ]
 time_epoch_dictionary = {
-    'Epoch1': 100
-    # 'Epoch5': 500,
-    # 'Epoch15': 1500,
-    # 'Epoch30': 3000,
-    # 'Epoch60': 6000
+    # 'Epoch1': 100
+    'Epoch5': 500,
+    'Epoch15': 1500,
+    'Epoch30': 3000,
+    'Epoch60': 6000
 }
 
 start_time = time.time()

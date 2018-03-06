@@ -23,43 +23,6 @@ class BlandAltman:
         plt.show()
 
     @staticmethod
-    def log_annotate_data(dataframe):
-
-        new_df = dataframe.loc[((dataframe['subject'] == 'LSM263') | (dataframe['subject'] == 'LSM265'))
-                               & (dataframe['mean'] < 0.08) & (dataframe['diff'] < 0.5)]
-        for index, row in new_df.iterrows():
-            print('A', row['waist_ee'], row['predicted_ee'])
-
-        new_df = dataframe.loc[((dataframe['subject'] == 'LSM263') | (dataframe['subject'] == 'LSM265'))
-                               & (0.08 < dataframe['mean']) & (dataframe['mean'] < 0.27) & (dataframe['diff'] < 0.4)]
-        for index, row in new_df.iterrows():
-            print('B', row['waist_ee'], row['predicted_ee'])
-
-        new_df = dataframe.loc[((dataframe['subject'] == 'LSM263') | (dataframe['subject'] == 'LSM265'))
-                               & (0.27 < dataframe['mean']) & (dataframe['mean'] < 0.48) & (dataframe['diff'] < 0.1)]
-        for index, row in new_df.iterrows():
-            print('C', row['waist_ee'], row['predicted_ee'])
-
-        new_df = dataframe.loc[((dataframe['subject'] == 'LSM263') | (dataframe['subject'] == 'LSM265'))
-                               & (0.27 < dataframe['mean']) & (dataframe['mean'] < 0.4) & (0.05 < dataframe['diff'])]
-        for index, row in new_df.iterrows():
-            print('D', row['waist_ee'], row['predicted_ee'])
-
-        new_df = dataframe.loc[((dataframe['subject'] == 'LSM263') | (dataframe['subject'] == 'LSM265'))
-                               & (0.4 < dataframe['mean']) & (dataframe['mean'] < 0.53) & (0.05 < dataframe['diff'])]
-        for index, row in new_df.iterrows():
-            print('E', row['waist_ee'], row['predicted_ee'])
-
-        new_df = dataframe.loc[((dataframe['subject'] == 'LSM263') | (dataframe['subject'] == 'LSM265'))
-                               & (0.53 < dataframe['mean']) & (dataframe['mean'] < 0.7) & (dataframe['diff'] < 0.4)]
-        for index, row in new_df.iterrows():
-            print('F', row['waist_ee'], row['predicted_ee'])
-
-        new_df = dataframe.loc[(0.7 < dataframe['mean']) & (dataframe['diff'] < 0.4)]
-        for index, row in new_df.iterrows():
-            print('G', row['waist_ee'], row['predicted_ee'])
-
-    @staticmethod
     def get_min_regularised_data_per_subject(data):
 
         min_count = min(data.groupby(['subject'])['waist_ee'].count())
@@ -85,8 +48,10 @@ class BlandAltman:
 
         x_label = 'Mean Energy Expenditure (METs)'
         y_label = 'Difference (Prediction - Reference) (log METs)'
-        x_lim = (1, 12)
-        y_lim = (-1.2, 1.0)
+        x_lim = (1, 24)
+        y_lim = (-1.2, 1.4)
+        # x_lim = (1, 12)
+        # y_lim = (-1.2, 1.0)
         x_annotate_begin = 10.4
         y_gap = 0.05
         ratio_suffix = ''
@@ -100,10 +65,6 @@ class BlandAltman:
         plt.axhline(mean_bias, color='gray', linestyle='--')
         plt.axhline(lower_loa, color='gray', linestyle='dotted')
 
-        # plt.annotate(str(BlandAltman.get_antilog(upper_loa))+ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
-        # plt.annotate(str(BlandAltman.get_antilog(mean_bias))+ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
-        # plt.annotate(str(BlandAltman.get_antilog(lower_loa))+ratio_suffix, xy=(x_annotate_begin, (lower_loa + y_gap)))
-
         plt.xlim(x_lim)
         plt.ylim(y_lim)
         plt.xlabel(x_label)
@@ -112,6 +73,12 @@ class BlandAltman:
         # http://www.anjuke.tech/questions/843083/matplotlib-savefig-in-jpeg-format
 
         plt.savefig(output_filename+'.jpg', dpi=1200)
+
+        plt.annotate(str(BlandAltman.get_antilog(upper_loa))+ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
+        plt.annotate(str(BlandAltman.get_antilog(mean_bias))+ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
+        plt.annotate(str(BlandAltman.get_antilog(lower_loa))+ratio_suffix, xy=(x_annotate_begin, (lower_loa + y_gap)))
+
+        plt.savefig(output_filename+'_annotated.jpg', dpi=1200)
         # plt.savefig(output_filename+'.png', dpi=1200)
         # plt.savefig(output_filename+'.eps')
         # plt.savefig(output_filename+'.pdf')
@@ -144,6 +111,7 @@ class BlandAltman:
                                    dataframe_sb_williams['mean'], dataframe_sb_williams['diff'],
                                    upper_loa_sb_williams, mean_bias_sb_williams, lower_loa_sb_williams,
                                    output_filename + '_sb')
+            # print(plot_title, 'SB', upper_loa_sb_williams, mean_bias_sb_williams, lower_loa_sb_williams)
 
         """
         Process BA plot for LPA
@@ -164,6 +132,7 @@ class BlandAltman:
                                    dataframe_lpa_williams['mean'], dataframe_lpa_williams['diff'],
                                    upper_loa_lpa_williams, mean_bias_lpa_williams, lower_loa_lpa_williams,
                                    output_filename + '_lpa')
+            # print(plot_title, 'LPA', upper_loa_lpa_williams, mean_bias_lpa_williams, lower_loa_lpa_williams)
 
         """
         Process BA plot for MVPA
@@ -177,6 +146,7 @@ class BlandAltman:
                                    dataframe_mvpa_freedson['mean'], dataframe_mvpa_freedson['diff'],
                                    upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
                                    output_filename + '_mvpa')
+            # print(plot_title, 'MVPA', upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson)
 
         # if len(dataframe_mvpa_williams) > 0:
         #     dataframe_mvpa_williams, mean_bias_mvpa_williams, upper_loa_mvpa_williams, lower_loa_mvpa_williams = BlandAltman._bland_altman_analyse(dataframe_mvpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
@@ -465,13 +435,19 @@ class Average_Stats:
         lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
         lpa_predicted_avg = str(df_lpa['predicted_time'].mean()) + "+-" + str(df_lpa['predicted_time'].std())
 
+        # Evaluate SB+LPA
+        df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_ee'] < 3)], mul)
+        df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
+        sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
+        sb_lpa_predicted_avg = str(df_sb_lpa['predicted_time'].mean()) + "+-" + str(df_sb_lpa['predicted_time'].std())
+
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
         df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
         mvpa_predicted_avg = str(df_mvpa['predicted_time'].mean()) + "+-" + str(df_mvpa['predicted_time'].std())
 
-        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
+        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg, sb_lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
 
     @staticmethod
     def evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path):
@@ -500,13 +476,19 @@ class Average_Stats:
         lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
         lpa_predicted_avg = str(df_lpa['predicted_time'].mean()) + "+-" + str(df_lpa['predicted_time'].std())
 
+        # Evaluate SB+LPA
+        df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_ee'] < 3)], mul)
+        df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
+        sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
+        sb_lpa_predicted_avg = str(df_sb_lpa['predicted_time'].mean()) + "+-" + str(df_sb_lpa['predicted_time'].std())
+
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_category'] == 3], mul)
         df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
         mvpa_predicted_avg = str(df_mvpa['predicted_time'].mean()) + "+-" + str(df_mvpa['predicted_time'].std())
 
-        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
+        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg, sb_lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
 
 
 class Utils:
