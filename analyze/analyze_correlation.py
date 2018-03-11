@@ -9,7 +9,10 @@ import pickle
 result_folders = [
     # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch5'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch5'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\hilderband\Epoch1'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\hilderband\Epoch5'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\hilderband\Epoch15'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\hilderband\Epoch30'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\hilderband\Epoch60'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch5/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch5/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
@@ -85,19 +88,23 @@ def initiate_dicts(folder_name):
     correlation_dict_MET[folder_name] = []
     correlation_dict_MET_sb[folder_name] = []
     correlation_dict_MET_lpa[folder_name] = []
+    correlation_dict_MET_sb_lpa[folder_name] = []
     correlation_dict_MET_mvpa[folder_name] = []
     correlation_dict_Intensity[folder_name] = []
     correlation_dict_Intensity_sb[folder_name] = []
     correlation_dict_Intensity_lpa[folder_name] = []
+    correlation_dict_Intensity_sb_lpa[folder_name] = []
     correlation_dict_Intensity_mvpa[folder_name] = []
 
     pvalue_dict_MET[folder_name] = []
     pvalue_dict_MET_sb[folder_name] = []
     pvalue_dict_MET_lpa[folder_name] = []
+    pvalue_dict_MET_sb_lpa[folder_name] = []
     pvalue_dict_MET_mvpa[folder_name] = []
     pvalue_dict_Intensity[folder_name] = []
     pvalue_dict_Intensity_sb[folder_name] = []
     pvalue_dict_Intensity_lpa[folder_name] = []
+    pvalue_dict_Intensity_sb_lpa[folder_name] = []
     pvalue_dict_Intensity_mvpa[folder_name] = []
 
 
@@ -122,15 +129,16 @@ def find_correlation(user_current, res, target_label, predicted_label, filename,
 def divide_results(dataframe):
     dataframe_sb = dataframe.loc[dataframe['waist_ee'] <= 1.5]
     dataframe_lpa = dataframe.loc[(1.5 < dataframe['waist_ee']) & (dataframe['waist_ee'] < 3)]
+    dataframe_sb_lpa = dataframe.loc[dataframe['waist_ee'] < 3]
     dataframe_mvpa = dataframe.loc[3 <= dataframe['waist_ee']]
-    return dataframe_sb, dataframe_lpa, dataframe_mvpa
+    return dataframe_sb, dataframe_lpa, dataframe_sb_lpa, dataframe_mvpa
 
 
 def process_correlations(current_results):
 
     current_results = clean_data_points(current_results)
 
-    results_sb, results_lpa, results_mvpa = divide_results(current_results)
+    results_sb, results_lpa, results_sb_lpa, results_mvpa = divide_results(current_results)
 
     # Process data for the prev_subj
     if 'predicted_ee' in results.columns:
@@ -141,6 +149,8 @@ def process_correlations(current_results):
                          pvalue_dict_MET_sb, method='pearson')
         find_correlation(prev_subj, results_lpa, target_label, predicted_label, result_folder, correlation_dict_MET_lpa,
                          pvalue_dict_MET_lpa, method='pearson')
+        find_correlation(prev_subj, results_sb_lpa, target_label, predicted_label, result_folder, correlation_dict_MET_sb_lpa,
+                         pvalue_dict_MET_sb_lpa, method='pearson')
         find_correlation(prev_subj, results_mvpa, target_label, predicted_label, result_folder,
                          correlation_dict_MET_mvpa, pvalue_dict_MET_mvpa, method='pearson')
     else:
@@ -166,19 +176,23 @@ def process_correlations(current_results):
 correlation_dict_MET = {}
 correlation_dict_MET_sb = {}
 correlation_dict_MET_lpa = {}
+correlation_dict_MET_sb_lpa = {}
 correlation_dict_MET_mvpa = {}
 pvalue_dict_MET = {}
 pvalue_dict_MET_sb = {}
 pvalue_dict_MET_lpa = {}
+pvalue_dict_MET_sb_lpa = {}
 pvalue_dict_MET_mvpa = {}
 
 correlation_dict_Intensity = {}
 correlation_dict_Intensity_sb = {}
 correlation_dict_Intensity_lpa = {}
+correlation_dict_Intensity_sb_lpa = {}
 correlation_dict_Intensity_mvpa = {}
 pvalue_dict_Intensity = {}
 pvalue_dict_Intensity_sb = {}
 pvalue_dict_Intensity_lpa = {}
+pvalue_dict_Intensity_sb_lpa = {}
 pvalue_dict_Intensity_mvpa = {}
 
 if __name__ == '__main__':
@@ -216,16 +230,16 @@ if __name__ == '__main__':
         total_completed += 1
         print('Completed\t', total_completed, '/', total_file_count)
 
-    save_pickle('correlation_dict_MET', correlation_dict_MET)
-    save_pickle('correlation_dict_MET_sb', correlation_dict_MET_sb)
-    save_pickle('correlation_dict_MET_lpa', correlation_dict_MET_lpa)
-    save_pickle('correlation_dict_MET_mvpa', correlation_dict_MET_mvpa)
-    save_pickle('correlation_dict_Intensity', correlation_dict_Intensity)
-    save_pickle('pvalue_dict_MET', pvalue_dict_MET)
-    save_pickle('pvalue_dict_MET_sb', pvalue_dict_MET_sb)
-    save_pickle('pvalue_dict_MET_lpa', pvalue_dict_MET_lpa)
-    save_pickle('pvalue_dict_MET_mvpa', pvalue_dict_MET_mvpa)
-    save_pickle('pvalue_dict_Intensity', pvalue_dict_Intensity)
+    # save_pickle('correlation_dict_MET', correlation_dict_MET)
+    # save_pickle('correlation_dict_MET_sb', correlation_dict_MET_sb)
+    # save_pickle('correlation_dict_MET_lpa', correlation_dict_MET_lpa)
+    # save_pickle('correlation_dict_MET_mvpa', correlation_dict_MET_mvpa)
+    # save_pickle('correlation_dict_Intensity', correlation_dict_Intensity)
+    # save_pickle('pvalue_dict_MET', pvalue_dict_MET)
+    # save_pickle('pvalue_dict_MET_sb', pvalue_dict_MET_sb)
+    # save_pickle('pvalue_dict_MET_lpa', pvalue_dict_MET_lpa)
+    # save_pickle('pvalue_dict_MET_mvpa', pvalue_dict_MET_mvpa)
+    # save_pickle('pvalue_dict_Intensity', pvalue_dict_Intensity)
     # save_pickle('pvalue_dict_Intensity_sb', pvalue_dict_Intensity_sb)
     # save_pickle('pvalue_dict_Intensity_lpa', pvalue_dict_Intensity_lpa)
     # save_pickle('pvalue_dict_Intensity_mvpa', pvalue_dict_Intensity_mvpa)
@@ -233,11 +247,13 @@ if __name__ == '__main__':
     wrist_to_csv('correlation_dict_MET', correlation_dict_MET)
     wrist_to_csv('correlation_dict_MET_sb', correlation_dict_MET_sb)
     wrist_to_csv('correlation_dict_MET_lpa', correlation_dict_MET_lpa)
+    wrist_to_csv('correlation_dict_MET_sb_lpa', correlation_dict_MET_sb_lpa)
     wrist_to_csv('correlation_dict_MET_mvpa', correlation_dict_MET_mvpa)
     wrist_to_csv('correlation_dict_Intensity', correlation_dict_Intensity)
     wrist_to_csv('pvalue_dict_MET', pvalue_dict_MET)
     wrist_to_csv('pvalue_dict_MET_sb', pvalue_dict_MET_sb)
     wrist_to_csv('pvalue_dict_MET_lpa', pvalue_dict_MET_lpa)
+    wrist_to_csv('pvalue_dict_MET_sb_lpa', pvalue_dict_MET_sb_lpa)
     wrist_to_csv('pvalue_dict_MET_mvpa', pvalue_dict_MET_mvpa)
     wrist_to_csv('pvalue_dict_Intensity', pvalue_dict_Intensity)
     # wrist_to_csv('pvalue_dict_Intensity_sb', pvalue_dict_Intensity_sb)

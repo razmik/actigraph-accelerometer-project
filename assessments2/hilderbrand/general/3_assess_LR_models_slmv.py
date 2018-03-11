@@ -1,10 +1,9 @@
 import sys
 import numpy as np
 import pandas as pd
-from sklearn.metrics import r2_score, confusion_matrix, precision_recall_fscore_support
+from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
-import itertools
-import math, time
+import time
 from os import listdir
 from os.path import isfile, join
 sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
@@ -23,11 +22,13 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
     def met_to_intensity_waist_ee(row):
         ee = data['waist_ee'][row.name]
-        return 1 if ee <= 1.5 else 2 if ee < 3 else 3
+        return 1 if ee < 3 else 2
+        # return 1 if ee <= 1.5 else 2 if ee < 3 else 3
 
     def met_to_intensity_lr_estimated_ee(row):
         ee = data['predicted_ee'][row.name]
-        return 1 if ee <= 2.1 else 2 if ee < 3 else 3
+        return 1 if ee < 3 else 2
+        # return 1 if ee <= 1.5 else 2 if ee < 3 else 3
 
     # convert activity intensity to 3 levels - SB, LPA, MVPA
     data['target_met_category'] = data.apply(met_to_intensity_waist_ee, axis=1)
@@ -50,7 +51,8 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
         return
 
-    class_names = ['SED', 'LPA', 'MVPA']
+    class_names = ['SED_LPA', 'MVPA']
+    # class_names = ['SED', 'LPA', 'MVPA']
 
     """
     Model evaluation statistics
@@ -83,21 +85,9 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
     SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title=status, output_filename=conf_mat_output_filename)
 
 
-def evaluate_average_measures(data, epoch, output_title):
-    sb, lpa, sb_lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+def evaluate_average_measures(data, epoch, output_title, output_folder_path):
 
-    assessment_result = 'Assessment of Average time\n\n'
-    assessment_result += 'SB actual:\t' + sb[0] + '\n'
-    assessment_result += 'SB predicted:\t' + sb[1] + '\n'
-    assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
-    assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
-    assessment_result += 'SB+LPA actual:\t' + sb_lpa[0] + '\n'
-    assessment_result += 'SB+LPA predicted:\t' + sb_lpa[1] + '\n'
-    assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
-    assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
-
-    results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
-    SE.Utils.print_assessment_results(results_output_filename, assessment_result)
+    SE.Average_Stats.evaluate_average_measures_controller(data, epoch, output_title, output_folder_path, is_categorical=False)
 
 
 if __name__ == '__main__':
@@ -107,7 +97,7 @@ if __name__ == '__main__':
     experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
-    epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+    epochs = ['Epoch60']
     model_title = 'Hilderbrand Linear Regression'
     plot_number = 1
 
@@ -122,7 +112,7 @@ if __name__ == '__main__':
         for experiment in experiments:
             for day in days:
 
-                input_file_path = ("E:/Data/Accelerometer_Processed_Raw_Epoch_Data/"+experiment+"/"+week+"/"+day+"/"+epoch+"/").replace('\\', '/')
+                input_file_path = ("E:/Data/Accelerometer_Processed_Raw_Epoch_Data/only_hilderbrand/"+experiment+"/"+week+"/"+day+"/"+epoch+"/").replace('\\', '/')
                 input_filenames = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
 
                 for file in input_filenames:
@@ -142,15 +132,18 @@ if __name__ == '__main__':
         results = predict(results)
 
         """Evaluate Average Measures"""
-        evaluate_average_measures(results, epoch, output_title)
+        evaluate_average_measures(results, epoch, output_title, output_folder_path)
+        sys.exit(0)
 
         """General Assessment"""
         evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
 
         """Bland Altman Plot"""
         results = SE.BlandAltman.clean_data_points(results)
-        SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+2, log_transformed=True,
+        SE.BlandAltman.bland_altman_paired_plot_for_two_catagories(results, model_title, plot_number+2, log_transformed=True,
                                                        min_count_regularise=False, output_filename=output_folder_path+output_title)
+        # SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+2, log_transformed=True,
+        #                                                min_count_regularise=False, output_filename=output_folder_path+output_title)
 
         plot_number += 10
 

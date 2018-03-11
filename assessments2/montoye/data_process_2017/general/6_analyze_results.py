@@ -69,19 +69,9 @@ def evaluate_models(data, status, plot_number, output_folder_path, output_title,
     SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title=status, output_filename=conf_mat_output_filename)
 
 
-def evaluate_average_measures(data, epoch, output_title):
-    sb, lpa, mvpa = SE.Average_Stats.evaluate_average_measures(data, epoch, output_title, output_folder_path)
+def evaluate_average_measures(data, epoch, output_title, output_folder_path):
 
-    assessment_result = 'Assessment of Average time\n\n'
-    assessment_result += 'SB actual:\t' + sb[0] + '\n'
-    assessment_result += 'SB predicted:\t' + sb[1] + '\n'
-    assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
-    assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
-    assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
-    assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
-
-    results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
-    SE.Utils.print_assessment_results(results_output_filename, assessment_result)
+    SE.Average_Stats.evaluate_average_measures_controller(data, epoch, output_title, output_folder_path, is_categorical=False)
 
 
 if __name__ == '__main__':
@@ -122,7 +112,7 @@ if __name__ == '__main__':
                     count += 1
 
                 """Evaluate Average Measures"""
-                evaluate_average_measures(results, epoch, output_title)
+                evaluate_average_measures(results, epoch, output_title, output_folder_path)
                 # print('completed average measure')
                 # sys.exit(0)
 

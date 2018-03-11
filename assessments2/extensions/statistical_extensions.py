@@ -7,13 +7,13 @@ from scipy.stats.stats import pearsonr
 
 
 class BlandAltman:
-
     """
     Example method call:
     waist_ee = results.loc[(results['waist_ee'] >= 1) & (results['waist_ee'] < 3)]['waist_ee'].as_matrix()
     statistical_extensions.BlandAltman.plot_histogram(waist_ee, 300, 'Histogram of Energy Expenditure Value Distribution',
                                                   'Energy Expenditure (MET) from Waist', 9)
     """
+
     @staticmethod
     def plot_histogram(values_array, bins, title, xaxis_label, figure_id):
         plt.figure(figure_id)
@@ -72,20 +72,21 @@ class BlandAltman:
 
         # http://www.anjuke.tech/questions/843083/matplotlib-savefig-in-jpeg-format
 
-        plt.savefig(output_filename+'.jpg', dpi=1200)
+        plt.savefig(output_filename + '.jpg', dpi=1200)
 
-        plt.annotate(str(BlandAltman.get_antilog(upper_loa))+ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
-        plt.annotate(str(BlandAltman.get_antilog(mean_bias))+ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
-        plt.annotate(str(BlandAltman.get_antilog(lower_loa))+ratio_suffix, xy=(x_annotate_begin, (lower_loa + y_gap)))
+        plt.annotate(str(BlandAltman.get_antilog(upper_loa)) + ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
+        plt.annotate(str(BlandAltman.get_antilog(mean_bias)) + ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
+        plt.annotate(str(BlandAltman.get_antilog(lower_loa)) + ratio_suffix, xy=(x_annotate_begin, (lower_loa + y_gap)))
 
-        plt.savefig(output_filename+'_annotated.jpg', dpi=1200)
+        plt.savefig(output_filename + '_annotated.jpg', dpi=1200)
         # plt.savefig(output_filename+'.png', dpi=1200)
         # plt.savefig(output_filename+'.eps')
         # plt.savefig(output_filename+'.pdf')
         # plt.savefig(output_filename+'.svg', format='svg')
 
     @staticmethod
-    def bland_altman_paired_plot_tested(dataframe, plot_title, plot_number, log_transformed=False, min_count_regularise=False, output_filename=''):
+    def bland_altman_paired_plot_tested(dataframe, plot_title, plot_number, log_transformed=False,
+                                        min_count_regularise=False, output_filename=''):
 
         """Define multiple dataframes based on the activity intensity"""
         dataframe_sb = dataframe.loc[dataframe['waist_ee'] <= 1.5]
@@ -106,8 +107,9 @@ class BlandAltman:
         #                            output_filename + '_sb_freedson_bland_altman.png')
 
         if len(dataframe_sb_williams) > 0:
-            dataframe_sb_williams, mean_bias_sb_williams, upper_loa_sb_williams, lower_loa_sb_williams = BlandAltman._bland_altman_analyse(dataframe_sb_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-            BlandAltman.plot_graph(plot_number+1, plot_title + ' - SB - Williams Work-Energy (98)',
+            dataframe_sb_williams, mean_bias_sb_williams, upper_loa_sb_williams, lower_loa_sb_williams = BlandAltman._bland_altman_analyse(
+                dataframe_sb_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 1, plot_title + ' - SB - Williams Work-Energy (98)',
                                    dataframe_sb_williams['mean'], dataframe_sb_williams['diff'],
                                    upper_loa_sb_williams, mean_bias_sb_williams, lower_loa_sb_williams,
                                    output_filename + '_sb')
@@ -127,8 +129,9 @@ class BlandAltman:
         #                            output_filename + '_lpa_freedson_bland_altman.png')
 
         if len(dataframe_lpa_williams) > 0:
-            dataframe_lpa_williams, mean_bias_lpa_williams, upper_loa_lpa_williams, lower_loa_lpa_williams = BlandAltman._bland_altman_analyse(dataframe_lpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-            BlandAltman.plot_graph(plot_number+3, plot_title + ' - LPA - Williams Work-Energy (98)',
+            dataframe_lpa_williams, mean_bias_lpa_williams, upper_loa_lpa_williams, lower_loa_lpa_williams = BlandAltman._bland_altman_analyse(
+                dataframe_lpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 3, plot_title + ' - LPA - Williams Work-Energy (98)',
                                    dataframe_lpa_williams['mean'], dataframe_lpa_williams['diff'],
                                    upper_loa_lpa_williams, mean_bias_lpa_williams, lower_loa_lpa_williams,
                                    output_filename + '_lpa')
@@ -141,8 +144,9 @@ class BlandAltman:
         # dataframe_mvpa_williams = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] <= 2453]
 
         if len(dataframe_mvpa_freedson) > 0:
-            dataframe_mvpa_freedson, mean_bias_mvpa_freedson, upper_loa_mvpa_freedson, lower_loa_mvpa_freedson = BlandAltman._bland_altman_analyse(dataframe_mvpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-            BlandAltman.plot_graph(plot_number+4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
+            dataframe_mvpa_freedson, mean_bias_mvpa_freedson, upper_loa_mvpa_freedson, lower_loa_mvpa_freedson = BlandAltman._bland_altman_analyse(
+                dataframe_mvpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
                                    dataframe_mvpa_freedson['mean'], dataframe_mvpa_freedson['diff'],
                                    upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
                                    output_filename + '_mvpa')
@@ -156,6 +160,49 @@ class BlandAltman:
         #                            output_filename + '_mvpa_williams_bland_altman.png')
 
     @staticmethod
+    def bland_altman_paired_plot_for_two_catagories(dataframe, plot_title, plot_number, log_transformed=False,
+                                                    min_count_regularise=False, output_filename=''):
+
+        """Define multiple dataframes based on the activity intensity"""
+        dataframe_sb_lpa = dataframe.loc[dataframe['waist_ee'] < 3]
+        dataframe_mvpa = dataframe.loc[3 <= dataframe['waist_ee']]
+
+        """
+        Process BA plot for SB + LPA
+        """
+        dataframe_sb_lpa_freedson = dataframe_sb_lpa.loc[dataframe_sb_lpa['waist_vm_cpm'] > 2453]
+        dataframe_sb_lpa_williams = dataframe_sb_lpa.loc[dataframe_sb_lpa['waist_vm_cpm'] <= 2453]
+
+        if len(dataframe_sb_lpa_freedson) > 0:
+            dataframe_sb_lpa_freedson, mean_bias_sb_lpa_freedson, upper_loa_sb_lpa_freedson, lower_loa_sb_lpa_freedson = BlandAltman._bland_altman_analyse(
+                dataframe_sb_lpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number, plot_title + ' - SB-LPA - Freedson VM3 Combination (11)',
+                                   dataframe_sb_lpa_freedson['mean'], dataframe_sb_lpa_freedson['diff'],
+                                   upper_loa_sb_lpa_freedson, mean_bias_sb_lpa_freedson, lower_loa_sb_lpa_freedson,
+                                   output_filename + '_sb_lpa_freedson_bland_altman.png')
+
+        if len(dataframe_sb_lpa_williams) > 0:
+            dataframe_sb_lpa_williams, mean_bias_sb_lpa_williams, upper_loa_sb_lpa_williams, lower_loa_sb_lpa_williams = BlandAltman._bland_altman_analyse(
+                dataframe_sb_lpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 1, plot_title + ' - SB-LPA - Williams Work-Energy (98)',
+                                   dataframe_sb_lpa_williams['mean'], dataframe_sb_lpa_williams['diff'],
+                                   upper_loa_sb_lpa_williams, mean_bias_sb_lpa_williams, lower_loa_sb_lpa_williams,
+                                   output_filename + '_sb')
+
+        """
+       Process BA plot for MVPA
+       """
+        dataframe_mvpa_freedson = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] > 2453]
+
+        if len(dataframe_mvpa_freedson) > 0:
+            dataframe_mvpa_freedson, mean_bias_mvpa_freedson, upper_loa_mvpa_freedson, lower_loa_mvpa_freedson = BlandAltman._bland_altman_analyse(
+                dataframe_mvpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
+                                   dataframe_mvpa_freedson['mean'], dataframe_mvpa_freedson['diff'],
+                                   upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
+                                   output_filename + '_mvpa')
+
+    @staticmethod
     def _bland_altman_analyse(dataframe, log_transformed=False, min_count_regularise=False):
 
         if min_count_regularise:
@@ -166,8 +213,9 @@ class BlandAltman:
             dataframe = dataframe.assign(predicted_ee_log_transformed=np.log10(dataframe['predicted_ee_cleaned']))
 
         dataframe = dataframe.assign(mean=np.mean([dataframe.as_matrix(columns=['waist_ee_cleaned']),
-                                     dataframe.as_matrix(columns=['predicted_ee_cleaned'])], axis=0))
-        dataframe = dataframe.assign(diff=dataframe['predicted_ee_log_transformed'] - dataframe['waist_ee_log_transformed'])
+                                                   dataframe.as_matrix(columns=['predicted_ee_cleaned'])], axis=0))
+        dataframe = dataframe.assign(
+            diff=dataframe['predicted_ee_log_transformed'] - dataframe['waist_ee_log_transformed'])
         # dataframe = dataframe.assign(diff=dataframe['waist_ee_cleaned']/dataframe['predicted_ee_cleaned'])
 
         k = len(pd.unique(dataframe.subject))  # number of conditions
@@ -237,7 +285,6 @@ class BlandAltman:
 
         return dataframe, mean_bias, upper_loa, lower_loa
 
-
     @staticmethod
     def clean_data_points(data):
         # Remove row if reference MET value is less than 1
@@ -268,7 +315,6 @@ class BlandAltman:
 
 
 class GeneralStats:
-
     """
     Confidence Interval:
         https://github.com/cmrivers/epipy/blob/master/epipy/analyses.py
@@ -279,84 +325,163 @@ class GeneralStats:
     @staticmethod
     def evaluation_statistics(confusion_matrix):
 
-        # Name the values
-        tpa = confusion_matrix[0, 0]
-        tpb = confusion_matrix[1, 1]
-        tpc = confusion_matrix[2, 2]
-        eab = confusion_matrix[0, 1]
-        eac = confusion_matrix[0, 2]
-        eba = confusion_matrix[1, 0]
-        ebc = confusion_matrix[1, 2]
-        eca = confusion_matrix[2, 0]
-        ecb = confusion_matrix[2, 1]
+        if confusion_matrix.shape == (3, 3):
 
-        # Calculate accuracy for label 1
-        total_classifications = sum(sum(confusion_matrix))
-        accuracy = (tpa + tpb + tpc) / total_classifications
-        accuracy_se = np.sqrt((accuracy * (1 - accuracy)) / total_classifications)
-        accuracy_confidence_interval = (accuracy - (1.96 * accuracy_se), accuracy + (1.96 * accuracy_se))
+            # Name the values
+            tpa = confusion_matrix[0, 0]
+            tpb = confusion_matrix[1, 1]
+            tpc = confusion_matrix[2, 2]
+            eab = confusion_matrix[0, 1]
+            eac = confusion_matrix[0, 2]
+            eba = confusion_matrix[1, 0]
+            ebc = confusion_matrix[1, 2]
+            eca = confusion_matrix[2, 0]
+            ecb = confusion_matrix[2, 1]
 
-        # Calculate Precision for label 1
-        precisionA = tpa / (tpa + eba + eca)
+            # Calculate accuracy for label 1
+            total_classifications = sum(sum(confusion_matrix))
+            accuracy = (tpa + tpb + tpc) / total_classifications
+            accuracy_se = np.sqrt((accuracy * (1 - accuracy)) / total_classifications)
+            accuracy_confidence_interval = (accuracy - (1.96 * accuracy_se), accuracy + (1.96 * accuracy_se))
 
-        # Calculate Sensitivity for label 1
-        sensitivityA = tpa / (tpa + eab + eac)
-        senA_se = np.sqrt((sensitivityA * (1 - sensitivityA)) / (tpa + eab + eac))
-        sensitivityA_confidence_interval = (sensitivityA - (1.96 * senA_se), sensitivityA + (1.96 * senA_se))
+            # Calculate Precision for label 1
+            precisionA = tpa / (tpa + eba + eca)
 
-        # Calculate Specificity for label 1
-        tna = tpb + ebc + ecb + tpc
-        specificityA = tna / (tna + eba + eca)
-        specA_se = np.sqrt((specificityA * (1 - specificityA)) / (tna + eba + eca))
-        specificityA_confidence_interval = (specificityA - (1.96 * specA_se), specificityA + (1.96 * specA_se))
+            # Calculate Sensitivity for label 1
+            sensitivityA = tpa / (tpa + eab + eac)
+            senA_se = np.sqrt((sensitivityA * (1 - sensitivityA)) / (tpa + eab + eac))
+            sensitivityA_confidence_interval = (sensitivityA - (1.96 * senA_se), sensitivityA + (1.96 * senA_se))
 
-        # Calculate Precision for label 2
-        precisionB = tpb / (tpb + eab + ecb)
+            # Calculate Specificity for label 1
+            tna = tpb + ebc + ecb + tpc
+            specificityA = tna / (tna + eba + eca)
+            specA_se = np.sqrt((specificityA * (1 - specificityA)) / (tna + eba + eca))
+            specificityA_confidence_interval = (specificityA - (1.96 * specA_se), specificityA + (1.96 * specA_se))
 
-        # Calculate Sensitivity for label 2
-        sensitivityB = tpb / (tpb + eba + ebc)
-        senB_se = np.sqrt((sensitivityB * (1 - sensitivityB)) / (tpb + eba + ebc))
-        sensitivityB_confidence_interval = (sensitivityB - (1.96 * senB_se), sensitivityB + (1.96 * senB_se))
+            # Calculate Precision for label 2
+            precisionB = tpb / (tpb + eab + ecb)
 
-        # Calculate Specificity for label 2
-        tnb = tpa + eac + eca + tpc
-        specificityB = tnb / (tnb + eab + ecb)
-        specB_se = np.sqrt((specificityB * (1 - specificityB)) / (tnb + eab + ecb))
-        specificityB_confidence_interval = (specificityB - (1.96 * specB_se), specificityB + (1.96 * specB_se))
+            # Calculate Sensitivity for label 2
+            sensitivityB = tpb / (tpb + eba + ebc)
+            senB_se = np.sqrt((sensitivityB * (1 - sensitivityB)) / (tpb + eba + ebc))
+            sensitivityB_confidence_interval = (sensitivityB - (1.96 * senB_se), sensitivityB + (1.96 * senB_se))
 
-        # Calculate Precision for label 2
-        precisionC = tpc / (tpc + eac + ebc)
+            # Calculate Specificity for label 2
+            tnb = tpa + eac + eca + tpc
+            specificityB = tnb / (tnb + eab + ecb)
+            specB_se = np.sqrt((specificityB * (1 - specificityB)) / (tnb + eab + ecb))
+            specificityB_confidence_interval = (specificityB - (1.96 * specB_se), specificityB + (1.96 * specB_se))
 
-        # Calculate Sensitivity for label 2
-        sensitivityC = tpc / (tpc + eca + ecb)
-        senC_se = np.sqrt((sensitivityC * (1 - sensitivityC)) / (tpc + eca + ecb))
-        sensitivityC_confidence_interval = (sensitivityC - (1.96 * senC_se), sensitivityC + (1.96 * senC_se))
+            # Calculate Precision for label 2
+            precisionC = tpc / (tpc + eac + ebc)
 
-        # Calculate Specificity for label 2
-        tnc = tpa + eab + eba + tpb
-        specificityC = tnc / (tnc + eac + ebc)
-        specC_se = np.sqrt((specificityC * (1 - specificityC)) / (tnc + eac + ebc))
-        specificityC_confidence_interval = (specificityC - (1.96 * specC_se), specificityC + (1.96 * specC_se))
+            # Calculate Sensitivity for label 2
+            sensitivityC = tpc / (tpc + eca + ecb)
+            senC_se = np.sqrt((sensitivityC * (1 - sensitivityC)) / (tpc + eca + ecb))
+            sensitivityC_confidence_interval = (sensitivityC - (1.96 * senC_se), sensitivityC + (1.96 * senC_se))
 
-        round_digits = 5
+            # Calculate Specificity for label 2
+            tnc = tpa + eab + eba + tpb
+            specificityC = tnc / (tnc + eac + ebc)
+            specC_se = np.sqrt((specificityC * (1 - specificityC)) / (tnc + eac + ebc))
+            specificityC_confidence_interval = (specificityC - (1.96 * specC_se), specificityC + (1.96 * specC_se))
 
-        sensitivityA_confidence_interval = (round(sensitivityA_confidence_interval[0], round_digits), round(sensitivityA_confidence_interval[1], round_digits))
-        sensitivityB_confidence_interval = (round(sensitivityB_confidence_interval[0], round_digits), round(sensitivityB_confidence_interval[1], round_digits))
-        sensitivityC_confidence_interval = (round(sensitivityC_confidence_interval[0], round_digits), round(sensitivityC_confidence_interval[1], round_digits))
-        specificityA_confidence_interval = (round(specificityA_confidence_interval[0], round_digits), round(specificityA_confidence_interval[1], round_digits))
-        specificityB_confidence_interval = (round(specificityB_confidence_interval[0], round_digits), round(specificityB_confidence_interval[1], round_digits))
-        specificityC_confidence_interval = (round(specificityC_confidence_interval[0], round_digits), round(specificityC_confidence_interval[1], round_digits))
+            round_digits = 5
 
-        return {
-            'accuracy': round(accuracy, round_digits),
-            'accuracy_ci': (round(accuracy_confidence_interval[0], round_digits), round(accuracy_confidence_interval[1], round_digits)),
-            'precision': [round(precisionA, round_digits), round(precisionB, round_digits), round(precisionC, round_digits)],
-            'recall': [round(sensitivityA, round_digits), round(sensitivityB, round_digits), round(sensitivityC, round_digits)],
-            'sensitivity': [round(sensitivityA, round_digits), round(sensitivityB, round_digits), round(sensitivityC, round_digits)],
-            'specificity': [round(specificityA, round_digits), round(specificityB, round_digits), round(specificityC, round_digits)],
-            'sensitivity_ci': [sensitivityA_confidence_interval, sensitivityB_confidence_interval, sensitivityC_confidence_interval],
-            'specificity_ci': [specificityA_confidence_interval, specificityB_confidence_interval, specificityC_confidence_interval]
-        }
+            sensitivityA_confidence_interval = (round(sensitivityA_confidence_interval[0], round_digits),
+                                                round(sensitivityA_confidence_interval[1], round_digits))
+            sensitivityB_confidence_interval = (round(sensitivityB_confidence_interval[0], round_digits),
+                                                round(sensitivityB_confidence_interval[1], round_digits))
+            sensitivityC_confidence_interval = (round(sensitivityC_confidence_interval[0], round_digits),
+                                                round(sensitivityC_confidence_interval[1], round_digits))
+            specificityA_confidence_interval = (round(specificityA_confidence_interval[0], round_digits),
+                                                round(specificityA_confidence_interval[1], round_digits))
+            specificityB_confidence_interval = (round(specificityB_confidence_interval[0], round_digits),
+                                                round(specificityB_confidence_interval[1], round_digits))
+            specificityC_confidence_interval = (round(specificityC_confidence_interval[0], round_digits),
+                                                round(specificityC_confidence_interval[1], round_digits))
+
+            return {
+                'accuracy': round(accuracy, round_digits),
+                'accuracy_ci': (round(accuracy_confidence_interval[0], round_digits),
+                                round(accuracy_confidence_interval[1], round_digits)),
+                'precision': [round(precisionA, round_digits), round(precisionB, round_digits),
+                              round(precisionC, round_digits)],
+                'recall': [round(sensitivityA, round_digits), round(sensitivityB, round_digits),
+                           round(sensitivityC, round_digits)],
+                'sensitivity': [round(sensitivityA, round_digits), round(sensitivityB, round_digits),
+                                round(sensitivityC, round_digits)],
+                'specificity': [round(specificityA, round_digits), round(specificityB, round_digits),
+                                round(specificityC, round_digits)],
+                'sensitivity_ci': [sensitivityA_confidence_interval, sensitivityB_confidence_interval,
+                                   sensitivityC_confidence_interval],
+                'specificity_ci': [specificityA_confidence_interval, specificityB_confidence_interval,
+                                   specificityC_confidence_interval]
+            }
+
+        elif confusion_matrix.shape == (2, 2):
+
+            tpa = confusion_matrix[0, 0]
+            tpb = confusion_matrix[1, 1]
+            eab = confusion_matrix[0, 1]
+            eba = confusion_matrix[1, 0]
+
+            # Calculate accuracy for label 1
+            total_classifications = sum(sum(confusion_matrix))
+            accuracy = (tpa + tpb) / total_classifications
+            accuracy_se = np.sqrt((accuracy * (1 - accuracy)) / total_classifications)
+            accuracy_confidence_interval = (accuracy - (1.96 * accuracy_se), accuracy + (1.96 * accuracy_se))
+
+            # Calculate Precision for label 1
+            precisionA = tpa / (tpa + eba)
+
+            # Calculate Sensitivity for label 1
+            sensitivityA = tpa / (tpa + eab)
+            senA_se = np.sqrt((sensitivityA * (1 - sensitivityA)) / (tpa + eab))
+            sensitivityA_confidence_interval = (sensitivityA - (1.96 * senA_se), sensitivityA + (1.96 * senA_se))
+
+            # Calculate Specificity for label 1
+            tna = tpb
+            specificityA = tna / (tna + eba)
+            specA_se = np.sqrt((specificityA * (1 - specificityA)) / (tna + eba))
+            specificityA_confidence_interval = (specificityA - (1.96 * specA_se), specificityA + (1.96 * specA_se))
+
+            # Calculate Precision for label 2
+            precisionB = tpb / (tpb + eab)
+
+            # Calculate Sensitivity for label 2
+            sensitivityB = tpb / (tpb + eba)
+            senB_se = np.sqrt((sensitivityB * (1 - sensitivityB)) / (tpb + eba))
+            sensitivityB_confidence_interval = (sensitivityB - (1.96 * senB_se), sensitivityB + (1.96 * senB_se))
+
+            # Calculate Specificity for label 2
+            tnb = tpa
+            specificityB = tnb / (tnb + eab)
+            specB_se = np.sqrt((specificityB * (1 - specificityB)) / (tnb + eab))
+            specificityB_confidence_interval = (specificityB - (1.96 * specB_se), specificityB + (1.96 * specB_se))
+
+            round_digits = 5
+
+            sensitivityA_confidence_interval = (round(sensitivityA_confidence_interval[0], round_digits),
+                                                round(sensitivityA_confidence_interval[1], round_digits))
+            sensitivityB_confidence_interval = (round(sensitivityB_confidence_interval[0], round_digits),
+                                                round(sensitivityB_confidence_interval[1], round_digits))
+            specificityA_confidence_interval = (round(specificityA_confidence_interval[0], round_digits),
+                                                round(specificityA_confidence_interval[1], round_digits))
+            specificityB_confidence_interval = (round(specificityB_confidence_interval[0], round_digits),
+                                                round(specificityB_confidence_interval[1], round_digits))
+
+            return {
+                'accuracy': round(accuracy, round_digits),
+                'accuracy_ci': (round(accuracy_confidence_interval[0], round_digits),
+                                round(accuracy_confidence_interval[1], round_digits)),
+                'precision': [round(precisionA, round_digits), round(precisionB, round_digits)],
+                'recall': [round(sensitivityA, round_digits), round(sensitivityB, round_digits)],
+                'sensitivity': [round(sensitivityA, round_digits), round(sensitivityB, round_digits)],
+                'specificity': [round(specificityA, round_digits), round(specificityB, round_digits)],
+                'sensitivity_ci': [sensitivityA_confidence_interval, sensitivityB_confidence_interval],
+                'specificity_ci': [specificityA_confidence_interval, specificityB_confidence_interval]
+            }
 
     @staticmethod
     def plot_confusion_matrix(cm, classes, normalize=False, title='', cmap=plt.cm.Blues, output_filename=''):
@@ -401,6 +526,7 @@ class GeneralStats:
      -------
      (Pearson's correlation coefficient, 2-tailed p-value)
     """
+
     @staticmethod
     def pearson_correlation(x, y):
         return pearsonr(x, y)
@@ -409,7 +535,8 @@ class GeneralStats:
 class Average_Stats:
 
     @staticmethod
-    def evaluate_average_measures(data, epoch, output_title, output_folder_path):
+    def evaluate_average_measures(data, epoch):
+
         def get_averaged_df(dataset, count_field, new_col, multiplyer):
             dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
             dataset_count[new_col] *= (multiplyer / (60 * 60))
@@ -425,33 +552,41 @@ class Average_Stats:
 
         # Evaluate SB
         df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_ee'] <= 1.5], mul)
-        df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
-        sb_actual_avg = str(round(df_sb['actual_time'].mean(), round_digits)) + "+-" + str(round(df_sb['actual_time'].std(), round_digits))
-        sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb['predicted_time'].std(), round_digits))
+        # df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+        sb_actual_avg = str(round(df_sb['actual_time'].mean(), round_digits)) + "+-" + str(
+            round(df_sb['actual_time'].std(), round_digits))
+        sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_sb['predicted_time'].std(), round_digits))
 
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[(data['predicted_ee'] > 1.5) & (data['predicted_ee'] < 3)], mul)
-        df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
-        lpa_actual_avg = str(round(df_lpa['actual_time'].mean(), round_digits)) + "+-" + str(round(df_lpa['actual_time'].std(), round_digits))
-        lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_lpa['predicted_time'].std(), round_digits))
+        # df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+        lpa_actual_avg = str(round(df_lpa['actual_time'].mean(), round_digits)) + "+-" + str(
+            round(df_lpa['actual_time'].std(), round_digits))
+        lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate SB+LPA
         df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_ee'] < 3)], mul)
-        df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
+        # df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
         sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
-        sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb_lpa['predicted_time'].std(), round_digits))
+        sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_sb_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
-        df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
+        # df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
-        mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_mvpa['predicted_time'].std(), round_digits))
+        mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_mvpa['predicted_time'].std(), round_digits))
 
-        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg, sb_lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
+        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg,
+                                                                                        sb_lpa_predicted_avg], [
+                   mvpa_actual_avg, mvpa_predicted_avg]
 
     @staticmethod
-    def evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path):
+    def evaluate_average_measures_for_categorical(data, epoch):
         def get_averaged_df(dataset, count_field, new_col, multiplyer):
             dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
             dataset_count[new_col] *= (multiplyer / (60 * 60))
@@ -466,31 +601,94 @@ class Average_Stats:
         mul = int(epoch.split('Epoch')[1])
 
         # Evaluate SB
-        df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_category'] == 1], mul)
-        df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+        df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_category'] == 1],
+                                       mul)
+        # df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
         sb_actual_avg = str(df_sb['actual_time'].mean()) + "+-" + str(df_sb['actual_time'].std())
-        sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb['predicted_time'].std(), round_digits))
+        sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_sb['predicted_time'].std(), round_digits))
 
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[data['predicted_category'] == 2], mul)
-        df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+        # df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
         lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
-        lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_lpa['predicted_time'].std(), round_digits))
+        lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate SB+LPA
-        df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_ee'] < 3)], mul)
-        df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
+        df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_category'] != 3)], mul)
+        # df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
         sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
-        sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_sb_lpa['predicted_time'].std(), round_digits))
+        sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_sb_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate MVPA
-        df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_category'] == 3], mul)
-        df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
+        df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_category'] == 3],
+                                         mul)
+        # df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
-        mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(round(df_mvpa['predicted_time'].std(), round_digits))
+        mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(
+            round(df_mvpa['predicted_time'].std(), round_digits))
 
-        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg, sb_lpa_predicted_avg], [mvpa_actual_avg, mvpa_predicted_avg]
+        return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg,
+                                                                                        sb_lpa_predicted_avg], [
+                   mvpa_actual_avg, mvpa_predicted_avg]
+
+    @staticmethod
+    def evaluate_average_measures_controller(data, epoch, output_title, output_folder_path, is_categorical=False):
+
+        def evaluate(category, filtered_data, epoch, assessment_result):
+
+            if not is_categorical:
+                sb, lpa, sb_lpa, mvpa = Average_Stats.evaluate_average_measures(filtered_data, epoch)
+            else:
+                sb, lpa, sb_lpa, mvpa = Average_Stats.evaluate_average_measures_for_categorical(filtered_data, epoch)
+
+            assessment_result += '\n\n' + category + ' Assessment of Average time\n\n'
+            assessment_result += 'SB actual:\t' + sb[0] + '\n'
+            assessment_result += 'SB predicted:\t' + sb[1] + '\n'
+            assessment_result += 'LPA actual:\t' + lpa[0] + '\n'
+            assessment_result += 'LPA predicted:\t' + lpa[1] + '\n'
+            assessment_result += 'SB+LPA actual:\t' + sb_lpa[0] + '\n'
+            assessment_result += 'SB+LPA predicted:\t' + sb_lpa[1] + '\n'
+            assessment_result += 'MVPA actual:\t' + mvpa[0] + '\n'
+            assessment_result += 'MVPA predicted:\t' + mvpa[1] + '\n'
+
+            return assessment_result
+
+        results_output_str = ''
+        general_user_details = pd.read_csv('E:/Projects/accelerometer-project/analyze/user_details.csv')
+        data = pd.merge(data, general_user_details, on='subject', how='outer')
+
+        # Overall evaluation
+        results_output_str = evaluate('Overall', data, epoch, results_output_str)
+
+        # Do the evaluation for Sex
+        male_data = data.loc[data['gender'] == 'Male']
+        results_output_str = evaluate('Male', male_data, epoch, results_output_str)
+
+        female_data = data.loc[data['gender'] == 'Female']
+        results_output_str = evaluate('Female', female_data, epoch, results_output_str)
+
+        female_data = data.loc[data['gender'] == 'Other']
+        results_output_str = evaluate('Other', female_data, epoch, results_output_str)
+
+        # Do the evaluation based on BMI catagory
+        underweight_data = data.loc[data['bmi'] < 18.5]
+        results_output_str = evaluate('BMI - underweight', underweight_data, epoch, results_output_str)
+
+        normal_data = data.loc[(data['bmi'] >= 18.5) & (data['bmi'] < 25)]
+        results_output_str = evaluate('BMI - normal weight', normal_data, epoch, results_output_str)
+
+        overweight_data = data.loc[(data['bmi'] >= 25) & (data['bmi'] < 30)]
+        results_output_str = evaluate('BMI - overweight', overweight_data, epoch, results_output_str)
+
+        obesity_data = data.loc[data['bmi'] >= 30]
+        results_output_str = evaluate('BMI - obesity', obesity_data, epoch, results_output_str)
+
+        results_output_filename = output_folder_path + output_title + '_average_time_assessment.txt'
+        Utils.print_assessment_results(results_output_filename, results_output_str)
 
 
 class Utils:
