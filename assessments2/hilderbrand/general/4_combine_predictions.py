@@ -29,7 +29,7 @@ if __name__ == '__main__':
     experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
-    epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+    epochs = ['Epoch60']
     model_title = 'Hilderband Linear Regression'
 
     for epoch in epochs:
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             for day in days:
 
                 output_folder = ("E:\Data\Accelerometer_LR\hilderband/").replace('\\', '/')
-                input_file_path = ("E:/Data/Accelerometer_Processed_Raw_Epoch_Data/"+experiment+"/"+week+"/"+day+"/"+epoch+"/").replace('\\', '/')
+                input_file_path = ("E:/Data/Accelerometer_Processed_Raw_Epoch_Data/only_hilderbrand/"+experiment+"/"+week+"/"+day+"/"+epoch+"/").replace('\\', '/')
                 input_filenames = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
 
                 for file in input_filenames:

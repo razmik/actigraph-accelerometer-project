@@ -20,9 +20,16 @@ starting_row = 0
 end_row = -1
 
 # summarize parameters
-summarized_duration = 4 * 60 * (1 / 6 ) #hour
+# summarized_duration = 4 * 60  # 1 hour
+# summarized_duration = 4 * 60 * (3 / 6)  # 30 min
+# summarized_duration = 4 * 60 * (2 / 6)  # 20 min
+# summarized_duration = 4 * 60 * (1 / 6)  # 10 min
+# summarized_duration = 4 * 60 * (1 / 12)  # 5 min
+# summarized_duration = 4 * 60 * (1 / 60)  # 1 min
+# summarized_duration = 2                   # 30 sec
+summarized_duration = 1                   # 15 sec
 
-# row_count = int((end_row - starting_row) / summarize_duration)
+#  row_count = int((end_row - starting_row) / summarize_duration)
 # epoch_start = int(starting_row/summarize_duration)
 
 if end_row == -1:
@@ -44,6 +51,7 @@ epoch_data = epoch_data.groupby(epoch_data.index // summarized_duration).mean()
 def get_normalized(parameter):
     return (epoch_data[parameter] - np.amin(epoch_data[parameter])) / (np.amax(epoch_data[parameter]) - np.amin(epoch_data[parameter]))
 
+
 x_range = np.arange(len(epoch_data))
 normalized_enrgy = get_normalized('actilife_waist_ee')
 normalize_intensity = get_normalized('actilife_waist_intensity')
@@ -55,9 +63,10 @@ normalized_waist_vm = get_normalized('actilife_waist_vm_15')
 # plt.plot(x_range, normalize_intensity, 'r', x_range, normalized_wrist_vm, 'b', x_range, normalized_waist_vm, 'g')
 
 plt.figure(2)
-plt.title('Energy Expenditure for 1 hour epochs')
+plt.title('Energy Expenditure for 15 sec time periods')
 plt.plot(x_range, normalized_enrgy, 'r', x_range, normalized_wrist_vm, 'b', x_range, normalized_waist_vm, 'g')
-plt.xlabel('Red - Energy Expenditure,    Blue - Wrist Acc.,    Green - Waist Acc.')
+# plt.xlabel('Red - Actual Energy Expenditure,    Blue - Wrist Acc.,    Green - Waist Acc.')
+plt.legend(['Actual Energy Expenditure', 'Wrist Acceleration', 'Hip Acceleration'], loc='upper right')
 
-# plt.imsave('output.jpeg')
-plt.show()
+plt.savefig('output2.jpg', dpi=1200)
+# plt.show()

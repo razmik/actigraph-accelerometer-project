@@ -126,17 +126,19 @@ if __name__ == '__main__':
 
                     count += 1
 
+                    # if count > 20:
+                    #     break
+
                 print('Completed', experiment, day)
 
         """Prediction"""
         results = predict(results)
 
         """Evaluate Average Measures"""
-        evaluate_average_measures(results, epoch, output_title, output_folder_path)
-        sys.exit(0)
+        # evaluate_average_measures(results, epoch, output_title, output_folder_path)
 
         """General Assessment"""
-        evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
+        # evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
 
         """Bland Altman Plot"""
         results = SE.BlandAltman.clean_data_points(results)

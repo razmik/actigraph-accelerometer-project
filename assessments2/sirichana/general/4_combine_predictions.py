@@ -39,7 +39,7 @@ if __name__ == '__main__':
     experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
-    epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+    epochs = ['Epoch15', 'Epoch60']
     model_title = 'Sirichana Linear Regression'
 
     for epoch in epochs:
@@ -66,13 +66,13 @@ if __name__ == '__main__':
                     output_filename = output_folder + 'LRA/' + epoch + '/' + file
                     results_A.to_csv(output_filename, sep=',', index=None)
 
-                    results_B = predict_ee_B(results.copy())
-                    transform_to_met_category(results_B, 'waist_ee', 'actual_category')
-                    transform_to_met_category(results_B, 'predicted_ee', 'predicted_category')
+                    # results_B = predict_ee_B(results.copy())
+                    # transform_to_met_category(results_B, 'waist_ee', 'actual_category')
+                    # transform_to_met_category(results_B, 'predicted_ee', 'predicted_category')
 
                     # save output file
-                    output_filename = output_folder + 'LRB/' + epoch + '/' + file
-                    results_B.to_csv(output_filename, sep=',', index=None)
+                    # output_filename = output_folder + 'LRB/' + epoch + '/' + file
+                    # results_B.to_csv(output_filename, sep=',', index=None)
 
                 print('Completed', experiment, day)
 

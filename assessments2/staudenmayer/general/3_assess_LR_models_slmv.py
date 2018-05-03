@@ -98,7 +98,7 @@ if __name__ == '__main__':
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
     # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
-    epochs = ['Epoch15']
+    epochs = ['Epoch15', 'Epoch60']
     model_title = 'Staudenmayer Linear Regression'
     plot_number = 1
 
@@ -133,12 +133,11 @@ if __name__ == '__main__':
         results = predict(results)
 
         """Evaluate Average Measures"""
-        evaluate_average_measures(results, epoch, output_title, output_folder_path)
-        print('completed average measure')
-        sys.exit(0)
+        # evaluate_average_measures(results, epoch, output_title, output_folder_path)
+        # print('completed average measure')
 
         """General Assessment"""
-        evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
+        # evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
 
         """Bland Altman Plot"""
         results = SE.BlandAltman.clean_data_points(results)

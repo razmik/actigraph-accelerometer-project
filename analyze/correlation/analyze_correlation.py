@@ -7,36 +7,36 @@ import math
 import pickle
 
 result_folders = [
+    'E:\Data\Accelerometer_LR\staudenmayer\Epoch15'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\staudenmayer\Epoch60'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch15'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch60'.replace('\\', '/'),
+    'E:\Data\Accelerometer_LR\hilderband\Epoch60'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch30/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch30/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v2/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v2/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v2/combined'.replace('\\', '/'),
+    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v2/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch5'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch5'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\hilderband\Epoch5'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\hilderband\Epoch15'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\hilderband\Epoch30'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\hilderband\Epoch60'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\hilderband\Epoch5'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\hilderband\Epoch15'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\hilderband\Epoch30'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch5/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch5/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v2/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch5/v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch15'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch15'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch15/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch15/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v2/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch30'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch30'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch30/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch30/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v2/combined'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch60'.replace('\\', '/'),
-    # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch60'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch60/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch60/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch60/v1v2/combined'.replace('\\', '/'),
@@ -120,7 +120,7 @@ def find_correlation(user_current, res, target_label, predicted_label, filename,
     p_val_dict[filename].append(pval)
 
     if math.isnan(corr):
-        print('\tIS NAN', filename)
+        # print('\tIS NAN', filename)
         correlation_dict[filename].append(0)
 
         # print(user_current, corr)
@@ -136,7 +136,7 @@ def divide_results(dataframe):
 
 def process_correlations(current_results):
 
-    current_results = clean_data_points(current_results)
+    # current_results = clean_data_points(current_results)
 
     results_sb, results_lpa, results_sb_lpa, results_mvpa = divide_results(current_results)
 
@@ -159,12 +159,14 @@ def process_correlations(current_results):
     target_label, predicted_label = 'actual_category', 'predicted_category'
     find_correlation(prev_subj, results, target_label, predicted_label, result_folder, correlation_dict_Intensity,
                      pvalue_dict_Intensity, method='spearman')
-    # find_correlation(prev_subj, results_sb, target_label, predicted_label, result_folder, correlation_dict_Intensity_sb,
-    #                  pvalue_dict_Intensity_sb, method='spearman')
-    # find_correlation(prev_subj, results_lpa, target_label, predicted_label, result_folder,
-    #                  correlation_dict_Intensity_lpa, pvalue_dict_Intensity_lpa, method='spearman')
-    # find_correlation(prev_subj, results_mvpa, target_label, predicted_label, result_folder,
-    #                  correlation_dict_Intensity_mvpa, pvalue_dict_Intensity_mvpa, method='spearman')
+    find_correlation(prev_subj, results_sb, target_label, predicted_label, result_folder, correlation_dict_Intensity_sb,
+                     pvalue_dict_Intensity_sb, method='spearman')
+    find_correlation(prev_subj, results_lpa, target_label, predicted_label, result_folder,
+                     correlation_dict_Intensity_lpa, pvalue_dict_Intensity_lpa, method='spearman')
+    find_correlation(prev_subj, results_sb_lpa, target_label, predicted_label, result_folder,
+                     correlation_dict_Intensity_sb_lpa, pvalue_dict_Intensity_sb_lpa, method='spearman')
+    find_correlation(prev_subj, results_mvpa, target_label, predicted_label, result_folder,
+                     correlation_dict_Intensity_mvpa, pvalue_dict_Intensity_mvpa, method='spearman')
 
     # Cannot process pearson/spearman correlation because actual_category for sb is always - 1 , lpa - 2 and mvpa - 3. So variance between the array is always 0.
     # Therefore cannot measure the correlation.
@@ -230,32 +232,26 @@ if __name__ == '__main__':
         total_completed += 1
         print('Completed\t', total_completed, '/', total_file_count)
 
-    # save_pickle('correlation_dict_MET', correlation_dict_MET)
-    # save_pickle('correlation_dict_MET_sb', correlation_dict_MET_sb)
-    # save_pickle('correlation_dict_MET_lpa', correlation_dict_MET_lpa)
-    # save_pickle('correlation_dict_MET_mvpa', correlation_dict_MET_mvpa)
-    # save_pickle('correlation_dict_Intensity', correlation_dict_Intensity)
-    # save_pickle('pvalue_dict_MET', pvalue_dict_MET)
-    # save_pickle('pvalue_dict_MET_sb', pvalue_dict_MET_sb)
-    # save_pickle('pvalue_dict_MET_lpa', pvalue_dict_MET_lpa)
-    # save_pickle('pvalue_dict_MET_mvpa', pvalue_dict_MET_mvpa)
-    # save_pickle('pvalue_dict_Intensity', pvalue_dict_Intensity)
-    # save_pickle('pvalue_dict_Intensity_sb', pvalue_dict_Intensity_sb)
-    # save_pickle('pvalue_dict_Intensity_lpa', pvalue_dict_Intensity_lpa)
-    # save_pickle('pvalue_dict_Intensity_mvpa', pvalue_dict_Intensity_mvpa)
-
     wrist_to_csv('correlation_dict_MET', correlation_dict_MET)
     wrist_to_csv('correlation_dict_MET_sb', correlation_dict_MET_sb)
     wrist_to_csv('correlation_dict_MET_lpa', correlation_dict_MET_lpa)
     wrist_to_csv('correlation_dict_MET_sb_lpa', correlation_dict_MET_sb_lpa)
     wrist_to_csv('correlation_dict_MET_mvpa', correlation_dict_MET_mvpa)
+
     wrist_to_csv('correlation_dict_Intensity', correlation_dict_Intensity)
+    wrist_to_csv('correlation_dict_Intensity_sb', correlation_dict_Intensity_sb)
+    wrist_to_csv('correlation_dict_Intensity_lpa', correlation_dict_Intensity_lpa)
+    wrist_to_csv('correlation_dict_Intensity_sb_lpa', correlation_dict_Intensity_sb_lpa)
+    wrist_to_csv('correlation_dict_Intensity_mvpa', correlation_dict_Intensity_mvpa)
+
     wrist_to_csv('pvalue_dict_MET', pvalue_dict_MET)
     wrist_to_csv('pvalue_dict_MET_sb', pvalue_dict_MET_sb)
     wrist_to_csv('pvalue_dict_MET_lpa', pvalue_dict_MET_lpa)
     wrist_to_csv('pvalue_dict_MET_sb_lpa', pvalue_dict_MET_sb_lpa)
     wrist_to_csv('pvalue_dict_MET_mvpa', pvalue_dict_MET_mvpa)
+
     wrist_to_csv('pvalue_dict_Intensity', pvalue_dict_Intensity)
-    # wrist_to_csv('pvalue_dict_Intensity_sb', pvalue_dict_Intensity_sb)
-    # wrist_to_csv('pvalue_dict_Intensity_lpa', pvalue_dict_Intensity_lpa)
-    # wrist_to_csv('pvalue_dict_Intensity_mvpa', pvalue_dict_Intensity_mvpa)
+    wrist_to_csv('pvalue_dict_Intensity_sb', pvalue_dict_Intensity_sb)
+    wrist_to_csv('pvalue_dict_Intensity_lpa', pvalue_dict_Intensity_lpa)
+    wrist_to_csv('pvalue_dict_Intensity_sb_lpa', pvalue_dict_Intensity_sb_lpa)
+    wrist_to_csv('pvalue_dict_Intensity_mvpa', pvalue_dict_Intensity_mvpa)

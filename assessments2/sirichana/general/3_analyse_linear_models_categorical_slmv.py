@@ -110,7 +110,7 @@ if __name__ == '__main__':
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
     # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
-    epochs = ['Epoch60']
+    epochs = ['Epoch60', 'Epoch15']
     model_title = 'Sirichana Linear Regression'
     plot_number = 1
 
@@ -151,16 +151,15 @@ if __name__ == '__main__':
         results = predict_ee_A(results)
 
         """Evaluate Average Measures"""
-        evaluate_average_measures(results, epoch, output_title, output_folder_path)
-        print('completed average measure')
-        sys.exit(0)
+        # evaluate_average_measures(results, epoch, output_title, output_folder_path)
+        # print('completed average measure')
 
-        evaluate_models(results, model_titleA, plot_number+1, output_folder_path, model_titleA, correlation_only=False)
+        # evaluate_models(results, model_titleA, plot_number+1, output_folder_path, model_titleA, correlation_only=False)
         results = SE.BlandAltman.clean_data_points(results)
         SE.BlandAltman.bland_altman_paired_plot_tested(results, model_titleA, plot_number+2, log_transformed=True,
                                                        min_count_regularise=False, output_filename=output_folder_path+model_titleA)
 
-        results.drop('predicted_ee', axis=1, inplace=True)
+        # results.drop('predicted_ee', axis=1, inplace=True)
 
         """LR B"""
         # # print('\n\n')

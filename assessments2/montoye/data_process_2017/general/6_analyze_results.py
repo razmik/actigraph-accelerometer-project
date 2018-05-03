@@ -83,7 +83,7 @@ if __name__ == '__main__':
     days = ['Wednesday', 'Thursday']
     wrists = ['left_wrist', 'right_wrist']
     # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
-    epochs = ['Epoch30']
+    epochs = ['Epoch30', 'Epoch15', 'Epoch5']
     models = ['v2', 'v1v2']
     model_title = 'Montoye ANN 2017 '
     plot_number = 1
@@ -91,6 +91,11 @@ if __name__ == '__main__':
     for model in models:
         for epoch in epochs:
             for wrist in wrists:
+
+                if epoch == 'Epoch5' and model in ['v2']:
+                    continue
+                elif epoch == 'Epoch5' and wrist in ['right_wrist']:
+                    continue
 
                 start_reading = time.time()
 
@@ -112,7 +117,7 @@ if __name__ == '__main__':
                     count += 1
 
                 """Evaluate Average Measures"""
-                evaluate_average_measures(results, epoch, output_title, output_folder_path)
+                # evaluate_average_measures(results, epoch, output_title, output_folder_path)
                 # print('completed average measure')
                 # sys.exit(0)
 
@@ -120,9 +125,9 @@ if __name__ == '__main__':
                 # evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)
 
                 """Bland Altman Plot"""
-                # results = SE.BlandAltman.clean_data_points(results)
-                # SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+1, log_transformed=True,
-                #                                                min_count_regularise=False, output_filename=output_folder_path+output_title)
+                results = SE.BlandAltman.clean_data_points(results)
+                SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+1, log_transformed=True,
+                                                               min_count_regularise=False, output_filename=output_folder_path+output_title)
 
                 plot_number += 10
 

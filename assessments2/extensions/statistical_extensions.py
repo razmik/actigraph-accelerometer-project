@@ -46,12 +46,23 @@ class BlandAltman:
     @staticmethod
     def plot_graph(plot_number, plot_title, x_values, y_values, upper_loa, mean_bias, lower_loa, output_filename):
 
-        x_label = 'Mean Energy Expenditure (METs)'
+        x_label = 'Reference Energy Expenditure (METs)'
         y_label = 'Difference (Prediction - Reference) (log METs)'
-        x_lim = (1, 24)
-        y_lim = (-1.2, 1.4)
-        # x_lim = (1, 12)
-        # y_lim = (-1.2, 1.0)
+
+        cat = output_filename.split('_')[-1]
+        if cat == 'sb':
+            x_lim = (0, 2)
+            y_lim = (-1.2, 1.2)
+        elif cat == 'lpa':
+            x_lim = (1, 4)
+            y_lim = (-1.2, 1.2)
+        elif cat == 'sblpa':
+            x_lim = (0, 4)
+            y_lim = (-1.2, 1.2)
+        else:
+            x_lim = (2, 15)
+            y_lim = (-1.2, 1.2)
+
         x_annotate_begin = 10.4
         y_gap = 0.05
         ratio_suffix = ''
@@ -72,13 +83,23 @@ class BlandAltman:
 
         # http://www.anjuke.tech/questions/843083/matplotlib-savefig-in-jpeg-format
 
-        plt.savefig(output_filename + '.jpg', dpi=1200)
+        # plt.savefig(output_filename + '.jpg', dpi=1200)
 
-        plt.annotate(str(BlandAltman.get_antilog(upper_loa)) + ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
-        plt.annotate(str(BlandAltman.get_antilog(mean_bias)) + ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
-        plt.annotate(str(BlandAltman.get_antilog(lower_loa)) + ratio_suffix, xy=(x_annotate_begin, (lower_loa + y_gap)))
+        # plt.annotate(str(BlandAltman.get_antilog(upper_loa)) + ratio_suffix, xy=(x_annotate_begin, (upper_loa + y_gap)))
+        # plt.annotate(str(BlandAltman.get_antilog(mean_bias)) + ratio_suffix, xy=(x_annotate_begin, (mean_bias + y_gap)))
+        # plt.annotate(str(BlandAltman.get_antilog(lower_loa)) + ratio_suffix, xy=(x_annotate_begin, (lower_loa + y_gap)))
 
-        plt.savefig(output_filename + '_annotated.jpg', dpi=1200)
+        # print(output_filename)
+        assessment_result = '\n\n' + output_filename
+        assessment_result += '\nupper_loa:' + str(BlandAltman.get_antilog(upper_loa))
+        assessment_result += '\nmean_bias:' + str(BlandAltman.get_antilog(mean_bias))
+        assessment_result += '\nlower_loa:' + str(BlandAltman.get_antilog(lower_loa))
+        # print('upper_loa:', str(BlandAltman.get_antilog(upper_loa)))
+        # print('mean_bias:', str(BlandAltman.get_antilog(mean_bias)))
+        # print('lower_loa:', str(BlandAltman.get_antilog(lower_loa)))
+        Utils.print_assessment_results(output_filename + '_ba_stats.txt', assessment_result)
+
+        # plt.savefig(output_filename + '_annotated.jpg', dpi=1200)
         # plt.savefig(output_filename+'.png', dpi=1200)
         # plt.savefig(output_filename+'.eps')
         # plt.savefig(output_filename+'.pdf')
@@ -92,6 +113,18 @@ class BlandAltman:
         dataframe_sb = dataframe.loc[dataframe['waist_ee'] <= 1.5]
         dataframe_lpa = dataframe.loc[(1.5 < dataframe['waist_ee']) & (dataframe['waist_ee'] < 3)]
         dataframe_mvpa = dataframe.loc[3 <= dataframe['waist_ee']]
+
+        """
+        Process BA plot for Overall
+        """
+        _, mean_bias_sb_overall, upper_loa_sb_overall, lower_loa_sb_overall = BlandAltman._bland_altman_analyse(
+            dataframe, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+
+        assessment_result = '\n\n' + output_filename
+        assessment_result += '\nupper_loa:' + str(BlandAltman.get_antilog(upper_loa_sb_overall))
+        assessment_result += '\nmean_bias:' + str(BlandAltman.get_antilog(mean_bias_sb_overall))
+        assessment_result += '\nlower_loa:' + str(BlandAltman.get_antilog(lower_loa_sb_overall))
+        Utils.print_assessment_results(output_filename + '_overall_ba_stats.txt', assessment_result)
 
         """
         Process BA plot for SB
@@ -168,6 +201,18 @@ class BlandAltman:
         dataframe_mvpa = dataframe.loc[3 <= dataframe['waist_ee']]
 
         """
+        Process BA plot for Overall
+        """
+        _, mean_bias_sb_overall, upper_loa_sb_overall, lower_loa_sb_overall = BlandAltman._bland_altman_analyse(
+            dataframe, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+
+        assessment_result = '\n\n' + output_filename
+        assessment_result += '\nupper_loa:' + str(BlandAltman.get_antilog(upper_loa_sb_overall))
+        assessment_result += '\nmean_bias:' + str(BlandAltman.get_antilog(mean_bias_sb_overall))
+        assessment_result += '\nlower_loa:' + str(BlandAltman.get_antilog(lower_loa_sb_overall))
+        Utils.print_assessment_results(output_filename + '_overall_ba_stats.txt', assessment_result)
+
+        """
         Process BA plot for SB + LPA
         """
         dataframe_sb_lpa_freedson = dataframe_sb_lpa.loc[dataframe_sb_lpa['waist_vm_cpm'] > 2453]
@@ -179,7 +224,7 @@ class BlandAltman:
             BlandAltman.plot_graph(plot_number, plot_title + ' - SB-LPA - Freedson VM3 Combination (11)',
                                    dataframe_sb_lpa_freedson['mean'], dataframe_sb_lpa_freedson['diff'],
                                    upper_loa_sb_lpa_freedson, mean_bias_sb_lpa_freedson, lower_loa_sb_lpa_freedson,
-                                   output_filename + '_sb_lpa_freedson_bland_altman.png')
+                                   output_filename + '_freedson_bland_altman_sblpa')
 
         if len(dataframe_sb_lpa_williams) > 0:
             dataframe_sb_lpa_williams, mean_bias_sb_lpa_williams, upper_loa_sb_lpa_williams, lower_loa_sb_lpa_williams = BlandAltman._bland_altman_analyse(
@@ -187,7 +232,7 @@ class BlandAltman:
             BlandAltman.plot_graph(plot_number + 1, plot_title + ' - SB-LPA - Williams Work-Energy (98)',
                                    dataframe_sb_lpa_williams['mean'], dataframe_sb_lpa_williams['diff'],
                                    upper_loa_sb_lpa_williams, mean_bias_sb_lpa_williams, lower_loa_sb_lpa_williams,
-                                   output_filename + '_sb')
+                                   output_filename + '_sblpa')
 
         """
        Process BA plot for MVPA
@@ -205,6 +250,22 @@ class BlandAltman:
     @staticmethod
     def _bland_altman_analyse(dataframe, log_transformed=False, min_count_regularise=False):
 
+
+        # # For equivalance testing
+        # dataframe2 = dataframe.assign(
+        #     realdiff=dataframe['waist_ee_cleaned'] - dataframe['predicted_ee_cleaned'])
+        #
+        # equiv_data = pd.DataFrame()
+        # dataframe_summary = dataframe2.groupby(['subject'])
+        # equiv_data['waist_ee_mean'] = dataframe_summary['waist_ee_cleaned'].mean()
+        # equiv_data['predicted_ee_mean'] = dataframe_summary['predicted_ee_cleaned'].mean()
+        # equiv_data['realdiff_mean'] = dataframe_summary['realdiff'].mean()  # sum of values in each group
+        #
+        # equiv_data.to_csv('hilderbrand.csv')
+        #
+        # import sys
+        # sys.exit(-1)
+
         if min_count_regularise:
             dataframe = BlandAltman.get_min_regularised_data_per_subject(dataframe)
 
@@ -212,8 +273,12 @@ class BlandAltman:
             dataframe = dataframe.assign(waist_ee_log_transformed=np.log10(dataframe['waist_ee_cleaned']))
             dataframe = dataframe.assign(predicted_ee_log_transformed=np.log10(dataframe['predicted_ee_cleaned']))
 
-        dataframe = dataframe.assign(mean=np.mean([dataframe.as_matrix(columns=['waist_ee_cleaned']),
-                                                   dataframe.as_matrix(columns=['predicted_ee_cleaned'])], axis=0))
+        # x-axis: use the reference/freedson vm3
+        dataframe = dataframe.assign(mean=dataframe.as_matrix(columns=['waist_ee_cleaned']))
+
+        # x-axis: use the mean value of reference/predicted
+        # dataframe = dataframe.assign(mean=np.mean([dataframe.as_matrix(columns=['waist_ee_cleaned']),
+        #                                            dataframe.as_matrix(columns=['predicted_ee_cleaned'])], axis=0))
         dataframe = dataframe.assign(
             diff=dataframe['predicted_ee_log_transformed'] - dataframe['waist_ee_log_transformed'])
         # dataframe = dataframe.assign(diff=dataframe['waist_ee_cleaned']/dataframe['predicted_ee_cleaned'])
@@ -535,7 +600,17 @@ class GeneralStats:
 class Average_Stats:
 
     @staticmethod
-    def evaluate_average_measures(data, epoch):
+    def include_general_userdata(data, user_data):
+        data = pd.merge(data, user_data, on='subject', how='outer')
+        data['bmi_catagory'] = 'none'
+        data.loc[data['bmi'] < 18.5, 'bmi_catagory'] = 'underweight'
+        data.loc[(data['bmi'] >= 18.5) & (data['bmi'] < 25), 'bmi_catagory'] = 'normal'
+        data.loc[(data['bmi'] >= 25) & (data['bmi'] < 30), 'bmi_catagory'] = 'overweight'
+        data.loc[data['bmi'] >= 30, 'bmi_catagory'] = 'obese'
+        return data
+
+    @staticmethod
+    def evaluate_average_measures(data, epoch, output_title, output_folder_path, general_user_details=None):
 
         def get_averaged_df(dataset, count_field, new_col, multiplyer):
             dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
@@ -552,7 +627,6 @@ class Average_Stats:
 
         # Evaluate SB
         df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_ee'] <= 1.5], mul)
-        # df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
         sb_actual_avg = str(round(df_sb['actual_time'].mean(), round_digits)) + "+-" + str(
             round(df_sb['actual_time'].std(), round_digits))
         sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(
@@ -561,7 +635,6 @@ class Average_Stats:
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[(data['predicted_ee'] > 1.5) & (data['predicted_ee'] < 3)], mul)
-        # df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
         lpa_actual_avg = str(round(df_lpa['actual_time'].mean(), round_digits)) + "+-" + str(
             round(df_lpa['actual_time'].std(), round_digits))
         lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
@@ -569,24 +642,32 @@ class Average_Stats:
 
         # Evaluate SB+LPA
         df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_ee'] < 3)], mul)
-        # df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
         sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
         sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
             round(df_sb_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_ee'] >= 3], mul)
-        # df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
         mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(
             round(df_mvpa['predicted_time'].std(), round_digits))
+
+        if general_user_details is not None:
+            df_sb = Average_Stats.include_general_userdata(df_sb, general_user_details)
+            df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+            df_lpa = Average_Stats.include_general_userdata(df_lpa, general_user_details)
+            df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+            df_sb_lpa = Average_Stats.include_general_userdata(df_sb_lpa, general_user_details)
+            df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
+            df_mvpa = Average_Stats.include_general_userdata(df_mvpa, general_user_details)
+            df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
 
         return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg,
                                                                                         sb_lpa_predicted_avg], [
                    mvpa_actual_avg, mvpa_predicted_avg]
 
     @staticmethod
-    def evaluate_average_measures_for_categorical(data, epoch):
+    def evaluate_average_measures_for_categorical(data, epoch, output_title, output_folder_path, general_user_details):
         def get_averaged_df(dataset, count_field, new_col, multiplyer):
             dataset_count = dataset.groupby(['subject'])[count_field].count().reset_index(name=new_col)
             dataset_count[new_col] *= (multiplyer / (60 * 60))
@@ -603,7 +684,6 @@ class Average_Stats:
         # Evaluate SB
         df_sb = get_average_counted_df(data.loc[data['waist_ee'] <= 1.5], data.loc[data['predicted_category'] == 1],
                                        mul)
-        # df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
         sb_actual_avg = str(df_sb['actual_time'].mean()) + "+-" + str(df_sb['actual_time'].std())
         sb_predicted_avg = str(round(df_sb['predicted_time'].mean(), round_digits)) + "+-" + str(
             round(df_sb['predicted_time'].std(), round_digits))
@@ -611,14 +691,12 @@ class Average_Stats:
         # Evaluate LPA
         df_lpa = get_average_counted_df(data.loc[(data['waist_ee'] > 1.5) & (data['waist_ee'] < 3)],
                                         data.loc[data['predicted_category'] == 2], mul)
-        # df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
         lpa_actual_avg = str(df_lpa['actual_time'].mean()) + "+-" + str(df_lpa['actual_time'].std())
         lpa_predicted_avg = str(round(df_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
             round(df_lpa['predicted_time'].std(), round_digits))
 
         # Evaluate SB+LPA
         df_sb_lpa = get_average_counted_df(data.loc[(data['waist_ee'] < 3)], data.loc[(data['predicted_category'] != 3)], mul)
-        # df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
         sb_lpa_actual_avg = str(df_sb_lpa['actual_time'].mean()) + "+-" + str(df_sb_lpa['actual_time'].std())
         sb_lpa_predicted_avg = str(round(df_sb_lpa['predicted_time'].mean(), round_digits)) + "+-" + str(
             round(df_sb_lpa['predicted_time'].std(), round_digits))
@@ -626,10 +704,19 @@ class Average_Stats:
         # Evaluate MVPA
         df_mvpa = get_average_counted_df(data.loc[data['waist_ee'] >= 3], data.loc[data['predicted_category'] == 3],
                                          mul)
-        # df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
         mvpa_actual_avg = str(df_mvpa['actual_time'].mean()) + "+-" + str(df_mvpa['actual_time'].std())
         mvpa_predicted_avg = str(round(df_mvpa['predicted_time'].mean(), round_digits)) + "+-" + str(
             round(df_mvpa['predicted_time'].std(), round_digits))
+
+        if general_user_details is not None:
+            df_sb = Average_Stats.include_general_userdata(df_sb, general_user_details)
+            df_sb.to_csv(output_folder_path + output_title + '_sb_averaged.csv', index=False)
+            df_lpa = Average_Stats.include_general_userdata(df_lpa, general_user_details)
+            df_lpa.to_csv(output_folder_path + output_title + '_lpa_averaged.csv', index=False)
+            df_sb_lpa = Average_Stats.include_general_userdata(df_sb_lpa, general_user_details)
+            df_sb_lpa.to_csv(output_folder_path + output_title + '_sb_lpa_averaged.csv', index=False)
+            df_mvpa = Average_Stats.include_general_userdata(df_mvpa, general_user_details)
+            df_mvpa.to_csv(output_folder_path + output_title + '_mvpa_averaged.csv', index=False)
 
         return [sb_actual_avg, sb_predicted_avg], [lpa_actual_avg, lpa_predicted_avg], [sb_lpa_actual_avg,
                                                                                         sb_lpa_predicted_avg], [
@@ -638,12 +725,12 @@ class Average_Stats:
     @staticmethod
     def evaluate_average_measures_controller(data, epoch, output_title, output_folder_path, is_categorical=False):
 
-        def evaluate(category, filtered_data, epoch, assessment_result):
+        def evaluate(category, filtered_data, epoch, assessment_result, output_title=None, general_user_details=None):
 
             if not is_categorical:
-                sb, lpa, sb_lpa, mvpa = Average_Stats.evaluate_average_measures(filtered_data, epoch)
+                sb, lpa, sb_lpa, mvpa = Average_Stats.evaluate_average_measures(filtered_data, epoch, output_title, output_folder_path, general_user_details)
             else:
-                sb, lpa, sb_lpa, mvpa = Average_Stats.evaluate_average_measures_for_categorical(filtered_data, epoch)
+                sb, lpa, sb_lpa, mvpa = Average_Stats.evaluate_average_measures_for_categorical(filtered_data, epoch, output_title, output_folder_path, general_user_details)
 
             assessment_result += '\n\n' + category + ' Assessment of Average time\n\n'
             assessment_result += 'SB actual:\t' + sb[0] + '\n'
@@ -662,7 +749,7 @@ class Average_Stats:
         data = pd.merge(data, general_user_details, on='subject', how='outer')
 
         # Overall evaluation
-        results_output_str = evaluate('Overall', data, epoch, results_output_str)
+        results_output_str = evaluate('Overall', data, epoch, results_output_str, output_title, general_user_details)
 
         # Do the evaluation for Sex
         male_data = data.loc[data['gender'] == 'Male']

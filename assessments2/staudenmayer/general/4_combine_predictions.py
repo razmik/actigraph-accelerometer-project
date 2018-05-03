@@ -28,7 +28,7 @@ if __name__ == '__main__':
     experiments = ['LSM1', 'LSM2']
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
-    epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
+    epochs = ['Epoch15', 'Epoch60']
     model_title = 'Staudenmayer Linear Regression'
 
     for epoch in epochs:
