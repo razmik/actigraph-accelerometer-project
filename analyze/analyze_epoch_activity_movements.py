@@ -25,9 +25,9 @@ end_row = -1
 # summarized_duration = 4 * 60 * (2 / 6)  # 20 min
 # summarized_duration = 4 * 60 * (1 / 6)  # 10 min
 # summarized_duration = 4 * 60 * (1 / 12)  # 5 min
-# summarized_duration = 4 * 60 * (1 / 60)  # 1 min
+summarized_duration = 4 * 60 * (1 / 60)  # 1 min
 # summarized_duration = 2                   # 30 sec
-summarized_duration = 1                   # 15 sec
+# summarized_duration = 1                   # 15 sec
 
 #  row_count = int((end_row - starting_row) / summarize_duration)
 # epoch_start = int(starting_row/summarize_duration)
@@ -68,5 +68,5 @@ plt.plot(x_range, normalized_enrgy, 'r', x_range, normalized_wrist_vm, 'b', x_ra
 # plt.xlabel('Red - Actual Energy Expenditure,    Blue - Wrist Acc.,    Green - Waist Acc.')
 plt.legend(['Actual Energy Expenditure', 'Wrist Acceleration', 'Hip Acceleration'], loc='upper right')
 
-plt.savefig('output2.jpg', dpi=1200)
-# plt.show()
+# plt.savefig('output2.jpg', dpi=1200)
+plt.show()

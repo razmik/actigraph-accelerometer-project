@@ -6,7 +6,7 @@ import sys, time
 
 process_start_time = time.time()
 
-time_epoch = 1
+time_epoch = 60
 multiplication_factor = int(60 / time_epoch)
 
 experiment = 'LSM2'
@@ -15,10 +15,10 @@ day = 'Wednesday'
 
 hip_key = 'Waist'
 epoch_start_rows = 10
-path = ("D:\Accelerometer Data\ActilifeProcessedEpochs\Epoch60/" + experiment + "/" + week + "/" + day + "").replace('\\', '/')
+input_path = ("D:\Accelerometer Data\ActilifeProcessedEpochs\Epoch60/" + experiment + "/" + week + "/" + day + "").replace('\\', '/')
 output_folder = ("D:\Accelerometer Data\ActilifeProcessedEpochs\Epoch"+str(time_epoch)+"/" + experiment + "/" + week + "/" + day + "/processed_1min_ref/").replace('\\', '/')
 
-path_components = path.split('/')
+path_components = input_path.split('/')
 output_prefix = (path_components[4] + '_' + path_components[5] + '_' + path_components[6]).replace(' ', '_')
 
 
@@ -30,24 +30,40 @@ def get_freedson_adult_vm3_intensity(row):
 
 
 def get_freedson_vm3_combination_11_energy_expenditure(row):
-    # https://actigraph.desk.com/customer/en/portal/articles/2515835-what-is-the-difference-among-the-energy-expenditure-algorithms-
-    # Step 1: calculate Energy Expenditure using VM3 and a constant body mass (e.g., 80 kg)
-    if hip_epoch_data['waist_vm_cpm'][row.name] > 2453:
-        met_value = (0.001064 * hip_epoch_data['waist_vm_60'][row.name]) + (0.087512 * 80) - 5.500229
+
+    if hip_epoch_data['waist_vm_cpm'][row.name] <= 2453:
+        # METs = 0.001092(VA) + 1.336129  [capped at 2.9999, where VM3 < 2453]
+        met_value = (0.001092 * hip_epoch_data['waist_cpm'][row.name]) + 1.336129
+        met_value = met_value if met_value < 2.9999 else 2.9999
     else:
-        met_value = hip_epoch_data['waist_cpm'][row.name] * 0.0000191 * 80
-
-    # Step 2: convert Energy Expenditure from Kcal/min to kJ/min
-    met_value *= 4.184
-
-    # Step 3: assuming that you use 80 kg as body mass, divide value by ((3.5/1000)*80*20.9)
-    met_value /= ((3.5 / 1000) * 80 * 20.9)
+        # METs = 0.000863(VM3) + 0.668876 [where VM3 ≥ 2453]
+        met_value = 0.000863 * hip_epoch_data['waist_vm_60'][row.name] + 0.668876
 
     return met_value
 
+# Old model
+# def get_freedson_vm3_combination_11_energy_expenditure(row):
+#     # https://actigraph.desk.com/customer/en/portal/articles/2515835-what-is-the-difference-among-the-energy-expenditure-algorithms-
+#     if hip_epoch_data['waist_vm_cpm'][row.name] > 2453:
+#         # Validation and comparison of ActiGraph activity monitors by Jeffer E. Sasaki
+#         met_value = (0.000863 * hip_epoch_data['waist_vm_60'][row.name]) + 0.668876
+#     else:
+#         # http://www.theactigraph.com/research-database/kcal-estimates-from-activity-counts-using-the-potential-energy-method/
+#         body_mass = 80
+#         # Step 1: calculate the energy expenditure in Kcals per min
+#         Kcals_min = hip_epoch_data['waist_cpm'][row.name] * 0.0000191 * body_mass * 9.81
+#
+#         # Step 2: convert Energy Expenditure from Kcal/min to kJ/min
+#         KJ_min = Kcals_min * 4.184
+#
+#         # Step 3: assuming that you use 80 kg as body mass, divide value by ((3.5/1000)*80*20.9)
+#         met_value = KJ_min / ((3.5 / 1000) * body_mass * 20.9)
+#
+#     return met_value
+
 
 print("Reading files and creating dictionary.")
-files = [f for f in listdir(path) if isfile(join(path, f))]
+files = [f for f in listdir(input_path) if isfile(join(input_path, f))]
 file_dictionary = {}
 for file in files:
 
@@ -64,7 +80,7 @@ print("Processing data of total", len(file_dictionary))
 i = 1
 for participant in file_dictionary:
     itr_start_time = time.time()
-    hip_file = path + '/' + file_dictionary[participant][hip_key]
+    hip_file = input_path + '/' + file_dictionary[participant][hip_key]
 
     """
     Calculate Waist (hip) epoch values and reference parameters
@@ -74,6 +90,14 @@ for participant in file_dictionary:
     # Axis 2 (x) - Goes through 2 hips
     # Axis 3 (z) - Goes through front and back of the stomach
     hip_epoch_data.columns = ['AxisY', 'AxisX', 'AxisZ']
+
+    """
+    https://actigraph.desk.com/customer/en/portal/articles/2515803-what-s-the-difference-among-the-cut-points-available-in-actilife-
+    * Unless otherwise noted, cut points are referencing only counts from the vertical axis (Axis 1).  
+    * Cutpoints with "VM" or "Vector Magnitude" annotation use 
+        the Vector Magnitude (SQRT[(Axis 1)^2 + (Axis 2)^2 + (Axis 3)^2 ] ) count value.
+    """
+
     hip_epoch_data['waist_vm_60'] = np.sqrt([(hip_epoch_data.AxisX ** 2) + (hip_epoch_data.AxisY ** 2) + (hip_epoch_data.AxisZ ** 2)])[0]
     hip_epoch_data['waist_vm_cpm'] = hip_epoch_data['waist_vm_60']
     hip_epoch_data['waist_cpm'] = hip_epoch_data.AxisY

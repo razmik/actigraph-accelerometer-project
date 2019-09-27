@@ -102,6 +102,11 @@ if __name__ == '__main__':
 
                 count += 1
 
+            """Update reference value"""
+            results['incorrect_waist_ee'] = results['waist_ee']
+            del results['waist_ee']
+            results = SE.ReferenceMethod.update_reference_ee(results)
+
             """Evaluate Average Measures"""
             evaluate_average_measures(results, epoch, output_title, output_folder_path)
 

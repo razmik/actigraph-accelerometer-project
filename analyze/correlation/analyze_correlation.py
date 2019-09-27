@@ -5,22 +5,25 @@ from os.path import isfile, join
 import csv
 import math
 import pickle
+import sys
+sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
+import statistical_extensions as SE
 
 result_folders = [
     'E:\Data\Accelerometer_LR\staudenmayer\Epoch15'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\staudenmayer\Epoch60'.replace('\\', '/'),
-    'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch15'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch60'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch15'.replace('\\', '/'),
     'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch60'.replace('\\', '/'),
     'E:\Data\Accelerometer_LR\hilderband\Epoch60'.replace('\\', '/'),
     'E:\Data\Accelerometer_Montoye_ANN/2016/left_wrist/Epoch30/combined'.replace('\\', '/'),
     'E:\Data\Accelerometer_Montoye_ANN/2016/right_wrist/Epoch30/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch5/v1v2/combined'.replace('\\', '/'),
     'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v1v2/combined'.replace('\\', '/'),
     'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v1v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch15/v2/combined'.replace('\\', '/'),
     'E:\Data\Accelerometer_Montoye_ANN/2017/left_wrist/Epoch30/v2/combined'.replace('\\', '/'),
-    'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v2/combined'.replace('\\', '/'),
+    # 'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch15/v2/combined'.replace('\\', '/'),
     'E:\Data\Accelerometer_Montoye_ANN/2017/right_wrist/Epoch30/v2/combined'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_LR\staudenmayer\Epoch5'.replace('\\', '/'),
     # 'E:\Data\Accelerometer_LR\sirichana\LRA\Epoch5'.replace('\\', '/'),
@@ -136,6 +139,8 @@ def divide_results(dataframe):
 
 def process_correlations(current_results):
 
+    current_results = revise_freedson_ref(current_results)
+
     # current_results = clean_data_points(current_results)
 
     results_sb, results_lpa, results_sb_lpa, results_mvpa = divide_results(current_results)
@@ -173,6 +178,12 @@ def process_correlations(current_results):
     # https://stackoverflow.com/questions/7653993/encountered-invalid-value-when-i-use-pearsonr
 
     # print(prev_subj)
+
+
+def revise_freedson_ref(res_df):
+    res_df['incorrect_waist_ee'] = res_df['waist_ee']
+    del res_df['waist_ee']
+    return SE.ReferenceMethod.update_reference_ee(results)
 
 
 correlation_dict_MET = {}

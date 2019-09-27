@@ -1,32 +1,19 @@
+import sys
 import numpy as np
 import pandas as pd
-import time
-import matplotlib.pyplot as plt
-import itertools, sys
 from sklearn.metrics import r2_score, confusion_matrix, precision_recall_fscore_support
+import matplotlib.pyplot as plt
+import itertools
+import math, time
+import os
 from os import listdir
 from os.path import isfile, join
 sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
 import statistical_extensions as SE
 
 
-def predict_ee_A(data):
-
-    def update_met_based_on_mv(row):
-        met_value = data['predicted_ee'][row.name]
-        if met_value > 6:
-            met_value = (data['svm'][row.name] - 1708.1) / 373.4
-        return met_value
-
-    data['predicted_ee'] = (data['svm'] - 32.5) / 83.3
-    data['predicted_ee'] = data.apply(update_met_based_on_mv, axis=1)
-
-    return data
-
-
-def predict_ee_B(data):
-
-    data['predicted_ee'] = (data['svm'] + 12.7) / 105.3
+def predict(data):
+    data['predicted_ee'] = 1.89378 + (5.50821 * data['raw_wrist_sdvm']) - (0.02705 * data['raw_wrist_mangle'])
     return data
 
 
@@ -34,46 +21,48 @@ def evaluate_models(data, status, plot_title, output_folder_path, output_title, 
 
     assessment_result = 'Assessment of ' + output_title + '\n\n'
 
-    def transform_to_met_category(column, new_column):
-        data.loc[data[column] <= 1.5, new_column] = 1
-        data.loc[(1.5 < data[column]) & (data[column] < 3), new_column] = 2
-        data.loc[3 <= data[column], new_column] = 3
+    def met_to_intensity_waist_ee(row):
+        ee = data['waist_ee'][row.name]
+        return 1 if ee <= 1.5 else 2 if ee < 3 else 3
 
-    # Freedson EE MET values -> convert activity intensity to 3 levels
-    transform_to_met_category('waist_ee', 'target_met_category_freedson_intensity')
+    def met_to_intensity_lr_estimated_ee(row):
+        ee = data['predicted_ee'][row.name]
+        return 1 if ee <= 1.5 else 2 if ee < 3 else 3
 
-    transform_to_met_category('predicted_ee', 'lr_estimated_met_category')
+    # convert activity intensity to 3 levels - SB, LPA, MVPA
+    data['target_met_category'] = data.apply(met_to_intensity_waist_ee, axis=1)
+    data['lr_predicted_met_category'] = data.apply(met_to_intensity_lr_estimated_ee, axis=1)
 
-    target_met_category = data['target_met_category_freedson_intensity']
-    lr_esitmated = data['lr_estimated_met_category']
+    target_category = data['target_met_category']
+    lr_estimated_category = data['lr_predicted_met_category']
 
-    target_ee = data['waist_ee']
-    predicted_ee = data['predicted_ee']
+    target_met = data['waist_ee']
+    lr_estimated_met = data['predicted_ee']
 
     # Pearson Correlation
     if correlation_only:
-        corr, p_val = SE.GeneralStats.pearson_correlation(target_met_category, lr_esitmated)
+        corr, p_val = SE.GeneralStats.pearson_correlation(target_category, lr_estimated_category)
         print('\n', output_folder_path, output_title)
         print('Categorical', corr, p_val)
 
-        corr, p_val = SE.GeneralStats.pearson_correlation(target_ee, predicted_ee)
+        corr, p_val = SE.GeneralStats.pearson_correlation(target_met, lr_estimated_met)
         print('MET', corr, p_val)
+
         return
 
-    class_names = ['SB', 'LPA', 'MVPA']
+    class_names = ['SED', 'LPA', 'MVPA']
 
     """
     Model evaluation statistics
     """
-    # print("Evaluation of", status)
-
     # The mean squared error
-    int_mse = "LR Mean squared error: %.2f" % np.mean((lr_esitmated - target_met_category) ** 2)
-    # print(int_mse)
+    met_mse = ("LR Mean squared error [MET]: %.2f" % np.mean((lr_estimated_met - target_met) ** 2))
+    int_mse = ("LR Mean squared error [Category]: %.2f" % np.mean((lr_estimated_category - target_category) ** 2))
+    assessment_result += met_mse + '\n\n'
     assessment_result += int_mse + '\n\n'
 
     # Compute confusion matrix
-    cnf_matrix = confusion_matrix(target_met_category, lr_esitmated)
+    cnf_matrix = confusion_matrix(target_category, lr_estimated_category)
     np.set_printoptions(precision=2)
 
     stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
@@ -110,14 +99,14 @@ if __name__ == '__main__':
     week = 'Week 1'
     days = ['Wednesday', 'Thursday']
     # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
-    epochs = ['Epoch60']
-    model_title = 'Sirichana Linear Regression'
+    epochs = ['Epoch15']
+    model_title = 'Staudenmayer Linear Regression'
     plot_number = 1
 
     for epoch in epochs:
 
         output_title = model_title + '_' + epoch
-        output_folder_path = ('E:\Data\Accelerometer_Results/Sirichana/').replace('\\', '/')
+        output_folder_path = ('E:\Data\Accelerometer_Results/Staudenmayer/').replace('\\', '/')
 
         start_reading = time.time()
 
@@ -125,12 +114,14 @@ if __name__ == '__main__':
         for experiment in experiments:
             for day in days:
 
-                input_file_path = (
-                "E:/Data/Accelerometer_Processed_Raw_Epoch_Data/" + experiment + "/" + week + "/" + day + "/" + epoch + "/").replace(
-                    '\\', '/')
+                input_file_path = ("E:/Data/Accelerometer_Processed_Raw_Epoch_Data/"+experiment+"/"+week+"/"+day+"/"+epoch+"/").replace('\\', '/')
                 input_filenames = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
 
                 for file in input_filenames:
+
+                    # if file.split('_(2016')[0] != 'LSM219':
+                    #     continue
+
                     dataframe = pd.read_csv(input_file_path + file)
                     dataframe['subject'] = file.split('_(2016')[0]
 
@@ -141,14 +132,13 @@ if __name__ == '__main__':
 
                     count += 1
 
+                    # if count > 10:
+                    #     break
+
                 print('Completed', experiment, day)
 
-        # result_B = results.copy()
-
-        # print('\n\n')
-        """LR A"""
-        model_titleA = output_title + '_A'
-        results = predict_ee_A(results)
+        """Prediction"""
+        results = predict(results)
 
         results['incorrect_waist_ee'] = results['waist_ee']
         del results['waist_ee']
@@ -156,25 +146,29 @@ if __name__ == '__main__':
         """Update reference value"""
         results = SE.ReferenceMethod.update_reference_ee(results)
 
-        # """Evaluate Average Measures"""
-        evaluate_average_measures(results, epoch, output_title, output_folder_path)
-        print('completed average measure')
+        # res_out = results[['AxisY', 'AxisX', 'AxisZ', 'waist_vm_60', 'waist_vm_cpm', 'waist_cpm', 'incorrect_waist_ee',
+        #                    'waist_ee_with_gravity', 'waist_ee', 'predicted_ee']]
+        # res_out.to_csv(os.path.join(output_folder_path, 'LSM219_dataset_staudenmayer.csv'), index=None)
         #
-        # evaluate_models(results, model_titleA, plot_number+1, output_folder_path, model_titleA, correlation_only=False)
-
-        results = SE.BlandAltman.clean_data_points(results)
-        SE.BlandAltman.bland_altman_paired_plot_tested(results, model_titleA, plot_number+2, log_transformed=True,
-                                                       min_count_regularise=False, output_filename=output_folder_path+model_titleA)
-
         # sys.exit(0)
 
-        # results.drop('predicted_ee', axis=1, inplace=True)
+        # """Evaluate Average Measures"""
+        # evaluate_average_measures(results, epoch, output_title, output_folder_path)
+        # print('completed average measure')
+        #
+        # """General Assessment"""
+        # evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
 
-        plot_number += 14
+        """Bland Altman Plot"""
+        results = SE.BlandAltman.clean_data_points(results)
+        SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+2, log_transformed=True,
+                                                       min_count_regularise=False, output_filename=output_folder_path+output_title)
+
+        sys.exit(0)
+
+        plot_number += 10
 
         end_reading = time.time()
         print('Completed', output_title, 'in', round(end_reading-start_reading, 2), '(s)')
 
-    # plt.show()
-
-    print('Completed.')
+    print('Assessment completed.')

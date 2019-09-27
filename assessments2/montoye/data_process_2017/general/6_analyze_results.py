@@ -83,7 +83,7 @@ if __name__ == '__main__':
     days = ['Wednesday', 'Thursday']
     wrists = ['left_wrist', 'right_wrist']
     # epochs = ['Epoch5', 'Epoch15', 'Epoch30', 'Epoch60']
-    epochs = ['Epoch30', 'Epoch15', 'Epoch5']
+    epochs = ['Epoch30']
     models = ['v2', 'v1v2']
     model_title = 'Montoye ANN 2017 '
     plot_number = 1
@@ -116,12 +116,17 @@ if __name__ == '__main__':
 
                     count += 1
 
-                """Evaluate Average Measures"""
+                """Update reference value"""
+                results['incorrect_waist_ee'] = results['waist_ee']
+                del results['waist_ee']
+                results = SE.ReferenceMethod.update_reference_ee(results)
+
+                # """Evaluate Average Measures"""
                 # evaluate_average_measures(results, epoch, output_title, output_folder_path)
                 # print('completed average measure')
                 # sys.exit(0)
 
-                """General Assessment"""
+                # """General Assessment"""
                 # evaluate_models(results, model_title, plot_number, output_folder_path, output_title, correlation_only=False)
 
                 """Bland Altman Plot"""
@@ -129,7 +134,7 @@ if __name__ == '__main__':
                 SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+1, log_transformed=True,
                                                                min_count_regularise=False, output_filename=output_folder_path+output_title)
 
-                plot_number += 10
+                plot_number += 15
 
                 end_reading = time.time()
                 print('Completed', output_title, 'in', round(end_reading-start_reading, 2), '(s)')

@@ -57,16 +57,10 @@ class BlandAltman:
             x_lim = (1, 3.5)
             y_lim = (-1.2, 1.2)
         elif cat == 'sblpa':
-            x_lim = (1, 3.5)
+            x_lim = (1, 4)
             y_lim = (-1.2, 1.2)
-        elif cat == 'mvpa':
+        else:
             x_lim = (2.5, 15)
-            y_lim = (-1.2, 1.2)
-        elif cat == 'mpa':
-            x_lim = (2.5, 6.5)
-            y_lim = (-1.2, 1.2)
-        elif cat == 'vpa':
-            x_lim = (5.5, 15)
             y_lim = (-1.2, 1.2)
 
         x_annotate_begin = 10.4
@@ -137,52 +131,68 @@ class BlandAltman:
         """
         Process BA plot for SB
         """
-        dataframe_sb, mean_bias_sb, upper_loa_sb, lower_loa_sb = BlandAltman._bland_altman_analyse(
-            dataframe_sb, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 1, plot_title + ' - SB - Williams Work-Energy (98)',
-                               dataframe_sb['mean'], dataframe_sb['diff'],
-                               upper_loa_sb, mean_bias_sb, lower_loa_sb,
-                               output_filename + '_sb')
+        # dataframe_sb_freedson = dataframe_sb.loc[dataframe_sb['waist_vm_cpm'] > 2453]
+        dataframe_sb_williams = dataframe_sb.loc[dataframe_sb['waist_vm_cpm'] <= 2453]
+
+        # if len(dataframe_sb_freedson) > 0:
+        #     dataframe_sb_freedson, mean_bias_sb_freedson, upper_loa_sb_freedson, lower_loa_sb_freedson = BlandAltman._bland_altman_analyse(dataframe_sb_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+        #     BlandAltman.plot_graph(plot_number, plot_title + ' - SB - Freedson VM3 Combination (11)',
+        #                            dataframe_sb_freedson['mean'], dataframe_sb_freedson['diff'],
+        #                            upper_loa_sb_freedson, mean_bias_sb_freedson, lower_loa_sb_freedson,
+        #                            output_filename + '_sb_freedson_bland_altman.png')
+
+        if len(dataframe_sb_williams) > 0:
+            dataframe_sb_williams, mean_bias_sb_williams, upper_loa_sb_williams, lower_loa_sb_williams = BlandAltman._bland_altman_analyse(
+                dataframe_sb_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 1, plot_title + ' - SB - Williams Work-Energy (98)',
+                                   dataframe_sb_williams['mean'], dataframe_sb_williams['diff'],
+                                   upper_loa_sb_williams, mean_bias_sb_williams, lower_loa_sb_williams,
+                                   output_filename + '_sb')
+            # print(plot_title, 'SB', upper_loa_sb_williams, mean_bias_sb_williams, lower_loa_sb_williams)
 
         """
         Process BA plot for LPA
         """
-        dataframe_lpa, mean_bias_lpa, upper_loa_lpa, lower_loa_lpa = BlandAltman._bland_altman_analyse(
-            dataframe_lpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 3, plot_title + ' - LPA - Williams Work-Energy (98)',
-                               dataframe_lpa['mean'], dataframe_lpa['diff'],
-                               upper_loa_lpa, mean_bias_lpa, lower_loa_lpa,
-                               output_filename + '_lpa')
+        # dataframe_lpa_freedson = dataframe_lpa.loc[dataframe_lpa['waist_vm_cpm'] > 2453]
+        dataframe_lpa_williams = dataframe_lpa.loc[dataframe_lpa['waist_vm_cpm'] <= 2453]
+
+        # if len(dataframe_lpa_freedson) > 0:
+        #     dataframe_lpa_freedson, mean_bias_lpa_freedson, upper_loa_lpa_freedson, lower_loa_lpa_freedson = BlandAltman._bland_altman_analyse(dataframe_lpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+        #     BlandAltman.plot_graph(plot_number+2, plot_title + ' - LPA - Freedson VM3 Combination (11)',
+        #                            dataframe_lpa_freedson['mean'], dataframe_lpa_freedson['diff'],
+        #                            upper_loa_lpa_freedson, mean_bias_lpa_freedson, lower_loa_lpa_freedson,
+        #                            output_filename + '_lpa_freedson_bland_altman.png')
+
+        if len(dataframe_lpa_williams) > 0:
+            dataframe_lpa_williams, mean_bias_lpa_williams, upper_loa_lpa_williams, lower_loa_lpa_williams = BlandAltman._bland_altman_analyse(
+                dataframe_lpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 3, plot_title + ' - LPA - Williams Work-Energy (98)',
+                                   dataframe_lpa_williams['mean'], dataframe_lpa_williams['diff'],
+                                   upper_loa_lpa_williams, mean_bias_lpa_williams, lower_loa_lpa_williams,
+                                   output_filename + '_lpa')
+            # print(plot_title, 'LPA', upper_loa_lpa_williams, mean_bias_lpa_williams, lower_loa_lpa_williams)
 
         """
         Process BA plot for MVPA
         """
-        dataframe_mvpa, mean_bias_mvpa, upper_loa_mvpa, lower_loa_mvpa = BlandAltman._bland_altman_analyse(
-            dataframe_mvpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
-                               dataframe_mvpa['mean'], dataframe_mvpa['diff'],
-                               upper_loa_mvpa, mean_bias_mvpa, lower_loa_mvpa,
-                               output_filename + '_mvpa')
+        dataframe_mvpa_freedson = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] > 2453]
+        # dataframe_mvpa_williams = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] <= 2453]
 
-        """
-        Process BA plot for MPA
-        """
-        dataframe_mpa, mean_bias_mpa, upper_loa_mpa, lower_loa_mpa = BlandAltman._bland_altman_analyse(
-            dataframe_mpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 5, plot_title + ' - MPA - Freedson VM3 Combination (11)',
-                               dataframe_mpa['mean'], dataframe_mpa['diff'],
-                               upper_loa_mpa, mean_bias_mpa, lower_loa_mpa,
-                               output_filename + '_mpa')
+        if len(dataframe_mvpa_freedson) > 0:
+            dataframe_mvpa_freedson, mean_bias_mvpa_freedson, upper_loa_mvpa_freedson, lower_loa_mvpa_freedson = BlandAltman._bland_altman_analyse(
+                dataframe_mvpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
+                                   dataframe_mvpa_freedson['mean'], dataframe_mvpa_freedson['diff'],
+                                   upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
+                                   output_filename + '_mvpa')
+            # print(plot_title, 'MVPA', upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson)
 
-        """
-        Process BA plot for VPA
-        """
-        dataframe_vpa, mean_bias_vpa, upper_loa_vpa, lower_loa_vpa = BlandAltman._bland_altman_analyse(
-            dataframe_vpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 6, plot_title + ' - VPA - Freedson VM3 Combination (11)',
-                               dataframe_vpa['mean'], dataframe_vpa['diff'],
-                               upper_loa_vpa, mean_bias_vpa, lower_loa_vpa,
-                               output_filename + '_vpa')
+        # if len(dataframe_mvpa_williams) > 0:
+        #     dataframe_mvpa_williams, mean_bias_mvpa_williams, upper_loa_mvpa_williams, lower_loa_mvpa_williams = BlandAltman._bland_altman_analyse(dataframe_mvpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+        #     BlandAltman.plot_graph(plot_number+5, plot_title + ' - MVPA - Williams Work-Energy (98)',
+        #                            dataframe_mvpa_williams['mean'], dataframe_mvpa_williams['diff'],
+        #                            upper_loa_mvpa_williams, mean_bias_mvpa_williams, lower_loa_mvpa_williams,
+        #                            output_filename + '_mvpa_williams_bland_altman.png')
 
     @staticmethod
     def bland_altman_paired_plot_for_two_catagories(dataframe, plot_title, plot_number, log_transformed=False,
@@ -191,8 +201,6 @@ class BlandAltman:
         """Define multiple dataframes based on the activity intensity"""
         dataframe_sb_lpa = dataframe.loc[dataframe['waist_ee'] < 3]
         dataframe_mvpa = dataframe.loc[3 <= dataframe['waist_ee']]
-        dataframe_mpa = dataframe.loc[(3 <= dataframe['waist_ee']) & (dataframe['waist_ee'] < 6)]
-        dataframe_vpa = dataframe.loc[6 <= dataframe['waist_ee']]
 
         """
         Process BA plot for Overall
@@ -209,42 +217,37 @@ class BlandAltman:
         """
         Process BA plot for SB + LPA
         """
-        dataframe_sb_lpa, mean_bias_sb_lpa, upper_loa_sb_lpa, lower_loa_sb_lpa = BlandAltman._bland_altman_analyse(
-            dataframe_sb_lpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 1, plot_title + ' - SB+LPA - Williams Work-Energy (98)',
-                               dataframe_sb_lpa['mean'], dataframe_sb_lpa['diff'],
-                               upper_loa_sb_lpa, mean_bias_sb_lpa, lower_loa_sb_lpa,
-                               output_filename + '_sblpa')
+        dataframe_sb_lpa_freedson = dataframe_sb_lpa.loc[dataframe_sb_lpa['waist_vm_cpm'] > 2453]
+        dataframe_sb_lpa_williams = dataframe_sb_lpa.loc[dataframe_sb_lpa['waist_vm_cpm'] <= 2453]
+
+        if len(dataframe_sb_lpa_freedson) > 0:
+            dataframe_sb_lpa_freedson, mean_bias_sb_lpa_freedson, upper_loa_sb_lpa_freedson, lower_loa_sb_lpa_freedson = BlandAltman._bland_altman_analyse(
+                dataframe_sb_lpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number, plot_title + ' - SB-LPA - Freedson VM3 Combination (11)',
+                                   dataframe_sb_lpa_freedson['mean'], dataframe_sb_lpa_freedson['diff'],
+                                   upper_loa_sb_lpa_freedson, mean_bias_sb_lpa_freedson, lower_loa_sb_lpa_freedson,
+                                   output_filename + '_freedson_bland_altman_sblpa')
+
+        if len(dataframe_sb_lpa_williams) > 0:
+            dataframe_sb_lpa_williams, mean_bias_sb_lpa_williams, upper_loa_sb_lpa_williams, lower_loa_sb_lpa_williams = BlandAltman._bland_altman_analyse(
+                dataframe_sb_lpa_williams, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 1, plot_title + ' - SB-LPA - Williams Work-Energy (98)',
+                                   dataframe_sb_lpa_williams['mean'], dataframe_sb_lpa_williams['diff'],
+                                   upper_loa_sb_lpa_williams, mean_bias_sb_lpa_williams, lower_loa_sb_lpa_williams,
+                                   output_filename + '_sblpa')
 
         """
        Process BA plot for MVPA
        """
-        dataframe_mvpa, mean_bias_mvpa, upper_loa_mvpa, lower_loa_mvpa = BlandAltman._bland_altman_analyse(
-            dataframe_mvpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
-                               dataframe_mvpa['mean'], dataframe_mvpa['diff'],
-                               upper_loa_mvpa, mean_bias_mvpa, lower_loa_mvpa,
-                               output_filename + '_mvpa')
+        dataframe_mvpa_freedson = dataframe_mvpa.loc[dataframe_mvpa['waist_vm_cpm'] > 2453]
 
-        """
-        Process BA plot for MPA
-        """
-        dataframe_mpa, mean_bias_mpa, upper_loa_mpa, lower_loa_mpa = BlandAltman._bland_altman_analyse(
-            dataframe_mpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 5, plot_title + ' - MPA - Freedson VM3 Combination (11)',
-                               dataframe_mpa['mean'], dataframe_mpa['diff'],
-                               upper_loa_mpa, mean_bias_mpa, lower_loa_mpa,
-                               output_filename + '_mpa')
-
-        """
-        Process BA plot for VPA
-        """
-        dataframe_vpa, mean_bias_vpa, upper_loa_vpa, lower_loa_vpa = BlandAltman._bland_altman_analyse(
-            dataframe_vpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
-        BlandAltman.plot_graph(plot_number + 6, plot_title + ' - VPA - Freedson VM3 Combination (11)',
-                               dataframe_vpa['mean'], dataframe_vpa['diff'],
-                               upper_loa_vpa, mean_bias_vpa, lower_loa_vpa,
-                               output_filename + '_vpa')
+        if len(dataframe_mvpa_freedson) > 0:
+            dataframe_mvpa_freedson, mean_bias_mvpa_freedson, upper_loa_mvpa_freedson, lower_loa_mvpa_freedson = BlandAltman._bland_altman_analyse(
+                dataframe_mvpa_freedson, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+            BlandAltman.plot_graph(plot_number + 4, plot_title + ' - MVPA - Freedson VM3 Combination (11)',
+                                   dataframe_mvpa_freedson['mean'], dataframe_mvpa_freedson['diff'],
+                                   upper_loa_mvpa_freedson, mean_bias_mvpa_freedson, lower_loa_mvpa_freedson,
+                                   output_filename + '_mvpa')
 
     @staticmethod
     def _bland_altman_analyse(dataframe, log_transformed=False, min_count_regularise=False):

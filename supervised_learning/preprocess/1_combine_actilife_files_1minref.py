@@ -1,0 +1,103 @@
+from os import listdir, makedirs
+from os.path import isfile, join, exists
+import numpy as np
+import pandas as pd
+import sys, time
+from tqdm import tqdm
+
+process_start_time = time.time()
+
+time_epoch = 60
+multiplication_factor = int(60 / time_epoch)
+
+experiment = 'LSM2'
+week = 'Week 1'
+day = 'Wednesday'
+
+hip_key = 'Waist'
+epoch_start_rows = 10
+input_path = ("D:\Accelerometer Data\ActilifeProcessedEpochs\Epoch60/" + experiment + "/" + week + "/" + day + "").replace('\\', '/')
+output_folder = ("D:\Accelerometer Data\ActilifeProcessedEpochs\Epoch"+str(time_epoch)+"/" + experiment + "/" + week + "/" + day + "/processed_1min_ref/").replace('\\', '/')
+
+if not exists(output_folder):
+    makedirs(output_folder)
+
+path_components = input_path.split('/')
+output_prefix = (path_components[4] + '_' + path_components[5] + '_' + path_components[6]).replace(' ', '_')
+
+
+def get_freedson_adult_vm3_intensity(row):
+    # https://actigraph.desk.com/customer/en/portal/articles/2515803-what-s-the-difference-among-the-cut-points-available-in-actilife-
+    # Unless otherwise noted, cut points are referencing only counts from the vertical axis (Axis 1 - Y).
+    cpm = hip_epoch_data['waist_cpm'][row.name]
+    return 1 if cpm <= 2690 else 2 if cpm <= 6166 else 3 if cpm <= 9642 else 4
+
+
+def get_freedson_vm3_combination_11_energy_expenditure(row):
+
+    if hip_epoch_data['waist_vm_cpm'][row.name] <= 2453:
+        # METs = 0.001092(VA) + 1.336129  [capped at 2.9999, where VM3 < 2453]
+        met_value = (0.001092 * hip_epoch_data['waist_cpm'][row.name]) + 1.336129
+        met_value = met_value if met_value < 2.9999 else 2.9999
+    else:
+        # METs = 0.000863(VM3) + 0.668876 [where VM3 ≥ 2453]
+        met_value = 0.000863 * hip_epoch_data['waist_vm_60'][row.name] + 0.668876
+
+    return met_value
+
+
+if __name__ == "__main__":
+
+    files = [f for f in listdir(input_path) if isfile(join(input_path, f))]
+    file_dictionary = {}
+    for file in tqdm(files, desc='Reading files'):
+
+        # Filename example: LSM203 Waist (2016-11-02)60sec.csv
+        file_components = file.split(' ')
+        key = file_components[0]
+
+        if key not in file_dictionary:
+            file_dictionary[key] = {file_components[1]: file}
+        else:
+            file_dictionary[key][file_components[1]] = file
+
+    for participant in tqdm(file_dictionary, desc='Processing files'):
+        hip_file = input_path + '/' + file_dictionary[participant][hip_key]
+
+        """
+        Calculate Waist (hip) epoch values and reference parameters
+        """
+        hip_epoch_data = pd.read_csv(hip_file, skiprows=epoch_start_rows, usecols=[0, 1, 2], header=None)
+        # Axis 1 (y) - Goes through head and middle of feet
+        # Axis 2 (x) - Goes through 2 hips
+        # Axis 3 (z) - Goes through front and back of the stomach
+        hip_epoch_data.columns = ['AxisY', 'AxisX', 'AxisZ']
+
+        """
+        https://actigraph.desk.com/customer/en/portal/articles/2515803-what-s-the-difference-among-the-cut-points-available-in-actilife-
+        * Unless otherwise noted, cut points are referencing only counts from the vertical axis (Axis 1).  
+        * Cutpoints with "VM" or "Vector Magnitude" annotation use 
+            the Vector Magnitude (SQRT[(Axis 1)^2 + (Axis 2)^2 + (Axis 3)^2 ] ) count value.
+        """
+
+        hip_epoch_data['waist_vm_60'] = \
+        np.sqrt([(hip_epoch_data.AxisX ** 2) + (hip_epoch_data.AxisY ** 2) + (hip_epoch_data.AxisZ ** 2)])[0]
+        hip_epoch_data['waist_vm_cpm'] = hip_epoch_data['waist_vm_60']
+        hip_epoch_data['waist_cpm'] = hip_epoch_data.AxisY
+
+        hip_epoch_data['waist_ee'] = hip_epoch_data.apply(get_freedson_vm3_combination_11_energy_expenditure, axis=1)
+        hip_epoch_data['waist_intensity'] = hip_epoch_data.apply(get_freedson_adult_vm3_intensity, axis=1)
+
+        hip_epoch_data = hip_epoch_data.reindex(np.repeat(hip_epoch_data.index.values, multiplication_factor),
+                                                method='ffill')
+
+        # save output file
+        # Filename example: LSM203 Waist (2016-11-02)5sec.csv
+        output_filename = file_dictionary[participant][hip_key].split(' ')
+        file_date = output_filename[2].split('60sec')
+        output_filename = output_folder + '/' + participant + '_' + output_prefix + '_' + file_date[0] + str(
+            time_epoch) + 's' + '.csv'
+        hip_epoch_data.to_csv(output_filename, sep=',', index=None)
+
+    process_end_time = time.time()
+    print("Completed with duration " + str(round((process_end_time - process_start_time) / 60, 2)) + " minutes.")

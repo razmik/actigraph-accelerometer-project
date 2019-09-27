@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 import time
+import os
 from os import listdir
 from os.path import isfile, join
 sys.path.append('E:/Projects/accelerometer-project/assessments2/extensions')
@@ -116,6 +117,10 @@ if __name__ == '__main__':
                 input_filenames = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
 
                 for file in input_filenames:
+
+                    # if file.split('_(2016')[0] != 'LSM219':
+                    #     continue
+
                     dataframe = pd.read_csv(input_file_path + file)
                     dataframe['subject'] = file.split('_(2016')[0]
 
@@ -134,11 +139,17 @@ if __name__ == '__main__':
         """Prediction"""
         results = predict(results)
 
-        """Evaluate Average Measures"""
-        # evaluate_average_measures(results, epoch, output_title, output_folder_path)
+        results['incorrect_waist_ee'] = results['waist_ee']
+        del results['waist_ee']
 
-        """General Assessment"""
-        # evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
+        """Update reference value"""
+        results = SE.ReferenceMethod.update_reference_ee(results)
+
+        # """Evaluate Average Measures"""
+        evaluate_average_measures(results, epoch, output_title, output_folder_path)
+        #
+        # """General Assessment"""
+        evaluate_models(results, output_title, plot_number+1, output_folder_path, output_title, correlation_only=False)
 
         """Bland Altman Plot"""
         results = SE.BlandAltman.clean_data_points(results)
@@ -146,6 +157,8 @@ if __name__ == '__main__':
                                                        min_count_regularise=False, output_filename=output_folder_path+output_title)
         # SE.BlandAltman.bland_altman_paired_plot_tested(results, model_title, plot_number+2, log_transformed=True,
         #                                                min_count_regularise=False, output_filename=output_folder_path+output_title)
+
+        # sys.exit(0)
 
         plot_number += 10
 
