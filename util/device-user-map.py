@@ -1,7 +1,8 @@
 from os import listdir, rename
 from os.path import isfile, join
 import pandas as pd
-import sys, time
+from tqdm import tqdm
+from shutil import copyfile
 
 
 
@@ -25,13 +26,13 @@ def get_codes(code_filename):
     return codes
 
 
-def update_filenames(file_list, file_folder):
+def update_filenames(file_list, file_folder, codes_dict):
     """
     Update file names
     """
     for file in file_list:
         current_name_split = file.split(' ')
-        new_filename = codes[current_name_split[0]] + ' ' + current_name_split[1]
+        new_filename = codes_dict[current_name_split[0]] + ' ' + current_name_split[1]
         print('In:', file_folder + file)
         rename(file_folder + file, file_folder + new_filename)
         print('Out:', file_folder + new_filename, '\n')
@@ -39,24 +40,51 @@ def update_filenames(file_list, file_folder):
     print('Processing completed.')
 
 
-"""
-Config
-"""
-# file_folder_name = 'D:\Accelerometer Data\LSM1\Week 1\Ian/'.replace('\\', '/')
-code_file = 'D:\Accelerometer Data\LSM1\device-user-map.csv'.replace('\\', '/')
-# files = [f for f in listdir(file_folder) if isfile(join(file_folder, f))]
+if __name__ == '__main__':
 
-filename = 'D:\Accelerometer Data\LSM1\Week 1\Thursday Outputs/Thursday Outputs_DailyDetailed_testfile.csv'.replace('\\', '/')
-output_filename = 'D:\Accelerometer Data\LSM1\Week 1\Thursday Outputs/Thursday Outputs_DailyDetailed_keys.csv'.replace('\\', '/')
+    code_file = 'E:/Data/Accelerometer_Dataset_Rashmika/Staff_Activity_Challenege/LSM1/device-user-map.csv'
+    codes = get_codes(code_file)
 
-codes = get_codes(code_file)
+    raw_files_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/Staff_Activity_Challenege/LSM1/Week 1/Thursday'
+    raw_file_names = [f for f in listdir(raw_files_folder) if 'RAW.csv' in f]
 
-dataframe = pd.read_csv(filename)
-dataframe['username'] = ''
-for index, row in dataframe.iterrows():
-    row['username'] = codes[row['Subject']]
+    # copy new files
+    for filename in tqdm(raw_file_names):
 
-dataframe.to_csv(output_filename)
+        user_id = filename.split(' ')[0]
+        suffix = filename.split(' ')[1]
+
+        updated_user_id = codes[user_id]
+
+        src = join(raw_files_folder, filename)
+        dst = join(raw_files_folder, '{} {}'.format(updated_user_id, suffix))
+
+        copyfile(src, dst)
+
+        # print(src, '\n', dst, '\n\n')
+
+    print('Completed.')
+
+
+#
+# """
+# Config
+# """
+# # file_folder_name = 'D:\Accelerometer Data\LSM1\Week 1\Ian/'.replace('\\', '/')
+# code_file = 'E:/Data/Accelerometer_Dataset_Rashmika/Staff_Activity_Challenege/LSM1/device-user-map.csv'
+# # files = [f for f in listdir(file_folder) if isfile(join(file_folder, f))]
+#
+# filename = 'D:\Accelerometer Data\LSM1\Week 1\Thursday Outputs/Thursday Outputs_DailyDetailed_testfile.csv'.replace('\\', '/')
+# output_filename = 'D:\Accelerometer Data\LSM1\Week 1\Thursday Outputs/Thursday Outputs_DailyDetailed_keys.csv'.replace('\\', '/')
+#
+# codes = get_codes(code_file)
+#
+# dataframe = pd.read_csv(filename)
+# dataframe['username'] = ''
+# for index, row in dataframe.iterrows():
+#     row['username'] = codes[row['Subject']]
+#
+# dataframe.to_csv(output_filename)
 
 
 

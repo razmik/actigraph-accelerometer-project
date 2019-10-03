@@ -2,37 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1feaf6e7-244f-4359-9cae-ece2cde690b7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Accelerometer-project_Rashmika.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analyze/analyze_cutpoints.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analyze/crouter_verification/1_combine_actilife_files_10secref.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analyze/crouter_verification/2_combine_raw_epoch_main_10sec.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analyze/crouter_verification/private_combine_raw_and_epoch_10sec.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assessments2/data_process_general/3_recorrect_reference_ee_LR.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assessments2/extensions/statistical_extensions_old.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assessments2/staudenmayer/general/3_assess_LR_models_slmv_updated.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supervised_learning/preprocess/2_combine_raw_epoch_main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supervised_learning/preprocess/private_combine_raw_and_epoch_files_no_filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/AccelerometerProject.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/pc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/modeling/cnn_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/preprocess/3_convert_to_supervised.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/preprocess/generate_raw_features.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Accelerometer-project_Rashmika.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Accelerometer-project_Rashmika.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analyze/analyze_epoch_activity_movements.py" beforeDir="false" afterPath="$PROJECT_DIR$/analyze/analyze_epoch_activity_movements.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analyze/correlation/analyze_correlation.py" beforeDir="false" afterPath="$PROJECT_DIR$/analyze/correlation/analyze_correlation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/data_process_general/1_combine_actilife_files_1minref.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/data_process_general/1_combine_actilife_files_1minref.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/hilderbrand/general/3_assess_LR_models_slmv.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/montoye/data_process_2016/general/6_analyze_results.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/montoye/data_process_2017/general/6_analyze_results.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py" beforeDir="false" afterPath="$PROJECT_DIR$/assessments2/sirichana/general/3_analyse_linear_models_categorical_slmv.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supervised_learning/pamap2_experiment/KerasDeep/realtime_display.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py" beforeDir="false" afterPath="$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supervised_learning/preprocess/2_combine_raw_epoch_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/supervised_learning/preprocess/2_combine_raw_epoch_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supervised_learning/preprocess/private_combine_raw_and_epoch_files_no_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/supervised_learning/preprocess/generate_statistical_features.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/device-user-map.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/device-user-map.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,16 +21,74 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/2_combine_raw_epoch_main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8">
+              <caret line="49" selection-start-line="49" selection-end-line="49" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/3_convert_to_supervised.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+            <state relative-caret-position="-663">
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/cnn_model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="38" column="40" lean-forward="true" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+              <folding>
+                <element signature="e#133#170#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/unsupervised_learning/analysis/multivariate_timeseries_lstm_handcrafted.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="70" column="59" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="59" />
+              <folding>
+                <element signature="e#94#112#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,7 +99,15 @@
         <option value="$PROJECT_DIR$/assessments2/data_process_general/2_combine_raw_epoch_main.py" />
         <option value="$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py" />
         <option value="$PROJECT_DIR$/assessments2/data_process_general/1_combine_actilife_files_1minref.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/preprocess/private_combine_raw_and_epoch_files_no_filter.py" />
+        <option value="$PROJECT_DIR$/util/device-user-map.py" />
         <option value="$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/preprocess/generate_statistical_features.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/preprocess/2_combine_raw_epoch_main.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/preprocess/generate_raw_features.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/modeling/lstm_model.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/modeling/cnn_model.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/preprocess/3_convert_to_supervised.py" />
       </list>
     </option>
   </component>
@@ -77,6 +122,7 @@
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
+      <autoscrollFromSource ProjectPane="true" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
@@ -90,18 +136,13 @@
             <path>
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
               <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
-              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
-              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
-              <item name="data_process_general" type="462c0819:PsiDirectoryNode" />
+              <item name="supervised_learning" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
               <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
               <item name="supervised_learning" type="462c0819:PsiDirectoryNode" />
+              <item name="modeling" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
@@ -118,7 +159,159 @@
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
               <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
               <item name="unsupervised_learning" type="462c0819:PsiDirectoryNode" />
-              <item name="data_process" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="numpy" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="numpy" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="groupby" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="indexes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="io" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="numpy" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="numpy" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="groupby" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="indexes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (tensorflow-gpu) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="pandas" type="462c0819:PsiDirectoryNode" />
+              <item name="io" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -133,6 +326,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/supervised_learning/preprocess" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -151,6 +345,134 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Python.cnn_model">
+    <configuration name="1_combine_actilife_files_1minref" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Accelerometer-project_Rashmika" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supervised_learning/preprocess" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="2_combine_raw_epoch_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Accelerometer-project_Rashmika" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supervised_learning/preprocess" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/preprocess/2_combine_raw_epoch_main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="3_convert_to_supervised" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Accelerometer-project_Rashmika" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supervised_learning/preprocess" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/preprocess/3_convert_to_supervised.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="cnn_model" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true">
+      <module name="Accelerometer-project_Rashmika" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supervised_learning/modeling" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/modeling/cnn_model.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="device-user-map" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true">
+      <module name="Accelerometer-project_Rashmika" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/util" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/util/device-user-map.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.1_combine_actilife_files_1minref" />
+      <item itemvalue="Python.2_combine_raw_epoch_main" />
+      <item itemvalue="Python.device-user-map" />
+      <item itemvalue="Python.3_convert_to_supervised" />
+      <item itemvalue="Python.cnn_model" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.cnn_model" />
+        <item itemvalue="Python.1_combine_actilife_files_1minref" />
+        <item itemvalue="Python.3_convert_to_supervised" />
+        <item itemvalue="Python.2_combine_raw_epoch_main" />
+        <item itemvalue="Python.device-user-map" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -161,30 +483,38 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1569462896556</updated>
-      <workItem from="1569462902806" duration="3081000" />
+      <workItem from="1569462902806" duration="37616000" />
     </task>
+    <task id="LOCAL-00001" summary="start phase 2 predictions">
+      <created>1569556775176</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1569556775176</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3081000" />
+    <option name="totallyTimeSpent" value="37616000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Python Console" />
       <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" sideWeight="0.5007163" side_tool="true" weight="0.32974428" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49928367" visible="true" weight="0.32974428" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39973083" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -198,17 +528,83 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="start phase 2 predictions" />
+    <option name="LAST_COMMIT_MESSAGE" value="start phase 2 predictions" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/util/device-user-map.py</url>
+          <line>65</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$2_combine_raw_epoch_main.coverage" NAME="2_combine_raw_epoch_main Coverage Results" MODIFIED="1569990427738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$cnn_model.coverage" NAME="cnn_model Coverage Results" MODIFIED="1570083253584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$3_convert_to_supervised.coverage" NAME="3_convert_to_supervised Coverage Results" MODIFIED="1570062881571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$1_combine_actilife_files_1minref.coverage" NAME="1_combine_actilife_files_1minref Coverage Results" MODIFIED="1570083022480" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$device_user_map.coverage" NAME="device-user-map Coverage Results" MODIFIED="1569566410901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>list(list(np.reshape(df_inputs.values, (window_length * len(input_cols), 1)).T)[0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>df_inputs.shape</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dataframe.loc[0:5, input_cols].shape</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dataframe.loc[i:(i+window_length), input_cols].shape</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dataframe.iloc[i:(i+window_length), input_cols].shape</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dataframe.iloc[i:(i+window_length),:].shape</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dataframe.iloc[0:5,:].shape</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(i+window_length)-i</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>col_names_out[495*3:]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-53">
-          <caret line="126" selection-start-line="126" selection-end-line="126" />
-          <folding>
-            <element signature="e#300#318#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/unsupervised_learning/data_process/1_combine_actilife_files.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -219,11 +615,6 @@
             <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unsupervised_learning/analysis/multivariate_timeseries_lstm_handcrafted.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-867" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/unsupervised_learning/data_process/2_combine_raw_epoch_main.py">
@@ -283,24 +674,157 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/private_combine_raw_and_epoch_files_no_filter.py">
+    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/2_recorrect_combined_epoch_linear.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="23" column="37" lean-forward="true" selection-start-line="23" selection-start-column="37" selection-end-line="23" selection-end-column="37" />
+        <state relative-caret-position="255">
+          <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/envs/tensorflow-gpu/Lib/site-packages/pandas/core/indexes/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="3137" selection-start-line="3137" selection-end-line="3137" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_process/combine_raw_epoch_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/private_combine_raw_and_epoch_files_no_filter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-204">
+          <caret line="23" column="19" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="19" />
+          <folding>
+            <element signature="e#300#318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assessments2/staudenmayer/data_process/epcoh_15s/private_combine_raw_and_epoch_files_no_filter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-347" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assessments2/staudenmayer/data_process/epcoh_15s/2_combine_raw_epoch_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/user_details.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/device-user-map.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="61" column="26" lean-forward="true" selection-start-line="61" selection-start-column="26" selection-end-line="61" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/envs/tensorflow-gpu/Lib/site-packages/pandas/core/groupby/groupby.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="621" selection-start-line="621" selection-end-line="621" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/generate_statistical_features.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
+          <folding>
+            <element signature="e#300#318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/envs/tensorflow-gpu/Lib/site-packages/pandas/io/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="423" selection-start-line="423" selection-end-line="423" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/2_combine_raw_epoch_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
+        <state relative-caret-position="8">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/envs/tensorflow-gpu/Lib/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/generate_raw_features.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-68">
+          <caret line="29" column="41" lean-forward="true" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="41" />
+          <folding>
+            <element signature="e#300#318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/unsupervised_learning/analysis/multivariate_timeseries_lstm_handcrafted.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="70" column="59" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="59" />
+          <folding>
+            <element signature="e#94#112#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/1_combine_actilife_files_1minref.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="-663">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/preprocess/3_convert_to_supervised.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/cnn_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="38" column="40" lean-forward="true" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+          <folding>
+            <element signature="e#133#170#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
