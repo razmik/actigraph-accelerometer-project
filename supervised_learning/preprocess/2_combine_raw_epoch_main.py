@@ -11,8 +11,10 @@ STAT_FEATURE_OUT_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/
 RAW_FEATURE_OUT_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/'
 
 input_detail_filenames_list = [
-    "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/LSM1_ActiveTimeline_Details_v1.csv",
-    "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/LSM2_ActiveTimeline_Details_v1.csv"
+    # "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week1_ActiveTimeline_Details.csv",
+    # "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM2_Week1_ActiveTimeline_Details.csv",
+    "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week2_ActiveTimeline_Details.csv",
+    "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM2_Week2_ActiveTimeline_Details.csv"
 ]
 TIME_EPOCH_DICT = {
     'Epoch1': 100,
@@ -38,18 +40,30 @@ if __name__ == "__main__":
         input_details = pd.read_csv(input_detail_filename, usecols=[0, 1, 2, 3, 4, 9, 10])
         input_details.columns = ['experiment', 'week', 'day', 'date', 'subject', 'row_start', 'row_end']
 
+        input_details['date'] = pd.to_datetime(input_details['date'])
+
         for index, row in tqdm(input_details.iterrows(), total=input_details.shape[0]):
 
             experiment = row['experiment']
             week = row['week']
             day = row['day']
-            date_line = row['date'].split('/')
-            date = '({}-{}-{:02d})'.format(date_line[2], date_line[1], int(date_line[0]))
+
+            # if '-' in row['date']:
+            #     date_line = row['date'].split('-')
+            # else:
+            #     date_line = row['date'].split('/')
+
+            date = '({}-{}-{})'.format(row['date'].year, row['date'].month, row['date'].day)
             user = row['subject'].split(' ')[0]
             device = 'Wrist'
 
             starting_row = row['row_start']
             end_row = row['row_end']
+
+            exclude_subject_1 = ('LSM1', 'Week 2', 'Thursday', 'LSM138')
+
+            if experiment == exclude_subject_1[0] and week == exclude_subject_1[1] and day == exclude_subject_1[2] and user == exclude_subject_1[3]:
+                continue
 
             if end_row > starting_row > -1 and end_row > -1:
 

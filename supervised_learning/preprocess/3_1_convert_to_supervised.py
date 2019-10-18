@@ -76,17 +76,27 @@ if __name__ == "__main__":
     if not exists(OUTPUT_FOLDER):
         makedirs(OUTPUT_FOLDER)
 
-    all_files = [f for f in listdir(INPUT_DATA_FOLDER) if isfile(join(INPUT_DATA_FOLDER, f))]
+    all_files = [f for f in listdir(INPUT_DATA_FOLDER) if isfile(join(INPUT_DATA_FOLDER, f)) and f[:6] in ['LSM106', 'LSM127']]
 
     for f in tqdm(all_files):
         #  84%|████████▎ | 705/842 [5:39:10<1:15:31, 33.08s/it]
 
         df = pd.read_csv(join(INPUT_DATA_FOLDER, f), usecols=req_cols)
 
-        # dataframe, window_length, input_cols, target_col
-        supervised_data = reshape_to_windows(df, window_length, input_cols, target_cols)
+        df4 = df.loc[df['waist_intensity'] == 4]
 
-        out_name = join(OUTPUT_FOLDER, f.replace('.csv', '_supervised.csv'))
-        supervised_data.to_csv(out_name, index=None)
+        if df4.shape[0] > 0:
+            print('problem.')
+
+        # for index, row in df4.iterrows():
+        #
+        #     if row['waist_intensity'] == 4:
+        #         print(index, row['waist_intensity'])
+
+        # # dataframe, window_length, input_cols, target_col
+        # supervised_data = reshape_to_windows(df, window_length, input_cols, target_cols)
+        #
+        # out_name = join(OUTPUT_FOLDER, f.replace('.csv', '_supervised.csv'))
+        # supervised_data.to_csv(out_name, index=None)
 
     print('Completed.')

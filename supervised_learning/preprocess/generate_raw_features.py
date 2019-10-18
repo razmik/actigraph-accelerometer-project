@@ -38,7 +38,7 @@ def process(input_data_folder, epoch_file_folder, output_folder, starting_row, e
         n = epoch_duration
         epoch_start = 1 + int(starting_row / n)
 
-        output_filename = '{}/{}_row-{}_to_{}.csv'.format(output_path, path_components[7].replace('RAW.csv', ''), int(starting_row / n), int(end_row / n))
+        output_filename = '{}/{}/{}_row-{}_to_{}.csv'.format(output_path, week, path_components[7].replace('RAW.csv', ''), int(starting_row / n), int(end_row / n))
 
         if exists(output_filename):
             return

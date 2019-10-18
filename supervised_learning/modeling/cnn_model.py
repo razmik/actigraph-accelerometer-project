@@ -15,10 +15,10 @@ from sklearn.metrics import classification_report
 from sklearn import preprocessing
 
 import keras
-# from keras.models import Sequential
-# from keras.layers import Dense, Dropout, Flatten, Reshape, GlobalAveragePooling1D
-# from keras.layers import Conv2D, MaxPooling2D, Conv1D, MaxPooling1D
-# from keras.utils import np_utils
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten, Reshape, GlobalAveragePooling1D
+from keras.layers import Conv2D, MaxPooling2D, Conv1D, MaxPooling1D
+from keras.utils import np_utils
 
 
 # DATA_ROOT = "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/supervised_data/window-500/"

@@ -7,13 +7,18 @@ import itertools
 from tqdm import tqdm
 
 
+"""
+MAKE SURETHE EPOCH START ROW NUMBER!!!!
+"""
+
+
 EXPERIMENTS = ['LSM1', 'LSM2']
 DAYS = ['Thursday', 'Wednesday']
-WEEKS = ['Week 1']
-TIME_EPOCHS = [1]#, 5, 6, 7, 10, 15, 30, 60]
+WEEKS = ['Week 2']
+TIME_EPOCHS = [15]#, 5, 6, 7, 10, 15, 30, 60]
 
 HIP_KEY = 'Waist'
-EPOCH_START_ROW = 10
+EPOCH_START_ROW = {'Week 1': 10, 'Week 2': 11}
 ROOT_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-ActilifeProcessedEpochs/'
 
 
@@ -66,7 +71,7 @@ if __name__ == "__main__":
             """
             Calculate Waist (hip) epoch values and reference parameters
             """
-            hip_epoch_data = pd.read_csv(hip_file, skiprows=EPOCH_START_ROW, usecols=[0, 1, 2], header=None)
+            hip_epoch_data = pd.read_csv(hip_file, skiprows=EPOCH_START_ROW[week], usecols=[0, 1, 2], header=None)
             # Axis 1 (y) - Goes through head and middle of feet
             # Axis 2 (x) - Goes through 2 hips
             # Axis 3 (z) - Goes through front and back of the stomach
