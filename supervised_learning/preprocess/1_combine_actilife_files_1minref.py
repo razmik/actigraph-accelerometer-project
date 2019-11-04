@@ -12,10 +12,10 @@ MAKE SURETHE EPOCH START ROW NUMBER!!!!
 """
 
 
-EXPERIMENTS = ['LSM1', 'LSM2']
-DAYS = ['Thursday', 'Wednesday']
+EXPERIMENTS = ['LSM2']
+DAYS = ['Wednesday']
 WEEKS = ['Week 2']
-TIME_EPOCHS = [15]#, 5, 6, 7, 10, 15, 30, 60]
+TIME_EPOCHS = [1]#, 5, 6, 7, 10, 15, 30, 60]
 
 HIP_KEY = 'Waist'
 EPOCH_START_ROW = {'Week 1': 10, 'Week 2': 11}
@@ -59,6 +59,9 @@ if __name__ == "__main__":
             # Filename example: LSM203 Waist (2016-11-02)60sec.csv
             file_components = file.split(' ')
             key = file_components[0]
+
+            # if key != 'LSM270':
+            #     continue
 
             if key not in file_dictionary:
                 file_dictionary[key] = {file_components[1]: file}

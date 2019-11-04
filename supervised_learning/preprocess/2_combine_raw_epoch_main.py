@@ -13,7 +13,7 @@ RAW_FEATURE_OUT_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P
 input_detail_filenames_list = [
     # "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week1_ActiveTimeline_Details.csv",
     # "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM2_Week1_ActiveTimeline_Details.csv",
-    "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week2_ActiveTimeline_Details.csv",
+    #"E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week2_ActiveTimeline_Details.csv",
     "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM2_Week2_ActiveTimeline_Details.csv"
 ]
 TIME_EPOCH_DICT = {
@@ -41,6 +41,7 @@ if __name__ == "__main__":
         input_details.columns = ['experiment', 'week', 'day', 'date', 'subject', 'row_start', 'row_end']
 
         input_details['date'] = pd.to_datetime(input_details['date'])
+
 
         for index, row in tqdm(input_details.iterrows(), total=input_details.shape[0]):
 
