@@ -238,9 +238,11 @@ def run(FOLDER_NAME, trial_id):
 
     CLASSIFICATION_RESULTS_FOLDER = OUTPUT_FOLDER_ROOT + '/classif_results/'
     REGRESSION_RESULTS_FOLDER = OUTPUT_FOLDER_ROOT + '/regress_results/'
-    if not exists(OUTPUT_FOLDER_ROOT):
-        makedirs(CLASSIFICATION_RESULTS_FOLDER)
-        makedirs(REGRESSION_RESULTS_FOLDER)
+
+    # Create output folders
+    for f in [OUTPUT_FOLDER_ROOT, CLASSIFICATION_RESULTS_FOLDER, REGRESSION_RESULTS_FOLDER]:
+        if not exists(f):
+            makedirs(f)
 
     # The number of steps within one time segment
     TIME_PERIODS = int(FOLDER_NAME.split('-')[1])
@@ -250,10 +252,9 @@ def run(FOLDER_NAME, trial_id):
     all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
     X_data, Y_data_classif, Y_data_regress, ID_user = load_data(all_files_test)
 
-    # Eval
     print('Evaluating Classification')
-    evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESULTS_FOLDER, X_data, Y_data_classif, ID_user,
-                                 TIME_PERIODS, STEP_DISTANCE)
+    evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESULTS_FOLDER, X_data, Y_data_classif,
+                                  ID_user, TIME_PERIODS, STEP_DISTANCE)
 
     print('Evaluating Regression')
     evaluate_regression_modal(REGRESS_MODEL_ROOT_FOLDER, REGRESSION_RESULTS_FOLDER, X_data, Y_data_regress, ID_user,
