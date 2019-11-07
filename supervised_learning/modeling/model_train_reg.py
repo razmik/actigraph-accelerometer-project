@@ -22,7 +22,6 @@ from tensorflow.python.keras.callbacks import TensorBoard
 from scipy.stats.stats import pearsonr
 from sklearn.metrics import explained_variance_score, mean_squared_error, r2_score, confusion_matrix
 from math import sqrt
-import utils as utils
 import statistical_extensions as SE
 
 pd.options.display.float_format = '{:.1f}'.format
@@ -68,12 +67,12 @@ def plot_model(history, MODEL_FOLDER):
     plt.close()
 
 
-def run(FOLDER_NAME):
+def run(FOLDER_NAME, trial_id):
 
     DATA_ROOT = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/'
     TRAIN_DATA_FOLDER = DATA_ROOT + 'Week 1/supervised_data/{}/'.format(FOLDER_NAME)
     TEST_DATA_FOLDER = DATA_ROOT + 'Week 2/supervised_data/{}/'.format(FOLDER_NAME)
-    OUTPUT_FOLDER_ROOT = '../output/regression/{}'.format(FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = '../output/regression/v{}/{}'.format(trial_id, FOLDER_NAME)
 
     MODEL_FOLDER = OUTPUT_FOLDER_ROOT + '/model_out/'
     RESULTS_FOLDER = OUTPUT_FOLDER_ROOT + '/results/'
@@ -257,13 +256,14 @@ if __name__ == '__main__':
     temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/Week 1/supervised_data/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
 
-    allowed_windows = [100, 200, 6000, 9000]
+    # allowed_windows = [100, 200, 6000, 9000]
+    trial_num = 2
 
     for f in all_files:
 
-        if int(f.split('-')[1]) not in allowed_windows:
-            continue
+        # if int(f.split('-')[1]) not in allowed_windows:
+        #     continue
 
         print('\n\n\n\nProcessing {}'.format(f))
-        run(f)
+        run(f, trial_num)
 
