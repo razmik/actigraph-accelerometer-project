@@ -434,7 +434,7 @@ class GeneralStats:
             specC_se = np.sqrt((specificityC * (1 - specificityC)) / (tnc + eac + ebc))
             specificityC_confidence_interval = (specificityC - (1.96 * specC_se), specificityC + (1.96 * specC_se))
 
-            round_digits = 5
+            round_digits = 4
 
             sensitivityA_confidence_interval = (round(sensitivityA_confidence_interval[0], round_digits),
                                                 round(sensitivityA_confidence_interval[1], round_digits))
@@ -508,7 +508,7 @@ class GeneralStats:
             specB_se = np.sqrt((specificityB * (1 - specificityB)) / (tnb + eab))
             specificityB_confidence_interval = (specificityB - (1.96 * specB_se), specificityB + (1.96 * specB_se))
 
-            round_digits = 5
+            round_digits = 4
 
             sensitivityA_confidence_interval = (round(sensitivityA_confidence_interval[0], round_digits),
                                                 round(sensitivityA_confidence_interval[1], round_digits))

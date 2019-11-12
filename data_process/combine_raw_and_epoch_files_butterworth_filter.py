@@ -67,7 +67,6 @@ def process_with_filter(starting_row, end_row, experiment, week, day, user, date
     """
     Filter the raw X, Y, Z through 4th order Butterworth filter - 0.5Hz to 2.5Hz
     """
-
     def butter_bandpass(lowcut, highcut, fs, order):
         nyq = 0.5 * fs
         low = lowcut / nyq
