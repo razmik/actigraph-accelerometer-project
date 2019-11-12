@@ -118,9 +118,9 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM',
                                           output_filename=join(CLASSIFICATION_RESULTS_FOLDER, 'confusion_matrix.png'))
 
-    # result_string = '\n'.join(results_descriptions)
-    # with open(join(CLASSIFICATION_RESULTS_FOLDER, 'result_report.txt'), "w") as text_file:
-    #     text_file.write(result_string)
+    result_string = '\n'.join(results_descriptions)
+    with open(join(CLASSIFICATION_RESULTS_FOLDER, 'result_report.txt'), "w") as text_file:
+        text_file.write(result_string)
 
 
 def evaluate_regression_modal(REGRESS_MODEL_ROOT_FOLDER, REGRESSION_RESULTS_FOLDER, test_X_data, test_Y_data, test_ID_user,
@@ -266,8 +266,8 @@ def run(FOLDER_NAME, training_version, trial_id):
                                   ID_user, TIME_PERIODS, STEP_DISTANCE)
 
     print('Evaluating Regression')
-    # evaluate_regression_modal(REGRESS_MODEL_ROOT_FOLDER, REGRESSION_RESULTS_FOLDER, X_data, Y_data_regress, ID_user,
-    #                           TIME_PERIODS, STEP_DISTANCE)
+    evaluate_regression_modal(REGRESS_MODEL_ROOT_FOLDER, REGRESSION_RESULTS_FOLDER, X_data, Y_data_regress, ID_user,
+                              TIME_PERIODS, STEP_DISTANCE)
 
     print('Completed {}.'.format(FOLDER_NAME))
 
