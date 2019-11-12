@@ -5,6 +5,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from os import listdir, makedirs
 from os.path import join, isfile, exists
+import pickle
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
@@ -75,6 +76,7 @@ def plot_model(history, MODEL_FOLDER):
 def run(FOLDER_NAME, trial_id):
 
     DATA_ROOT = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/'
+    TRAIN_TEST_SUBJECT_PICKLE = 'participant_split/train_test_split.pickle'
     TRAIN_DATA_FOLDER = DATA_ROOT + 'Week 1/supervised_data/{}/'.format(FOLDER_NAME)
     TEST_DATA_FOLDER = DATA_ROOT + 'Week 2/supervised_data/{}/'.format(FOLDER_NAME)
     OUTPUT_FOLDER_ROOT = '../output/classification/v{}/{}'.format(trial_id, FOLDER_NAME)
@@ -100,10 +102,17 @@ def run(FOLDER_NAME, trial_id):
     LABEL = 'activity_classes'
     results_descriptions.append('Time Period = {}, Step Distance = {}, Label = {}'.format(TIME_PERIODS, STEP_DISTANCE, LABEL))
 
+    # Test Train Split
+    with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
+        split_dict = pickle.load(handle)
+    train_subjects = split_dict['train']
+    test_subjects = split_dict['test']
+
     # Load all data
     all_files_train = [join(TRAIN_DATA_FOLDER, f) for f in listdir(TRAIN_DATA_FOLDER) if
-                       isfile(join(TRAIN_DATA_FOLDER, f))]
-    all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
+                       isfile(join(TRAIN_DATA_FOLDER, f)) and f.split(' ')[0] in train_subjects]
+    all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))
+                      and f.split(' ')[0] in test_subjects]
     results_descriptions.append('Train files: {}\nTest files: {}'.format(len(all_files_train), len(all_files_test)))
 
     train_X_data, train_Y_data, train_ID_user = load_data(all_files_train)
@@ -152,6 +161,18 @@ def run(FOLDER_NAME, trial_id):
     y_test = np_utils.to_categorical(y_test, num_classes)
 
     # Model Architecture
+    # model_m = Sequential()
+    # model_m.add(Reshape((TIME_PERIODS, num_sensors), input_shape=(input_shape,)))
+    # model_m.add(Conv1D(80, 10, activation='relu', input_shape=(TIME_PERIODS, num_sensors)))
+    # model_m.add(Conv1D(100, 10, activation='relu'))
+    # model_m.add(MaxPooling1D(3))
+    # model_m.add(Conv1D(160, 10, activation='relu'))
+    # model_m.add(Conv1D(180, 10, activation='relu'))
+    # model_m.add(GlobalMaxPooling1D())
+    # model_m.add(Dropout(0.5))
+    # model_m.add(Dense(num_classes, activation='softmax'))
+
+    # New architecture
     model_m = Sequential()
     model_m.add(Reshape((TIME_PERIODS, num_sensors), input_shape=(input_shape,)))
     model_m.add(Conv1D(80, 10, activation='relu', input_shape=(TIME_PERIODS, num_sensors)))
@@ -159,6 +180,9 @@ def run(FOLDER_NAME, trial_id):
     model_m.add(MaxPooling1D(3))
     model_m.add(Conv1D(160, 10, activation='relu'))
     model_m.add(Conv1D(180, 10, activation='relu'))
+    model_m.add(MaxPooling1D(3))
+    model_m.add(Conv1D(220, 10, activation='relu'))
+    model_m.add(Conv1D(240, 10, activation='relu'))
     model_m.add(GlobalMaxPooling1D())
     model_m.add(Dropout(0.5))
     model_m.add(Dense(num_classes, activation='softmax'))
@@ -168,7 +192,7 @@ def run(FOLDER_NAME, trial_id):
             filepath='temp_model_out/best_model.{epoch:03d}-{val_loss:.2f}.h5',
             monitor='val_loss', save_best_only=True),
         TensorBoard(log_dir='logs/{}'.format(time())),
-        EarlyStopping(monitor='val_loss', patience=8)
+        EarlyStopping(monitor='val_loss', patience=15)
     ]
 
     model_m.compile(loss='categorical_crossentropy',
@@ -177,7 +201,7 @@ def run(FOLDER_NAME, trial_id):
 
     # Hyper-parameters
     BATCH_SIZE = 32
-    EPOCHS = 15
+    EPOCHS = 40
 
     history = model_m.fit(X_train,
                           y_train,
@@ -240,12 +264,13 @@ if __name__ == '__main__':
     temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/Week 1/supervised_data/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
 
-    trial_num = 2
+    allowed_windows = [1500, 3000, 6000]
+    trial_num = 4
 
     for f in sorted(all_files, reverse=True):
 
-        # if f == 'window-9000-overlap-4500':
-        #     continue
+        if int(f.split('-')[1]) not in allowed_windows:
+            continue
 
         print('\n\n\n\nProcessing {}'.format(f))
         run(f, trial_num)

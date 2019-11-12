@@ -5,6 +5,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from os import listdir, makedirs
 from os.path import join, isfile, exists
+import pickle
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
@@ -121,6 +122,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     with open(join(CLASSIFICATION_RESULTS_FOLDER, 'result_report.txt'), "w") as text_file:
         text_file.write(result_string)
 
+
 def evaluate_regression_modal(REGRESS_MODEL_ROOT_FOLDER, REGRESSION_RESULTS_FOLDER, test_X_data, test_Y_data, test_ID_user,
                                  TIME_PERIODS, STEP_DISTANCE):
 
@@ -224,15 +226,16 @@ def evaluate_regression_modal(REGRESS_MODEL_ROOT_FOLDER, REGRESSION_RESULTS_FOLD
         text_file.write(result_string)
 
 
-def run(FOLDER_NAME, trial_id):
+def run(FOLDER_NAME, training_version, trial_id):
 
     model_folder_name = FOLDER_NAME.split('-')
     model_folder_name[-1] = str(int(int(model_folder_name[-1])/2))
     model_folder_name = '-'.join(model_folder_name)
 
     DATA_ROOT = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/'
-    CLASSIF_MODEL_ROOT_FOLDER = '../output/classification/v1/{}/model_out/'.format(model_folder_name)
-    REGRESS_MODEL_ROOT_FOLDER = '../output/regression/v1/{}/model_out/'.format(model_folder_name)
+    TRAIN_TEST_SUBJECT_PICKLE = 'participant_split/train_test_split.pickle'
+    CLASSIF_MODEL_ROOT_FOLDER = '../output/classification/v{}/{}/model_out/'.format(training_version, model_folder_name)
+    REGRESS_MODEL_ROOT_FOLDER = '../output/regression/v{}/{}/model_out/'.format(training_version, model_folder_name)
     TEST_DATA_FOLDER = DATA_ROOT + 'Week 2/test_data/{}/'.format(FOLDER_NAME)
     OUTPUT_FOLDER_ROOT = '../output/test_results/v{}/{}'.format(trial_id, FOLDER_NAME)
 
@@ -248,8 +251,14 @@ def run(FOLDER_NAME, trial_id):
     TIME_PERIODS = int(FOLDER_NAME.split('-')[1])
     STEP_DISTANCE = int(FOLDER_NAME.split('-')[3])
 
+    # Test Train Split
+    with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
+        split_dict = pickle.load(handle)
+    test_subjects = split_dict['test']
+
     # Load all data
-    all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
+    all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))
+                      and f.split(' ')[0] in test_subjects]
     X_data, Y_data_classif, Y_data_regress, ID_user = load_data(all_files_test)
 
     print('Evaluating Classification')
@@ -269,14 +278,15 @@ if __name__ == '__main__':
     temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/Week 2/test_data/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
 
-    trial_num = 1
-    not_allowed_list = ['window-9000-overlap-9000', 'window-800-overlap-800']
+    trial_num = 4
+    training_version = 4
+    allowed_list = [1500, 3000, 6000]
 
     for f in sorted(all_files, reverse=True):
 
-        if f in not_allowed_list:
+        if int(f.split('-')[1]) not in allowed_list:
             continue
 
-        print('\n\n\n\nProcessing {}'.format(f))
-        run(f, trial_num)
+        print('\n\nProcessing {}'.format(f))
+        run(f, training_version, trial_num)
 
