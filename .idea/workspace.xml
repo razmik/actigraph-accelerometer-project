@@ -1,7 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1feaf6e7-244f-4359-9cae-ece2cde690b7" name="Default Changelist" comment="" />
+    <list default="true" id="1feaf6e7-244f-4359-9cae-ece2cde690b7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/.RData" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/.Rhistory" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/compose_files_for_eqv_testing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/equiv_test.R" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/input/hlr_mvpa.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/input/silr_sb.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/input/time_in_PA-categories.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/hlr_mvpa/hlr_mvpa_female.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/hlr_mvpa/hlr_mvpa_male.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/hlr_mvpa/hlr_mvpa_normal.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/hlr_mvpa/hlr_mvpa_obese.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/hlr_mvpa/hlr_mvpa_other.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/hlr_mvpa/hlr_mvpa_overall.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/hlr_mvpa/hlr_mvpa_overweight.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_female.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_male.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_normal.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_obese.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_other.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_overall.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_overweight.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/.Rhistory" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 1.r" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 1.sas" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 2.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 2.r" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 2.sas" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 3.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 3.r" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/Example 3.sas" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/hilderbrand.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/hilderbrand.r" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/hlr_mvpa.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/hlr_mvpa.r" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/silr_sb.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/silr_sb.r" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/stlr_mvpa.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/samples/stlr_mvpa.r" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/modeling/model_test_reg_individual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supervised_learning/modeling/model_test_individual.py" beforeDir="false" afterPath="$PROJECT_DIR$/supervised_learning/modeling/model_test_class_individual.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,67 +53,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_both.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="63" selection-start-line="20" selection-start-column="63" selection-end-line="20" selection-end-column="63" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_class.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2074">
-              <caret line="122" selection-start-line="122" selection-end-line="122" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_reg.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3111">
-              <caret line="185" column="15" selection-start-line="185" selection-start-column="15" selection-end-line="185" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1666">
-              <caret line="98" column="50" selection-start-line="98" selection-start-column="50" selection-end-line="98" selection-end-column="50" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test_individual.py">
+        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test_reg_individual.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="61" column="50" lean-forward="true" selection-start-line="61" selection-start-column="50" selection-end-line="61" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/statistical_extensions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7395">
-              <caret line="435" selection-start-line="435" selection-end-line="435" />
+            <state relative-caret-position="416">
+              <caret line="122" column="27" selection-start-line="122" selection-start-column="27" selection-end-line="122" selection-end-column="27" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#1189#2778#0" />
               </folding>
             </state>
           </provider>
@@ -120,12 +109,14 @@
         <option value="$PROJECT_DIR$/supervised_learning/analysis/analyze_total_time.py" />
         <option value="$PROJECT_DIR$/supervised_learning/preprocess/4_setup_test_data.py" />
         <option value="$PROJECT_DIR$/data_process/combine_raw_and_epoch_files_butterworth_filter.py" />
-        <option value="$PROJECT_DIR$/supervised_learning/modeling/model_train_reg.py" />
         <option value="$PROJECT_DIR$/supervised_learning/modeling/model_train_both.py" />
         <option value="$PROJECT_DIR$/supervised_learning/modeling/model_train_class.py" />
-        <option value="$PROJECT_DIR$/supervised_learning/modeling/model_test.py" />
         <option value="$PROJECT_DIR$/supervised_learning/modeling/statistical_extensions.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/modeling/model_test.py" />
         <option value="$PROJECT_DIR$/supervised_learning/modeling/model_test_individual.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/modeling/model_train_reg.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/modeling/model_test_class_individual.py" />
+        <option value="$PROJECT_DIR$/supervised_learning/modeling/model_test_reg_individual.py" />
       </list>
     </option>
   </component>
@@ -154,7 +145,12 @@
             <path>
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
               <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
-              <item name="actilife_counts" type="462c0819:PsiDirectoryNode" />
+              <item name="analyze" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
+              <item name="assessments2" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
@@ -165,7 +161,27 @@
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
               <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
               <item name="supervised_learning" type="462c0819:PsiDirectoryNode" />
-              <item name="modeling" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
+              <item name="supervised_learning" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis" type="462c0819:PsiDirectoryNode" />
+              <item name="eqv_testing" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
+              <item name="supervised_learning" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Accelerometer-project_Rashmika" type="462c0819:PsiDirectoryNode" />
+              <item name="supervised_learning" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
+              <item name="test_results_individual" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Accelerometer-project_Rashmika" type="b2602c69:ProjectViewProjectNode" />
@@ -181,22 +197,22 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/supervised_learning/modeling" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/supervised_learning/analysis" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\analysis" />
+      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\modeling" />
+      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\preprocess" />
+      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\utils" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\output\regression" />
       <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\utils" />
       <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\preprocess" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\modeling" />
-      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\preprocess" />
-      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\analysis" />
-      <recent name="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\utils" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -211,7 +227,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.model_test_individual">
+  <component name="RunManager" selected="Python.model_test_reg_individual">
     <configuration name="model_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Accelerometer-project_Rashmika" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -234,6 +250,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="model_test_class_individual" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Accelerometer-project_Rashmika" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supervised_learning/modeling" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/modeling/model_test_class_individual.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="model_test_individual" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Accelerometer-project_Rashmika" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -247,7 +285,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/modeling/model_test_individual.py" />
+      <option name="SCRIPT_NAME" value="E:\Projects\Accelerometer-project_Rashmika\supervised_learning\modeling\model_test_class_individual.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -256,7 +294,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="model_train_both" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="model_test_reg_individual" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Accelerometer-project_Rashmika" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -269,7 +307,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/modeling/model_train_both.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/modeling/model_test_reg_individual.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -300,42 +338,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="model_train_reg" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Accelerometer-project_Rashmika" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supervised_learning/modeling" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supervised_learning/modeling/model_train_reg.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.model_train_class" />
-      <item itemvalue="Python.model_train_reg" />
       <item itemvalue="Python.model_test" />
-      <item itemvalue="Python.model_train_both" />
       <item itemvalue="Python.model_test_individual" />
+      <item itemvalue="Python.model_test_reg_individual" />
+      <item itemvalue="Python.model_test_class_individual" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.model_test_reg_individual" />
+        <item itemvalue="Python.model_test_class_individual" />
         <item itemvalue="Python.model_test_individual" />
         <item itemvalue="Python.model_test" />
         <item itemvalue="Python.model_train_class" />
-        <item itemvalue="Python.model_train_both" />
-        <item itemvalue="Python.model_train_reg" />
       </list>
     </recent_temporary>
   </component>
@@ -355,6 +371,8 @@
       <workItem from="1571474733431" duration="97945000" />
       <workItem from="1573520254036" duration="13782000" />
       <workItem from="1573601773332" duration="100000" />
+      <workItem from="1573601955321" duration="1125000" />
+      <workItem from="1574915111501" duration="17060000" />
     </task>
     <task id="LOCAL-00001" summary="start phase 2 predictions">
       <created>1569556775176</created>
@@ -405,23 +423,36 @@
       <option name="project" value="LOCAL" />
       <updated>1573524043043</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add actilife counts and individual evaluation">
+      <created>1573602147488</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1573602147488</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update">
+      <created>1573602353962</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1573602353962</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="191555000" />
+    <option name="totallyTimeSpent" value="209740000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20629604" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21108742" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928367" visible="true" weight="0.28672317" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.38418078" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928367" visible="true" weight="0.23618636" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.24011299" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -457,7 +488,9 @@
     <MESSAGE value="update modeling cnn" />
     <MESSAGE value="update model testing" />
     <MESSAGE value="update with test/train unique users" />
-    <option name="LAST_COMMIT_MESSAGE" value="update with test/train unique users" />
+    <MESSAGE value="add actilife counts and individual evaluation" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -482,18 +515,29 @@
           <line>115</line>
           <option name="timeStamp" value="90" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/supervised_learning/modeling/model_test_class_individual.py</url>
+          <line>91</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/supervised_learning/modeling/model_test_reg_individual.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_train.coverage" NAME="model_train Coverage Results" MODIFIED="1572469160098" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
-    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_test_individual.coverage" NAME="model_test_individual Coverage Results" MODIFIED="1573539908967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_test_individual.coverage" NAME="model_test_individual Coverage Results" MODIFIED="1574989828794" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$analyze_valid_time.coverage" NAME="analyze_valid_time Coverage Results" MODIFIED="1572564510685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/analysis" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_train_reg.coverage" NAME="model_train_reg Coverage Results" MODIFIED="1573194860201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$move_files.coverage" NAME="move_files Coverage Results" MODIFIED="1571203612643" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/assessments2/data_process_general" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$1_combine_actilife_files_1minref.coverage" NAME="1_combine_actilife_files_1minref Coverage Results" MODIFIED="1571389174379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$analyze_total_time.coverage" NAME="analyze_total_time Coverage Results" MODIFIED="1572577714335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/analysis" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$summary_stats.coverage" NAME="summary_stats Coverage Results" MODIFIED="1572578512601" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/analysis" />
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_test_reg_individual.coverage" NAME="model_test_reg_individual Coverage Results" MODIFIED="1575010520507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_test.coverage" NAME="model_test Coverage Results" MODIFIED="1573535365584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$device_user_map.coverage" NAME="device-user-map Coverage Results" MODIFIED="1569566410901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$2_combine_raw_epoch_main.coverage" NAME="2_combine_raw_epoch_main Coverage Results" MODIFIED="1571389217352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
@@ -502,6 +546,7 @@
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$4_setup_test_data.coverage" NAME="4_setup_test_data Coverage Results" MODIFIED="1573026950636" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$3_1_convert_to_supervised.coverage" NAME="3_1_convert_to_supervised Coverage Results" MODIFIED="1571012434310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$3_convert_to_supervised.coverage" NAME="3_convert_to_supervised Coverage Results" MODIFIED="1570062881571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
+    <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_test_class_individual.coverage" NAME="model_test_class_individual Coverage Results" MODIFIED="1574997101436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_train_class.coverage" NAME="model_train_class Coverage Results" MODIFIED="1573522479892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$model_train_both.coverage" NAME="model_train_both Coverage Results" MODIFIED="1573255649008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/modeling" />
     <SUITE FILE_PATH="coverage/Accelerometer_project_Rashmika$3_2_data_balancing.coverage" NAME="3_2_data_balancing Coverage Results" MODIFIED="1572437144440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supervised_learning/preprocess" />
@@ -523,6 +568,22 @@ corr = pearsonr(list(y_test), y_pred_test_1d_list)</expression-string>
       </expression>
     </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>[join(REG_MODEL_ROOT_FOLDER, f) for f in listdir(REG_RESULTS_FOLDER) if isfile(join(REG_MODEL_ROOT_FOLDER, f)) and '.h5' in f]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>[join(REG_MODEL_ROOT_FOLDER, f) for f in listdir(REG_RESULTS_FOLDER) if
+                   isfile(join(REG_MODEL_ROOT_FOLDER, f)) and '.h5' in f]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>spearmanr(max_y_test, max_y_pred_test)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>get_time_in(y_test, TIME_PERIODS)</expression-string>
         <language-id>Python</language-id>
@@ -553,113 +614,9 @@ corr = pearsonr(list(y_test), y_pred_test_1d_list)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>actual_data[0] * STEP_DISTANCE if 0 in actual_data else 0</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>actual_data[1] * STEP_DISTANCE if 1 in actual_data else 0</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>actual_data[2] * STEP_DISTANCE if 2 in actual_data else 0</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/unsupervised_learning/data_process/1_combine_actilife_files.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unsupervised_learning/data_process/3_finalise_feature_vector.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-257">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unsupervised_learning/data_process/2_combine_raw_epoch_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/3_recorrect_reference_ee_LR.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/2_recorrect_combined_epoch_ANN_2016.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1410">
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/extensions/statistical_extensions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="786" column="28" lean-forward="true" selection-start-line="776" selection-start-column="8" selection-end-line="786" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/data_process_general/2_recorrect_combined_epoch_linear.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/envs/tensorflow-gpu/Lib/site-packages/pandas/core/indexes/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="3137" selection-start-line="3137" selection-end-line="3137" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data_process/combine_raw_epoch_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/staudenmayer/data_process/epcoh_15s/private_combine_raw_and_epoch_files_no_filter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-347" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assessments2/staudenmayer/data_process/epcoh_15s/2_combine_raw_epoch_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/analyze/user_details.csv">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -926,35 +883,28 @@ corr = pearsonr(list(y_test), y_pred_test_1d_list)</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_both.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="63" selection-start-line="20" selection-start-column="63" selection-end-line="20" selection-end-column="63" />
+        <state relative-caret-position="102">
+          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_class.py">
+    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2074">
-          <caret line="122" selection-start-line="122" selection-end-line="122" />
+        <state relative-caret-position="286">
+          <caret line="255" column="40" lean-forward="true" selection-start-line="255" selection-start-column="40" selection-end-line="255" selection-end-column="40" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_reg.py">
+    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_class.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3111">
-          <caret line="185" column="15" selection-start-line="185" selection-start-column="15" selection-end-line="185" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1666">
-          <caret line="98" column="50" selection-start-line="98" selection-start-column="50" selection-end-line="98" selection-end-column="50" />
+        <state relative-caret-position="547">
+          <caret line="50" column="45" lean-forward="true" selection-start-line="50" selection-start-column="45" selection-end-line="50" selection-end-column="45" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
@@ -963,7 +913,7 @@ corr = pearsonr(list(y_test), y_pred_test_1d_list)</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/statistical_extensions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7395">
+        <state relative-caret-position="178">
           <caret line="435" selection-start-line="435" selection-end-line="435" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -971,10 +921,89 @@ corr = pearsonr(list(y_test), y_pred_test_1d_list)</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test_individual.py">
+    <entry file="file://$PROJECT_DIR$/analyze/time_in_pa_cat/input/silr_sb.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/time_in_pa_cat/equiv_test.R">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/time_in_pa_cat/output/preprocess/silr_sb/silr_sb_female.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="24" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/time_in_pa_cat/compose_files_for_eqv_testing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="34" column="22" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/input/silr_sb.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_train_reg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="218">
-          <caret line="61" column="50" lean-forward="true" selection-start-line="61" selection-start-column="50" selection-end-line="61" selection-end-column="50" />
+          <caret line="231" column="84" selection-start-line="231" selection-start-column="55" selection-end-line="231" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyze/correlation/analyze_correlation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="116" column="52" selection-start-line="116" selection-start-column="36" selection-end-line="116" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/output/preprocess/silr_sb/silr_sb_female.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/compose_files_for_eqv_testing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/analysis/eqv_testing/equiv_test.R">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test_class_individual.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-953">
+          <caret line="71" column="90" selection-start-line="71" selection-start-column="61" selection-end-line="71" selection-end-column="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/output/test_results_individual/v7/window-6000-overlap-6000/results_reg.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supervised_learning/modeling/model_test_reg_individual.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="122" column="27" selection-start-line="122" selection-start-column="27" selection-end-line="122" selection-end-column="27" />
+          <folding>
+            <element signature="e#1189#2778#0" />
+          </folding>
         </state>
       </provider>
     </entry>

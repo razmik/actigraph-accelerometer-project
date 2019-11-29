@@ -15,7 +15,7 @@ import keras
 from keras.models import load_model
 from keras.utils import np_utils
 from math import sqrt
-from scipy.stats.stats import pearsonr
+from scipy.stats.stats import pearsonr, spearmanr
 from sklearn.metrics import explained_variance_score, mean_squared_error, r2_score, confusion_matrix
 import supervised_learning.modeling.statistical_extensions as SE
 
@@ -77,7 +77,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     model_b = load_model(model_files[0])
 
     out_col_names = ['participant',
-                     'accuracy', 'accuracy_ci', 'sensitivity SB', 'sensitivity LPA', 'sensitivity MVPA',
+                     'accuracy', 'accuracy_ci', 'spearman_corr', 'spearman_corr_pval', 'sensitivity SB', 'sensitivity LPA', 'sensitivity MVPA',
                      'sensitivity_ci_SB', 'sensitivity_ci_LPA', 'sensitivity_ci_MVPA', 'specificity_SB',
                      'specificity_LPA', 'specificity_MVPA', 'specificity_ci_SB', 'specificity_ci_LPA', 'specificity_ci_MVPA',
                      'actual_SB', 'predicted_SB', 'actual_LPA', 'predicted_LPA', 'actual_MVPA', 'predicted_MVPA']
@@ -141,14 +141,19 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
             specificity_ci_sb, specificity_ci_lpa = stats['specificity_ci']
             specificity_ci_mvpa = 'NA'
 
-        result_row = [key, stats['accuracy'], stats['accuracy_ci'], sensitivity_sb, sensitivity_lpa, sensitivity_mvpa,
-                      sensitivity_ci_sb, sensitivity_ci_lpa, sensitivity_ci_mvpa, specificity_sb, specificity_lpa,
-                      specificity_mvpa, specificity_ci_sb, specificity_ci_lpa, specificity_ci_mvpa, actual_SB,
-                      predicted_SB, actual_LPA, predicted_LPA, actual_MVPA, predicted_MVPA]
+        # Spearman's correlation
+        spearman_corr, spearman_pval = spearmanr(max_y_test, max_y_pred_test)
+        # spearman_corr = round(corr, 8)
+        # spearman_pval = round(pval, 8)
+
+        result_row = [key, stats['accuracy'], stats['accuracy_ci'], spearman_corr, spearman_pval, sensitivity_sb,
+                      sensitivity_lpa, sensitivity_mvpa, sensitivity_ci_sb, sensitivity_ci_lpa, sensitivity_ci_mvpa,
+                      specificity_sb, specificity_lpa, specificity_mvpa, specificity_ci_sb, specificity_ci_lpa,
+                      specificity_ci_mvpa, actual_SB, predicted_SB, actual_LPA, predicted_LPA, actual_MVPA, predicted_MVPA]
         output_results.append(result_row)
 
     # test completed
-    pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results.csv'), index=None)
+    pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results_classif.csv'), index=None)
 
 
 def run(FOLDER_NAME, training_version, trial_id, unique_participants=True):
@@ -199,7 +204,7 @@ if __name__ == '__main__':
     temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/Week 2/test_data/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
 
-    trial_num = 5
+    trial_num = 6
     training_version = 3
     allowed_list = [3000, 6000]
 
@@ -209,5 +214,5 @@ if __name__ == '__main__':
             continue
 
         print('\n\nProcessing {}'.format(f))
-        run(f, training_version, trial_num, unique_participants=False)
+        run(f, training_version, trial_num, unique_participants=True)
 
