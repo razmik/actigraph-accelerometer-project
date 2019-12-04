@@ -11,7 +11,7 @@ DATA_KEYS = ['Week 1', 'Week 2']
 if __name__ == '__main__':
 
     result_data = []
-    result_col_names = ['Week', 'Subject', 'Total Time', 'SB Time', 'LPA Time', 'MPA Time', 'VPA Time', 'Mean EE']
+    result_col_names = ['Week', 'Subject', 'Total Time', 'SB Time', 'LPA Time', 'MVPA Time', 'Mean EE']
 
     for key in DATA_KEYS:
 
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             mean_ee = df['waist_ee'].mean()
 
             # Construct data row
-            row = [key, subject, total_time, time_sb, time_lpa, time_mpa, time_vpa, mean_ee]
+            row = [key, subject, total_time, time_sb, time_lpa, (time_mpa + time_vpa), mean_ee]
 
             result_data.append(row)
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     df_out = pd.DataFrame(result_data, columns=result_col_names)
 
     df_agg = df_out.groupby(['Week', 'Subject'], as_index=False).agg(
-        {'Total Time': 'sum', 'SB Time': 'sum', 'LPA Time': 'sum', 'MPA Time': 'sum', 'VPA Time': 'sum',
+        {'Total Time': 'sum', 'SB Time': 'sum', 'LPA Time': 'sum', 'MVPA Time': 'sum',
          'Mean EE': 'mean'})
 
     # Merge data with demographics
