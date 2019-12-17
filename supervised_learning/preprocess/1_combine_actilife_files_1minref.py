@@ -15,7 +15,7 @@ MAKE SURETHE EPOCH START ROW NUMBER!!!!
 EXPERIMENTS = ['LSM2']
 DAYS = ['Wednesday']
 WEEKS = ['Week 2']
-TIME_EPOCHS = [1]#, 5, 6, 7, 10, 15, 30, 60]
+TIME_EPOCHS = [1, 60]#, 5, 6, 7, 10, 15, 30, 60]
 
 HIP_KEY = 'Waist'
 EPOCH_START_ROW = {'Week 1': 10, 'Week 2': 11}
@@ -42,6 +42,11 @@ def get_freedson_vm3_combination_11_energy_expenditure(row):
     return met_value
 
 
+def get_waist_ee_based_intensity(row_val):
+    pa_intensity = 1 if row_val < 1.5 else 2 if row_val < 3 else 3
+    return pa_intensity
+
+
 if __name__ == "__main__":
 
     process_start_time = time.time()
@@ -50,7 +55,7 @@ if __name__ == "__main__":
 
         experiment, week, day = conf
 
-        input_path = ROOT_FOLDER + "Epoch60/" + experiment + "/" + week + "/" + day
+        input_path = ROOT_FOLDER + "Epoch60-REF-DO-NOT-DELETE/" + experiment + "/" + week + "/" + day
 
         files = [f for f in listdir(input_path) if isfile(join(input_path, f))]
         file_dictionary = {}
@@ -60,8 +65,8 @@ if __name__ == "__main__":
             file_components = file.split(' ')
             key = file_components[0]
 
-            # if key != 'LSM270':
-            #     continue
+            if key != 'LSM270':
+                continue
 
             if key not in file_dictionary:
                 file_dictionary[key] = {file_components[1]: file}
@@ -93,7 +98,8 @@ if __name__ == "__main__":
             hip_epoch_data['waist_cpm'] = hip_epoch_data.AxisY
 
             hip_epoch_data['waist_ee'] = hip_epoch_data.apply(get_freedson_vm3_combination_11_energy_expenditure, axis=1)
-            hip_epoch_data['waist_intensity'] = hip_epoch_data.apply(get_freedson_adult_vm3_intensity, axis=1)
+            # hip_epoch_data['waist_intensity'] = hip_epoch_data.apply(get_freedson_adult_vm3_intensity, axis=1)
+            hip_epoch_data['waist_intensity_ee_based'] = hip_epoch_data['waist_ee'].apply(get_waist_ee_based_intensity)
 
             for time_epoch in TIME_EPOCHS:
 

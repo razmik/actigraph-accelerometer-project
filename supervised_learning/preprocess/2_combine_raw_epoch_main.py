@@ -1,6 +1,7 @@
 from tqdm import tqdm
 import pandas as pd
 import time
+import pickle
 import supervised_learning.preprocess.generate_statistical_features as stat_feature_generator
 import supervised_learning.preprocess.generate_raw_features as raw_feature_generator
 
@@ -9,24 +10,34 @@ RAW_DATA_ROOT_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/Staff_Activity_Ch
 EPOCH_DATA_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-ActilifeProcessedEpochs/'
 STAT_FEATURE_OUT_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Statistical_features/'
 RAW_FEATURE_OUT_FOLDER = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/'
+# TRAIN_TEST_SUBJECT_PICKLE = '../participant_split/train_test_split.pickle'
 
 input_detail_filenames_list = [
     # "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week1_ActiveTimeline_Details.csv",
     # "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM2_Week1_ActiveTimeline_Details.csv",
-    #"E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week2_ActiveTimeline_Details.csv",
+    # "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM1_Week2_ActiveTimeline_Details.csv",
     "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM2_Week2_ActiveTimeline_Details.csv"
 ]
+
+"""NOTE: ONLY ONE EPOCH AT A TIME NOW!"""
 TIME_EPOCH_DICT = {
-    'Epoch1': 100,
+    # 'Epoch1': 100,
     # 'Epoch5': 500,
     # 'Epoch6': 6000,
     # 'Epoch7': 7000,
     # 'Epoch10': 1000,
     # 'Epoch15': 1500,
     # 'Epoch30': 3000,
-    # 'Epoch60': 6000
+    'Epoch60': 6000
 }
-USE_STAT_FEATURES = False
+USE_STAT_FEATURES = True
+
+# Test Train Split
+# with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
+#     split_dict = pickle.load(handle)
+# test_subjects = split_dict['test']
+# train_subjects = split_dict['train']
+
 
 if __name__ == "__main__":
 
@@ -40,7 +51,16 @@ if __name__ == "__main__":
         input_details = pd.read_csv(input_detail_filename, usecols=[0, 1, 2, 3, 4, 9, 10])
         input_details.columns = ['experiment', 'week', 'day', 'date', 'subject', 'row_start', 'row_end']
 
-        input_details['date'] = pd.to_datetime(input_details['date'])
+        input_details['clean_date'] = input_details['date'].str.replace('/', '-')
+        if input_detail_filename == "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/Processed/wear-time-validation/LSM2_Week2_ActiveTimeline_Details.csv":
+            input_details.loc[input_details['clean_date'] == "02-11-16", 'clean_date'] = "02-11-2016"
+
+        try:
+            input_details['clean_date'] = pd.to_datetime(input_details['clean_date'], format="%d-%m-%Y")
+            print('Use full year - YYYY')
+        except:
+            input_details['clean_date'] = pd.to_datetime(input_details['clean_date'], format="%d-%m-%y")
+            print('Use 2-digit year - yy')
 
 
         for index, row in tqdm(input_details.iterrows(), total=input_details.shape[0]):
@@ -49,12 +69,7 @@ if __name__ == "__main__":
             week = row['week']
             day = row['day']
 
-            # if '-' in row['date']:
-            #     date_line = row['date'].split('-')
-            # else:
-            #     date_line = row['date'].split('/')
-
-            date = '({}-{}-{})'.format(row['date'].year, row['date'].month, row['date'].day)
+            date = '({}-{}-{:02d})'.format(row['clean_date'].year, row['clean_date'].month, row['clean_date'].day)
             user = row['subject'].split(' ')[0]
             device = 'Wrist'
 
@@ -62,7 +77,6 @@ if __name__ == "__main__":
             end_row = row['row_end']
 
             exclude_subject_1 = ('LSM1', 'Week 2', 'Thursday', 'LSM138')
-
             if experiment == exclude_subject_1[0] and week == exclude_subject_1[1] and day == exclude_subject_1[2] and user == exclude_subject_1[3]:
                 continue
 
