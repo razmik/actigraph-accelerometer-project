@@ -27,7 +27,6 @@ import supervised_learning.modeling.statistical_extensions as SE
 # pd.options.display.float_format = '{:.1f}'.format
 # sns.set()  # Default seaborn look and feel
 # plt.style.use('ggplot')
-print('Keras version ', keras.__version__)
 
 
 def load_data(filenames):
@@ -46,7 +45,7 @@ def load_data(filenames):
         ID_user.extend([user_id for _ in range(data_length)])
 
         # counter += 1
-        # if counter > 30:
+        # if counter > 10:
         #     break
 
     X_data = np.concatenate(X_data, axis=0)
@@ -170,7 +169,7 @@ def run(FOLDER_NAME, trial_id, data_root):
             filepath='temp_model_out/best_model.{epoch:03d}-{val_loss:.2f}.h5',
             monitor='val_loss', save_best_only=True),
         TensorBoard(log_dir='logs/{}'.format(time())),
-        EarlyStopping(monitor='val_loss', patience=15)
+        EarlyStopping(monitor='val_loss', patience=20)
     ]
 
     model_m.compile(loss='categorical_crossentropy',
@@ -179,7 +178,7 @@ def run(FOLDER_NAME, trial_id, data_root):
 
     # Hyper-parameters
     BATCH_SIZE = 32
-    EPOCHS = 40
+    EPOCHS = 50
 
     history = model_m.fit(X_train,
                           y_train,

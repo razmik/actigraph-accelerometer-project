@@ -53,9 +53,9 @@ def load_data(filenames):
             data_dict[user_id]['Y_data_classif'] = npy.item().get('activity_classes')
             data_dict[user_id]['Y_data_regress'] = npy.item().get('energy_e')
 
-        # cc += 1
-        # if cc > 25:
-        #     break
+        cc += 1
+        if cc > 25:
+            break
 
     # Data relabeling from index 0 (use only 3 classes)
     for key in tqdm(data_dict.keys(), desc='Relabeling'):
@@ -68,7 +68,7 @@ def load_data(filenames):
     return data_dict
 
 
-def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESULTS_FOLDER, data_dict, TIME_PERIODS):
+def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESULTS_FOLDER, data_dict, TIME_PERIODS, group):
 
     # Select best model
     model_files = [join(CLASSIF_MODEL_ROOT_FOLDER, f) for f in listdir(CLASSIF_MODEL_ROOT_FOLDER) if
@@ -159,18 +159,14 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
         output_results.append(result_row)
 
     # test completed
-    pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results_classif.csv'), index=None)
+    pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results_classif_{}.csv'.format(group)), index=None)
 
 
 def run(FOLDER_NAME, training_version, trial_id, group, data_root):
 
-    model_folder_name = FOLDER_NAME.split('-')
-    model_folder_name[-1] = str(int(int(model_folder_name[-1])/2))
-    model_folder_name = '-'.join(model_folder_name)
-
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
-    CLASSIF_MODEL_ROOT_FOLDER = '../output/classification/v{}/{}/model_out/'.format(training_version, model_folder_name)
-    OUTPUT_FOLDER_ROOT = '../output/classification/v{}/{}/individual_results'.format(trial_id, FOLDER_NAME)
+    CLASSIF_MODEL_ROOT_FOLDER = '../output/classification/v{}/{}/model_out/'.format(training_version, FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = '../output/classification/v{}/{}/individual_results/{}/'.format(trial_id, FOLDER_NAME, group)
 
     # Create output folders
     for f in [OUTPUT_FOLDER_ROOT]:
@@ -185,17 +181,14 @@ def run(FOLDER_NAME, training_version, trial_id, group, data_root):
 
     data_dictionary = load_data(all_files_test)
 
-    print('Evaluating Classification')
-    evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS)
-
-    print('Completed {}.'.format(FOLDER_NAME))
+    evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
 
 
 if __name__ == '__main__':
 
     # Get folder names
-    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined/model_ready/'
-    all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
+    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined\model_ready/'
+    all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f)) and (f.split('-')[1] != f.split('-')[3])]
 
     trial_num = 1
     training_version = 1
@@ -207,7 +200,7 @@ if __name__ == '__main__':
         if int(f.split('-')[1]) not in allowed_list:
             continue
 
-        print('\n\nProcessing {}'.format(f))
+        print('\n\nProcessing {} for {}'.format(f, grp))
         run(f, training_version, trial_num, grp, temp_folder)
 
     print('Completed.')

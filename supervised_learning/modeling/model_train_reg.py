@@ -8,7 +8,6 @@ from os.path import join, isfile, exists
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 import shutil
 from tqdm import tqdm
 from time import time
@@ -26,7 +25,6 @@ import supervised_learning.modeling.statistical_extensions as SE
 # pd.options.display.float_format = '{:.1f}'.format
 # sns.set()  # Default seaborn look and feel
 # plt.style.use('ggplot')
-print('Keras version ', keras.__version__)
 
 
 def load_data(filenames):
@@ -45,7 +43,7 @@ def load_data(filenames):
         ID_user.extend([user_id for _ in range(data_length)])
 
         # counter += 1
-        # if counter > 30:
+        # if counter > 10:
         #     break
 
     X_data = np.concatenate(X_data, axis=0)
@@ -157,7 +155,7 @@ def run(FOLDER_NAME, trial_id, data_root):
             filepath='temp_model_out/best_model.{epoch:03d}-{val_loss:.2f}.h5',
             monitor='val_loss', save_best_only=True),
         TensorBoard(log_dir='logs/{}'.format(time())),
-        EarlyStopping(monitor='val_loss', patience=15)
+        EarlyStopping(monitor='val_loss', patience=20)
     ]
 
     model_m.compile(loss='mean_squared_error',
@@ -166,7 +164,7 @@ def run(FOLDER_NAME, trial_id, data_root):
 
     # Hyper-parameters
     BATCH_SIZE = 32
-    EPOCHS = 40
+    EPOCHS = 50
 
     history = model_m.fit(X_train,
                           y_train,
@@ -205,7 +203,7 @@ def run(FOLDER_NAME, trial_id, data_root):
         plt.scatter(y_test, y_pred_test)
         plt.xlabel('Actual EE')
         plt.ylabel('Predicted EE')
-        plt.savefig(join(RESULTS_FOLDER, 'actual_vs_predicted_met.png'))
+        plt.savefig(join(RESULTS_FOLDER, grp, 'actual_vs_predicted_met.png'))
         plt.clf()
         plt.close()
 
@@ -236,7 +234,7 @@ def run(FOLDER_NAME, trial_id, data_root):
         grp_results.append(assessment_result)
 
         SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM',
-                                              output_filename=join(RESULTS_FOLDER, 'confusion_matrix.png'))
+                                              output_filename=join(RESULTS_FOLDER, grp, 'confusion_matrix.png'))
 
         results_df = pd.DataFrame(
             {'subject': ID_test,
@@ -253,10 +251,10 @@ def run(FOLDER_NAME, trial_id, data_root):
         results_df = clean_data_points(results_df)
 
         SE.BlandAltman.bland_altman_paired_plot_tested(results_df, '{}'.format(FOLDER_NAME), 1, log_transformed=True,
-                                                       min_count_regularise=False, output_filename=join(RESULTS_FOLDER, 'bland_altman'))
+                                                       min_count_regularise=False, output_filename=join(RESULTS_FOLDER, grp, 'bland_altman'))
 
         result_string = '\n'.join(grp_results)
-        with open(join(RESULTS_FOLDER, 'result_report.txt'), "w") as text_file:
+        with open(join(RESULTS_FOLDER, grp, 'result_report.txt'), "w") as text_file:
             text_file.write(result_string)
 
 

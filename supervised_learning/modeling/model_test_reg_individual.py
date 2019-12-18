@@ -14,14 +14,12 @@ import itertools
 from scipy.stats.stats import pearsonr
 from sklearn.metrics import r2_score
 
-print('Keras version ', keras.__version__)
-
 
 def load_data(filenames):
 
     # Single row for each
     data_dict = {}
-    # ccc = 1
+    ccc = 1
     for filename in tqdm(filenames, desc='Loading data'):
 
         npy = np.load(filename, allow_pickle=True)
@@ -38,7 +36,6 @@ def load_data(filenames):
             data_dict[user_id]['Y_data_classif'] = npy.item().get('activity_classes')
 
         # ccc += 1
-        #
         # if ccc > 20:
         #     break
 
@@ -69,7 +66,7 @@ def calculate_error(X, y, model):
     return person_corr, float(r_2_error)
 
 
-def evaluate_regression_modal(REG_MODEL_ROOT_FOLDER, REG_RESULTS_FOLDER, data_dict):
+def evaluate_regression_modal(REG_MODEL_ROOT_FOLDER, REG_RESULTS_FOLDER, data_dict, group):
 
     # Select best model
     model_files = [join(REG_MODEL_ROOT_FOLDER, f) for f in listdir(REG_MODEL_ROOT_FOLDER) if
@@ -109,18 +106,14 @@ def evaluate_regression_modal(REG_MODEL_ROOT_FOLDER, REG_RESULTS_FOLDER, data_di
         output_results.append(result_row)
 
     # test completed
-    pd.DataFrame(output_results, columns=out_col_names).to_csv(join(REG_RESULTS_FOLDER, 'results_reg_updated.csv'), index=None)
+    pd.DataFrame(output_results, columns=out_col_names).to_csv(join(REG_RESULTS_FOLDER, 'results_reg_{}.csv'.format(group)), index=None)
 
 
 def run(FOLDER_NAME, training_version, trial_id, group, data_root):
 
-    model_folder_name = FOLDER_NAME.split('-')
-    model_folder_name[-1] = str(int(int(model_folder_name[-1])/2))
-    model_folder_name = '-'.join(model_folder_name)
-
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
-    REGRESSION_MODEL_ROOT_FOLDER = '../output/regression/v{}/{}/model_out/'.format(training_version, model_folder_name)
-    OUTPUT_FOLDER_ROOT = '../output/regression/v{}/{}/individual_results'.format(trial_id, FOLDER_NAME)
+    REGRESSION_MODEL_ROOT_FOLDER = '../output/regression/v{}/{}/model_out/'.format(training_version, FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = '../output/regression/v{}/{}/individual_results/{}/'.format(trial_id, FOLDER_NAME, group)
 
     # Create output folders
     for f in [OUTPUT_FOLDER_ROOT]:
@@ -132,20 +125,17 @@ def run(FOLDER_NAME, training_version, trial_id, group, data_root):
 
     data_dictionary = load_data(all_files_test)
 
-    print('Evaluating Classification')
-    evaluate_regression_modal(REGRESSION_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary)
-
-    print('Completed {}.'.format(FOLDER_NAME))
+    evaluate_regression_modal(REGRESSION_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary, group)
 
 
 if __name__ == '__main__':
 
     # Get folder names
-    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/Week 2/test_data/'
-    all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
+    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined\model_ready/'
+    all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f)) and (f.split('-')[1] != f.split('-')[3])]
 
-    trial_num = 8
-    training_version = 3
+    trial_num = 1
+    training_version = 1
     allowed_list = [3000, 6000]
     groups = ['test', 'train_test']
 
@@ -154,6 +144,6 @@ if __name__ == '__main__':
         if int(f.split('-')[1]) not in allowed_list:
             continue
 
-        print('\n\nProcessing {}'.format(f))
+        print('\n\nProcessing {} for {}'.format(f, grp))
         run(f, training_version, trial_num, grp, temp_folder)
 
