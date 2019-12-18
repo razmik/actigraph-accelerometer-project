@@ -64,13 +64,13 @@ def create_segments_and_labels(df, time_steps, step, n_features, label_class, la
 
 if __name__ == "__main__":
 
-    TIME_PERIODS_LIST = [6000, 9000]
+    TIME_PERIODS_LIST = [3000, 6000]
     N_FEATURES = 3
     LABEL_CLASS = 'waist_intensity'
     LABEL_REG = 'waist_ee'
     WEEKS = ['Week 1', 'Week 2']
 
-    req_cols = ['X', 'Y', 'Z', 'vm', 'angle', 'enmo', 'waist_ee', 'waist_intensity']
+    req_cols = ['X', 'Y', 'Z', 'waist_ee', 'waist_intensity']
     input_cols = ['X', 'Y', 'Z']
     target_cols = ['waist_ee', 'waist_intensity']
 

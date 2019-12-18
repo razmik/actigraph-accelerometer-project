@@ -4,6 +4,7 @@ from os import listdir, makedirs
 from os.path import isfile, join, exists
 from tqdm import tqdm
 import operator
+import pickle
 
 
 def create_segments_and_labels(dataframe, time_steps, step, n_features, label_class, label_2):
@@ -43,24 +44,33 @@ def create_segments_and_labels(dataframe, time_steps, step, n_features, label_cl
 
 if __name__ == "__main__":
 
-    TIME_PERIODS_LIST = [100, 200, 300, 500, 600, 800, 1000, 1500, 3000, 9000]  # [100, 200, 300, 500, 600, 800, 1000, 1500, 3000, 6000, 9000]
+    TIME_PERIODS_LIST = [3000, 6000]
     N_FEATURES = 3
     LABEL_CLASS = 'waist_intensity'
     LABEL_REG = 'waist_ee'
-    WEEKS = ['Week 2']
 
-    req_cols = ['X', 'Y', 'Z', 'vm', 'angle', 'enmo', 'waist_ee', 'waist_intensity']
+    GROUPS = ['test', 'train_test']
+    WEEKS = {'test': 'Week 2', 'train_test': 'Week 2'}
+
+    req_cols = ['X', 'Y', 'Z', 'waist_ee', 'waist_intensity']
     input_cols = ['X', 'Y', 'Z']
     target_cols = ['waist_ee', 'waist_intensity']
 
-    INPUT_DATA_ROOT = "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/"
+    INPUT_DATA_ROOT = "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined/"
+    OUTPUT_FOLDER_ROOT = join(INPUT_DATA_ROOT, 'model_ready')
+    TRAIN_TEST_SUBJECT_PICKLE = '../participant_split/train_test_split.v2.pickle'
 
-    for week in WEEKS:
+    # Test Train Split
+    with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
+        split_dict = pickle.load(handle)
+    split_dict['train_test'] = split_dict['train'][:]
 
-        INPUT_DATA_FOLDER = join(INPUT_DATA_ROOT, week)
+    for user_group in GROUPS:
+
+        INPUT_DATA_FOLDER = join(INPUT_DATA_ROOT, WEEKS[user_group])
         all_files = [f for f in listdir(INPUT_DATA_FOLDER) if isfile(join(INPUT_DATA_FOLDER, f))]
 
-        for f in tqdm(all_files, desc=week):
+        for f in tqdm(all_files, desc=user_group):
 
             try:
                 df = pd.read_csv(join(INPUT_DATA_FOLDER, f), usecols=req_cols)
@@ -77,8 +87,8 @@ if __name__ == "__main__":
                     reshaped_outcomes = create_segments_and_labels(df, time_window, STEP_DISTANCE,
                                                                    N_FEATURES, LABEL_CLASS, LABEL_REG)
 
-                    OUTPUT_FOLDER = join(INPUT_DATA_FOLDER, 'test_data',
-                                         'window-{}-overlap-{}'.format(time_window, STEP_DISTANCE))
+                    OUTPUT_FOLDER = join(OUTPUT_FOLDER_ROOT, 'window-{}-overlap-{}'.format(time_window, STEP_DISTANCE),
+                                         user_group)
                     if not exists(OUTPUT_FOLDER):
                         makedirs(OUTPUT_FOLDER)
                     out_name = join(OUTPUT_FOLDER, f.replace('.csv', '_test.npy'))
