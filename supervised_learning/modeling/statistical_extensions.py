@@ -17,6 +17,14 @@ class EnergyTransform:
 
         return data
 
+    @staticmethod
+    def met_to_intensity_sblpa_mvpa(data):
+
+        data = np.where(data < 3, 1, data)
+        data = np.where(3 <= data, 2, data)
+
+        return data
+
 
 class BlandAltman:
     """

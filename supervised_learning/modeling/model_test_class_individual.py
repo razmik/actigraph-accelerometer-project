@@ -5,23 +5,17 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from os import listdir, makedirs
 from os.path import join, isfile, exists
-import pickle
-from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from tqdm import tqdm
 import keras
 from keras.models import load_model
 from keras.utils import np_utils
-from math import sqrt
-from scipy.stats.stats import pearsonr, spearmanr
-from sklearn.metrics import explained_variance_score, mean_squared_error, r2_score, confusion_matrix
+import itertools
+from scipy.stats.stats import spearmanr
+from sklearn.metrics import confusion_matrix
 import supervised_learning.modeling.statistical_extensions as SE
 
-pd.options.display.float_format = '{:.1f}'.format
-sns.set()
-plt.style.use('ggplot')
 print('Keras version ', keras.__version__)
 
 
@@ -32,9 +26,9 @@ def get_time_in(labels, time_epoch):
     for i, j in zip(unique, counts):
         outcomes[i] = j
 
-    SB = outcomes[0] * (6000 / time_epoch) if 0 in outcomes else 0
-    LPA = outcomes[1] * (6000 / time_epoch) if 1 in outcomes else 0
-    MVPA = outcomes[2] * (6000 / time_epoch) if 2 in outcomes else 0
+    SB = outcomes[0] / (6000 / time_epoch) if 0 in outcomes else 0
+    LPA = outcomes[1] / (6000 / time_epoch) if 1 in outcomes else 0
+    MVPA = outcomes[2] / (6000 / time_epoch) if 2 in outcomes else 0
 
     return SB, LPA, MVPA
 
@@ -43,6 +37,7 @@ def load_data(filenames):
 
     # Single row for each
     data_dict = {}
+    cc = 1
     for filename in tqdm(filenames, desc='Loading data'):
 
         npy = np.load(filename, allow_pickle=True)
@@ -57,6 +52,10 @@ def load_data(filenames):
             data_dict[user_id]['X_data'] = npy.item().get('segments')
             data_dict[user_id]['Y_data_classif'] = npy.item().get('activity_classes')
             data_dict[user_id]['Y_data_regress'] = npy.item().get('energy_e')
+
+        # cc += 1
+        # if cc > 25:
+        #     break
 
     # Data relabeling from index 0 (use only 3 classes)
     for key in tqdm(data_dict.keys(), desc='Relabeling'):
@@ -77,7 +76,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     model_b = load_model(model_files[0])
 
     out_col_names = ['participant',
-                     'accuracy', 'accuracy_ci', 'spearman_corr', 'spearman_corr_pval', 'sensitivity SB', 'sensitivity LPA', 'sensitivity MVPA',
+                     'accuracy', 'accuracy_ci', 'spearman_corr_overall', 'spearman_corr_sb', 'spearman_corr_lpa', 'spearman_corr_mvpa', 'sensitivity SB', 'sensitivity LPA', 'sensitivity MVPA',
                      'sensitivity_ci_SB', 'sensitivity_ci_LPA', 'sensitivity_ci_MVPA', 'specificity_SB',
                      'specificity_LPA', 'specificity_MVPA', 'specificity_ci_SB', 'specificity_ci_LPA', 'specificity_ci_MVPA',
                      'actual_SB', 'predicted_SB', 'actual_LPA', 'predicted_LPA', 'actual_MVPA', 'predicted_MVPA']
@@ -143,10 +142,17 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
 
         # Spearman's correlation
         spearman_corr, spearman_pval = spearmanr(max_y_test, max_y_pred_test)
-        # spearman_corr = round(corr, 8)
-        # spearman_pval = round(pval, 8)
 
-        result_row = [key, stats['accuracy'], stats['accuracy_ci'], spearman_corr, spearman_pval, sensitivity_sb,
+        max_y_test_sb, max_y_pred_test_sb = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 0], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 0]
+        spearman_corr_sb, _ = spearmanr(max_y_test_sb, max_y_pred_test_sb)
+
+        max_y_test_lpa, max_y_pred_test_lpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 1], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 1]
+        spearman_corr_lpa, _ = spearmanr(max_y_test_lpa, max_y_pred_test_lpa)
+
+        max_y_test_mvpa, max_y_pred_test_mvpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 2], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 2]
+        spearman_corr_mvpa, _ = spearmanr(max_y_test_mvpa, max_y_pred_test_mvpa)
+
+        result_row = [key, stats['accuracy'], stats['accuracy_ci'], spearman_corr, spearman_corr_sb, spearman_corr_lpa, spearman_corr_mvpa, sensitivity_sb,
                       sensitivity_lpa, sensitivity_mvpa, sensitivity_ci_sb, sensitivity_ci_lpa, sensitivity_ci_mvpa,
                       specificity_sb, specificity_lpa, specificity_mvpa, specificity_ci_sb, specificity_ci_lpa,
                       specificity_ci_mvpa, actual_SB, predicted_SB, actual_LPA, predicted_LPA, actual_MVPA, predicted_MVPA]
@@ -156,17 +162,15 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results_classif.csv'), index=None)
 
 
-def run(FOLDER_NAME, training_version, trial_id, unique_participants=True):
+def run(FOLDER_NAME, training_version, trial_id, group, data_root):
 
     model_folder_name = FOLDER_NAME.split('-')
     model_folder_name[-1] = str(int(int(model_folder_name[-1])/2))
     model_folder_name = '-'.join(model_folder_name)
 
-    DATA_ROOT = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/'
-    TRAIN_TEST_SUBJECT_PICKLE = 'participant_split/train_test_split.pickle'
+    TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
     CLASSIF_MODEL_ROOT_FOLDER = '../output/classification/v{}/{}/model_out/'.format(training_version, model_folder_name)
-    TEST_DATA_FOLDER = DATA_ROOT + 'Week 2/test_data/{}/'.format(FOLDER_NAME)
-    OUTPUT_FOLDER_ROOT = '../output/test_results_individual/v{}/{}'.format(trial_id, FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = '../output/classification/v{}/{}/individual_results'.format(trial_id, FOLDER_NAME)
 
     # Create output folders
     for f in [OUTPUT_FOLDER_ROOT]:
@@ -176,19 +180,8 @@ def run(FOLDER_NAME, training_version, trial_id, unique_participants=True):
     # The number of steps within one time segment
     TIME_PERIODS = int(FOLDER_NAME.split('-')[1])
 
-    # Test Train Split
-    if unique_participants:
-        with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
-            split_dict = pickle.load(handle)
-        test_subjects = split_dict['test']
-
-        # Load all data
-        all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))
-                          and f.split(' ')[0] in test_subjects]
-    else:
-
-        # Load all data
-        all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
+    # Load data
+    all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
 
     data_dictionary = load_data(all_files_test)
 
@@ -201,18 +194,20 @@ def run(FOLDER_NAME, training_version, trial_id, unique_participants=True):
 if __name__ == '__main__':
 
     # Get folder names
-    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/Week 2/test_data/'
+    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined/model_ready/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
 
-    trial_num = 6
-    training_version = 3
+    trial_num = 1
+    training_version = 1
     allowed_list = [3000, 6000]
+    groups = ['test', 'train_test']
 
-    for f in sorted(all_files, reverse=True):
+    for f, grp in itertools.product(all_files, groups):
 
         if int(f.split('-')[1]) not in allowed_list:
             continue
 
         print('\n\nProcessing {}'.format(f))
-        run(f, training_version, trial_num, unique_participants=True)
+        run(f, training_version, trial_num, grp, temp_folder)
 
+    print('Completed.')

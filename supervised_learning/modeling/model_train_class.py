@@ -9,7 +9,7 @@ import pickle
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
+# import seaborn as sns
 import shutil
 from tqdm import tqdm
 from time import time
@@ -22,11 +22,11 @@ from keras.utils import np_utils
 from tensorflow.python.keras.callbacks import TensorBoard
 
 from sklearn.metrics import confusion_matrix
-import statistical_extensions as SE
+import supervised_learning.modeling.statistical_extensions as SE
 
-pd.options.display.float_format = '{:.1f}'.format
-sns.set()  # Default seaborn look and feel
-plt.style.use('ggplot')
+# pd.options.display.float_format = '{:.1f}'.format
+# sns.set()  # Default seaborn look and feel
+# plt.style.use('ggplot')
 print('Keras version ', keras.__version__)
 
 
@@ -35,6 +35,7 @@ def load_data(filenames):
     X_data = []
     Y_data = []
     ID_user = []
+    counter = 0
     for filename in tqdm(filenames):
         npy = np.load(filename, allow_pickle=True)
         X_data.append(npy.item().get('segments'))
@@ -43,6 +44,10 @@ def load_data(filenames):
         user_id = filename.split('/')[-1][:6]
         data_length = npy.item().get('activity_classes').shape[0]
         ID_user.extend([user_id for _ in range(data_length)])
+
+        # counter += 1
+        # if counter > 30:
+        #     break
 
     X_data = np.concatenate(X_data, axis=0)
     Y_data = np.concatenate(Y_data, axis=0)
@@ -73,20 +78,22 @@ def plot_model(history, MODEL_FOLDER):
     plt.close()
 
 
-def run(FOLDER_NAME, trial_id):
+def run(FOLDER_NAME, trial_id, data_root):
 
-    DATA_ROOT = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/'
-    TRAIN_TEST_SUBJECT_PICKLE = 'participant_split/train_test_split.pickle'
-    TRAIN_DATA_FOLDER = DATA_ROOT + 'Week 1/supervised_data/{}/'.format(FOLDER_NAME)
-    TEST_DATA_FOLDER = DATA_ROOT + 'Week 2/supervised_data/{}/'.format(FOLDER_NAME)
-    OUTPUT_FOLDER_ROOT = '../output/classification/v{}/{}'.format(trial_id, FOLDER_NAME)
-
+    TRAIN_DATA_FOLDER = data_root + '/{}/train/'.format(FOLDER_NAME)
+    GROUPS = ['test', 'train_test']
+    TEST_DATA_FOLDERS = {
+        'test': data_root + '/{}/test/'.format(FOLDER_NAME),
+        'train_test': data_root + '/{}/train_test/'.format(FOLDER_NAME),
+        }
+    OUTPUT_FOLDER_ROOT = '../output/classification/v{}/{}/'.format(trial_id, FOLDER_NAME)
     MODEL_FOLDER = OUTPUT_FOLDER_ROOT + '/model_out/'
     RESULTS_FOLDER = OUTPUT_FOLDER_ROOT + '/results/'
     if not exists(OUTPUT_FOLDER_ROOT):
         makedirs(OUTPUT_FOLDER_ROOT)
         makedirs(MODEL_FOLDER)
-        makedirs(RESULTS_FOLDER)
+        makedirs(join(RESULTS_FOLDER, 'test'))
+        makedirs(join(RESULTS_FOLDER, 'train_test'))
 
     # Create temp folder to save model outputs
     temp_model_out_folder = 'temp_model_out'
@@ -102,42 +109,12 @@ def run(FOLDER_NAME, trial_id):
     LABEL = 'activity_classes'
     results_descriptions.append('Time Period = {}, Step Distance = {}, Label = {}'.format(TIME_PERIODS, STEP_DISTANCE, LABEL))
 
-    # Test Train Split
-    with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
-        split_dict = pickle.load(handle)
-    train_subjects = split_dict['train']
-    test_subjects = split_dict['test']
-
-    # Load all data
+    """Load and Setup Train Data"""
     all_files_train = [join(TRAIN_DATA_FOLDER, f) for f in listdir(TRAIN_DATA_FOLDER) if
-                       isfile(join(TRAIN_DATA_FOLDER, f)) and f.split(' ')[0] in train_subjects]
-    all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))
-                      and f.split(' ')[0] in test_subjects]
-    results_descriptions.append('Train files: {}\nTest files: {}'.format(len(all_files_train), len(all_files_test)))
+                       isfile(join(TRAIN_DATA_FOLDER, f))]
 
     train_X_data, train_Y_data, train_ID_user = load_data(all_files_train)
-    test_X_data, test_Y_data, test_ID_user = load_data(all_files_test)
-
-    assert train_X_data.shape[0] == train_Y_data.shape[0] == len(train_ID_user)
-    assert test_X_data.shape[0] == test_Y_data.shape[0] == len(test_ID_user)
-
-    results_descriptions.append('Subjects in Train set = {}'.format(len(set(train_ID_user))))
-    results_descriptions.append('Subjects in Test set = {}'.format(len(set(test_ID_user))))
-    results_descriptions.append('All unique users = {}'.format(len(set(train_ID_user + test_ID_user))))
-
-    results_descriptions.append('Count of Train {} = {}'.format(0, list(train_Y_data).count(0)))
-    results_descriptions.append('Count of Train {} = {}'.format(1, list(train_Y_data).count(1)))
-    results_descriptions.append('Count of Train {} = {}'.format(2, list(train_Y_data).count(2)))
-
-    results_descriptions.append('Count of Test {} = {}'.format(0, list(test_Y_data).count(0)))
-    results_descriptions.append('Count of Test {} = {}'.format(1, list(test_Y_data).count(1)))
-    results_descriptions.append('Count of Test {} = {}'.format(2, list(test_Y_data).count(2)))
-
-    # Train /Test split
-
-    X_train, X_test = train_X_data, test_X_data
-    y_train, y_test = train_Y_data, test_Y_data
-    ID_train, ID_test = train_ID_user, test_ID_user
+    X_train, y_train, ID_train = train_X_data, train_Y_data, train_ID_user
 
     # Data -> Model ready
     num_time_periods, num_sensors = X_train.shape[1], X_train.shape[2]
@@ -148,31 +125,32 @@ def run(FOLDER_NAME, trial_id):
     # it properly into coreml later, the preferred matrix of shape [40,3]
     input_shape = (num_time_periods * num_sensors)
     X_train = X_train.reshape(X_train.shape[0], input_shape)
-    X_test = X_test.reshape(X_test.shape[0], input_shape)
 
-    # Convert type for Keras otherwise Keras cannot process the data
     X_train = X_train.astype("float32")
     y_train = y_train.astype("float32")
-    X_test = X_test.astype("float32")
-    y_test = y_test.astype("float32")
 
     # One-hot encoding of y_train labels (only execute once!)
     y_train = np_utils.to_categorical(y_train, num_classes)
-    y_test = np_utils.to_categorical(y_test, num_classes)
 
-    # Model Architecture
-    # model_m = Sequential()
-    # model_m.add(Reshape((TIME_PERIODS, num_sensors), input_shape=(input_shape,)))
-    # model_m.add(Conv1D(80, 10, activation='relu', input_shape=(TIME_PERIODS, num_sensors)))
-    # model_m.add(Conv1D(100, 10, activation='relu'))
-    # model_m.add(MaxPooling1D(3))
-    # model_m.add(Conv1D(160, 10, activation='relu'))
-    # model_m.add(Conv1D(180, 10, activation='relu'))
-    # model_m.add(GlobalMaxPooling1D())
-    # model_m.add(Dropout(0.5))
-    # model_m.add(Dense(num_classes, activation='softmax'))
+    """Load and Setup Test Data"""
+    test_data_combined = {}
+    for grp in GROUPS:
 
-    # New architecture
+        test_data_combined[grp] = {}
+
+        fs = [join(TEST_DATA_FOLDERS[grp], f) for f in listdir(TEST_DATA_FOLDERS[grp]) if
+              isfile(join(TEST_DATA_FOLDERS[grp], f))]
+
+        test_X_data, test_Y_data, test_ID_user = load_data(fs)
+        test_X_data = test_X_data.reshape(test_X_data.shape[0], input_shape).astype("float32")
+        test_Y_data = test_Y_data.astype("float32")
+        test_Y_data = np_utils.to_categorical(test_Y_data, num_classes)
+
+        test_data_combined[grp]['test_X_data'] = test_X_data
+        test_data_combined[grp]['test_Y_data'] = test_Y_data
+        test_data_combined[grp]['test_ID_user'] = test_ID_user
+
+    """Model architecture"""
     model_m = Sequential()
     model_m.add(Reshape((TIME_PERIODS, num_sensors), input_shape=(input_shape,)))
     model_m.add(Conv1D(80, 10, activation='relu', input_shape=(TIME_PERIODS, num_sensors)))
@@ -209,7 +187,7 @@ def run(FOLDER_NAME, trial_id):
                           epochs=EPOCHS,
                           callbacks=callbacks_list,
                           validation_split=0.2,
-                          verbose=1)
+                          verbose=2)
 
     plot_model(history, MODEL_FOLDER)
 
@@ -225,47 +203,54 @@ def run(FOLDER_NAME, trial_id):
     shutil.rmtree(temp_model_out_folder)
 
     # Evaluate against test data
-    print('Model Evaluation.')
-    y_pred_test = model_b.predict(X_test)
+    for grp in GROUPS:
 
-    # Take the class with the highest probability from the test predictions
-    max_y_pred_test = np.argmax(y_pred_test, axis=1)
-    max_y_test = np.argmax(y_test, axis=1)
+        grp_results = results_descriptions[:]
 
-    assert y_test.shape[0] == y_pred_test.shape[0]
+        X_test = test_data_combined[grp]['test_X_data']
+        y_test = test_data_combined[grp]['test_Y_data']
 
-    # Evaluation matrices
+        print('Model Evaluation for {}'.format(grp))
+        y_pred_test = model_b.predict(X_test)
 
-    class_names = ['SED', 'LPA', 'MVPA']
-    cnf_matrix = confusion_matrix(max_y_test, max_y_pred_test)
+        # Take the class with the highest probability from the test predictions
+        max_y_pred_test = np.argmax(y_pred_test, axis=1)
+        max_y_test = np.argmax(y_test, axis=1)
 
-    stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
+        assert y_test.shape[0] == y_pred_test.shape[0]
 
-    assessment_result = 'Classes' + '\t' + str(class_names) + '\t' + '\n'
-    assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
-    assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
-    assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
-    assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
-    assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
+        # Evaluation matrices
 
-    results_descriptions.append(assessment_result)
+        class_names = ['SED', 'LPA', 'MVPA']
+        cnf_matrix = confusion_matrix(max_y_test, max_y_pred_test)
 
-    SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM',
-                                          output_filename=join(RESULTS_FOLDER, 'confusion_matrix.png'))
+        stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
 
-    result_string = '\n'.join(results_descriptions)
-    with open(join(RESULTS_FOLDER, 'result_report.txt'), "w") as text_file:
-        text_file.write(result_string)
+        assessment_result = 'Classes' + '\t' + str(class_names) + '\t' + '\n'
+        assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
+        assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
+        assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
+        assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
+        assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
+
+        grp_results.append(assessment_result)
+
+        SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM',
+                                              output_filename=join(RESULTS_FOLDER, grp, 'confusion_matrix.png'))
+
+        result_string = '\n'.join(grp_results)
+        with open(join(RESULTS_FOLDER, grp, 'result_report.txt'), "w") as text_file:
+            text_file.write(result_string)
 
 
 if __name__ == '__main__':
 
     # Get folder names
-    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1/Week 1/supervised_data/'
+    temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined/model_ready/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f))]
 
-    allowed_windows = [1500, 3000, 6000]
-    trial_num = 4
+    allowed_windows = [3000, 6000]
+    trial_num = 1
 
     for f in sorted(all_files, reverse=True):
 
@@ -273,5 +258,5 @@ if __name__ == '__main__':
             continue
 
         print('\n\n\n\nProcessing {}'.format(f))
-        run(f, trial_num)
+        run(f, trial_num, temp_folder)
 
