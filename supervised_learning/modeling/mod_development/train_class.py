@@ -72,7 +72,7 @@ def plot_model(history, MODEL_FOLDER):
 def run(FOLDER_NAME, trial_id, data_root, epochs=20, patience=10):
 
     TRAIN_DATA_FOLDER = data_root + '/{}/train/'.format(FOLDER_NAME)
-    OUTPUT_FOLDER_ROOT = '../output/v{}/classification/{}/'.format(trial_id, FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/classification/{}/'.format(trial_id, FOLDER_NAME)
     MODEL_FOLDER = OUTPUT_FOLDER_ROOT + '/model_out/'
     if not exists(OUTPUT_FOLDER_ROOT):
         makedirs(OUTPUT_FOLDER_ROOT)

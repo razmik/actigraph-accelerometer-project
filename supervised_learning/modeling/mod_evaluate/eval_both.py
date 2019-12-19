@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     training_version = '1-12_Dec'
     allowed_list = [3000, 6000]
-    groups = ['test', 'train_test']
+    groups = ['test']#, 'train_test']
 
     # Run classifier
     for f, grp in itertools.product(all_files, groups):
@@ -21,7 +21,7 @@ if __name__ == '__main__':
         if int(f.split('-')[1]) not in allowed_list:
             continue
 
-        print('\n\nProcessing {} for {}'.format(f, grp))
+        print('\nProcessing Classification on {} for {}'.format(f, grp))
         model_eval_class.run(f, training_version, grp, temp_folder, demo=False)
 
     # Run Regressor
@@ -30,5 +30,5 @@ if __name__ == '__main__':
         if int(f.split('-')[1]) not in allowed_list:
             continue
 
-        print('\n\nProcessing {} for {}'.format(f, grp))
+        print('\nProcessing Regression {} for {}'.format(f, grp))
         model_eval_reg.run(f, training_version, grp, temp_folder, demo=False)

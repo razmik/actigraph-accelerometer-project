@@ -22,7 +22,7 @@ def load_data_overall(filenames, demo=False):
     Y_data = []
     ID_user = []
     counter = 0
-    for filename in tqdm(filenames):
+    for filename in tqdm(filenames, desc='Loading data.'):
         npy = np.load(filename, allow_pickle=True)
         X_data.append(npy.item().get('segments'))
         Y_data.append(npy.item().get('energy_e'))
@@ -258,10 +258,12 @@ def bland_altman_eval(model_b, REG_RESULTS_FOLDER, X_data, Y_data, ID_user, grou
     y = y.astype("float32")
 
     # Evaluate against test data
+    print('Predicting...')
     y_pred_test = model_b.predict(X)
     y_pred_test_1d_list = [list(i)[0] for i in list(y_pred_test)]
 
     # Overall analysis
+    print('Overall analysis calculations.')
     grp_results = []
     corr = pearsonr(list(y), y_pred_test_1d_list)
     grp_results.append('\n\n -------RESULTS-------\n\n')
@@ -288,10 +290,11 @@ def bland_altman_eval(model_b, REG_RESULTS_FOLDER, X_data, Y_data, ID_user, grou
 
     results_df = clean_data_points(results_df)
 
-    ba_outfolder = join(REG_RESULTS_FOLDER, 'bland_altman', 'ba')
+    ba_outfolder = join(REG_RESULTS_FOLDER, 'bland_altman')
     if not exists(ba_outfolder):
         makedirs(ba_outfolder)
 
+    print('Plotting bland-altman.')
     SE.BlandAltman.bland_altman_paired_plot_tested(results_df, 'Bland Altman Analysis', 1, log_transformed=True,
                                                    min_count_regularise=False,
                                                    output_filename=ba_outfolder)
@@ -327,8 +330,8 @@ def run(FOLDER_NAME, training_version, group, data_root, demo=False):
     del test_ID_user
 
     # Load data for individual assessment
-    # data_dictionary = load_data_individual(all_files_test, demo=demo)
-    # evaluate_regression_modal(model_b, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
+    data_dictionary = load_data_individual(all_files_test, demo=demo)
+    evaluate_regression_modal(model_b, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
 
 
 if __name__ == '__main__':
@@ -339,7 +342,7 @@ if __name__ == '__main__':
 
     training_version = '1-12_Dec'
     allowed_list = [3000, 6000]
-    groups = ['test', 'train_test']
+    groups = ['train_test']#['test', 'train_test']
 
     for f, grp in itertools.product(all_files, groups):
 
@@ -347,5 +350,5 @@ if __name__ == '__main__':
             continue
 
         print('\n\nProcessing {} for {}'.format(f, grp))
-        run(f, training_version, grp, temp_folder, demo=True)
+        run(f, training_version, grp, temp_folder, demo=False)
 
