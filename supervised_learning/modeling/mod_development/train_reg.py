@@ -12,19 +12,12 @@ import shutil
 from tqdm import tqdm
 from time import time
 import keras
+import pickle
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Reshape, GlobalMaxPooling1D
 from keras.layers import Conv1D, MaxPooling1D
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.python.keras.callbacks import TensorBoard
-
-from scipy.stats.stats import pearsonr
-from sklearn.metrics import explained_variance_score, mean_squared_error, r2_score, confusion_matrix
-import supervised_learning.modeling.statistical_extensions as SE
-
-# pd.options.display.float_format = '{:.1f}'.format
-# sns.set()  # Default seaborn look and feel
-# plt.style.use('ggplot')
 
 
 def load_data(filenames):
@@ -69,22 +62,14 @@ def plot_model(history, MODEL_FOLDER):
     plt.close()
 
 
-def run(FOLDER_NAME, trial_id, data_root):
+def run(FOLDER_NAME, trial_id, data_root, epochs=20, patience=10):
 
     TRAIN_DATA_FOLDER = data_root + '/{}/train/'.format(FOLDER_NAME)
-    GROUPS = ['test', 'train_test']
-    TEST_DATA_FOLDERS = {
-        'test': data_root + '/{}/test/'.format(FOLDER_NAME),
-        'train_test': data_root + '/{}/train_test/'.format(FOLDER_NAME),
-        }
-    OUTPUT_FOLDER_ROOT = '../output/regression/v{}/{}/'.format(trial_id, FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = '../output/v{}/regression/{}/'.format(trial_id, FOLDER_NAME)
     MODEL_FOLDER = OUTPUT_FOLDER_ROOT + '/model_out/'
-    RESULTS_FOLDER = OUTPUT_FOLDER_ROOT + '/results/'
     if not exists(OUTPUT_FOLDER_ROOT):
         makedirs(OUTPUT_FOLDER_ROOT)
         makedirs(MODEL_FOLDER)
-        makedirs(join(RESULTS_FOLDER, 'test'))
-        makedirs(join(RESULTS_FOLDER, 'train_test'))
 
     # Create temp folder to save model outputs
     temp_model_out_folder = 'temp_model_out'
@@ -111,23 +96,6 @@ def run(FOLDER_NAME, trial_id, data_root):
     X_train = X_train.astype("float32")
     y_train = y_train.astype("float32")
 
-    """Load and Setup Test Data"""
-    test_data_combined = {}
-    for grp in GROUPS:
-
-        test_data_combined[grp] = {}
-
-        fs = [join(TEST_DATA_FOLDERS[grp], f) for f in listdir(TEST_DATA_FOLDERS[grp]) if
-              isfile(join(TEST_DATA_FOLDERS[grp], f))]
-
-        test_X_data, test_Y_data, test_ID_user = load_data(fs)
-        test_X_data = test_X_data.reshape(test_X_data.shape[0], input_shape).astype("float32")
-        test_Y_data = test_Y_data.astype("float32")
-
-        test_data_combined[grp]['test_X_data'] = test_X_data
-        test_data_combined[grp]['test_Y_data'] = test_Y_data
-        test_data_combined[grp]['test_ID_user'] = test_ID_user
-
     """Model architecture"""
     model_m = Sequential()
     model_m.add(Reshape((TIME_PERIODS, num_sensors), input_shape=(input_shape,)))
@@ -148,7 +116,7 @@ def run(FOLDER_NAME, trial_id, data_root):
             filepath='temp_model_out/best_model.{epoch:03d}-{val_loss:.2f}.h5',
             monitor='val_loss', save_best_only=True),
         TensorBoard(log_dir='logs/{}'.format(time())),
-        EarlyStopping(monitor='val_loss', patience=6)
+        EarlyStopping(monitor='val_loss', patience=patience)
     ]
 
     model_m.compile(loss='mean_squared_error',
@@ -157,7 +125,7 @@ def run(FOLDER_NAME, trial_id, data_root):
 
     # Hyper-parameters
     BATCH_SIZE = 32
-    EPOCHS = 15
+    EPOCHS = epochs
 
     history = model_m.fit(X_train,
                           y_train,
@@ -169,6 +137,9 @@ def run(FOLDER_NAME, trial_id, data_root):
 
     plot_model(history, MODEL_FOLDER)
 
+    with open(join(MODEL_FOLDER, 'history.pickle'), 'wb') as file_pi:
+        pickle.dump(history, file_pi)
+
     print('Selecting best model.')
     model_files = [(join(temp_model_out_folder, f), int(f.split('-')[0].split('.')[1])) for f in listdir(temp_model_out_folder) if
                    isfile(join(temp_model_out_folder, f)) and f.split('-')[0].split('.')[0] != 'final']
@@ -178,77 +149,6 @@ def run(FOLDER_NAME, trial_id, data_root):
     model_b = load_model(model_b_name)
     model_b.save(join(MODEL_FOLDER, model_b_name.split('\\')[1]))
     shutil.rmtree(temp_model_out_folder)
-
-    # Evaluate against test data
-    for grp in GROUPS:
-
-        grp_results = []
-        grp_results.append('Best model name {}'.format(model_b_name))
-
-        X_test = test_data_combined[grp]['test_X_data']
-        y_test = test_data_combined[grp]['test_Y_data']
-        ID_test = test_data_combined[grp]['test_ID_user']
-
-        print('Model Evaluation for {}'.format(grp))
-        y_pred_test = model_b.predict(X_test)
-
-        plt.figure(figsize=(8, 8))
-        plt.scatter(y_test, y_pred_test)
-        plt.xlabel('Actual EE')
-        plt.ylabel('Predicted EE')
-        plt.savefig(join(RESULTS_FOLDER, grp, 'actual_vs_predicted_met.png'))
-        plt.clf()
-        plt.close()
-
-        y_pred_test_1d_list = [list(i)[0] for i in list(y_pred_test)]
-        corr = pearsonr(list(y_test), y_pred_test_1d_list)
-
-        grp_results.append('\n\n -------RESULTS-------\n\n')
-        grp_results.append('Pearsons Correlation = {}'.format(corr))
-        grp_results.append('RMSE - {}'.format(np.sqrt(mean_squared_error(y_test, y_pred_test))))
-        grp_results.append('R2 Error - {}'.format(r2_score(y_test, y_pred_test)))
-        grp_results.append('Explained Variance Score - {}'.format(explained_variance_score(y_test, y_pred_test)))
-
-        class_names = ['SED', 'LPA', 'MVPA']
-        y_test_ai = SE.EnergyTransform.met_to_intensity(y_test)
-        y_pred_test_ai = SE.EnergyTransform.met_to_intensity(y_pred_test)
-
-        cnf_matrix = confusion_matrix(y_test_ai, y_pred_test_ai)
-
-        stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
-
-        assessment_result = 'Classes' + '\t' + str(class_names) + '\t' + '\n'
-        assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
-        assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
-        assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
-        assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
-        assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
-
-        grp_results.append(assessment_result)
-
-        SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM',
-                                              output_filename=join(RESULTS_FOLDER, grp, 'confusion_matrix.png'))
-
-        results_df = pd.DataFrame(
-            {'subject': ID_test,
-             'waist_ee': list(y_test),
-             'predicted_ee': [list(i)[0] for i in list(y_pred_test)]
-             })
-
-        def clean_data_points(data):
-            data = data.assign(waist_ee_cleaned=data['waist_ee'])
-            data = data.assign(predicted_ee_cleaned=data['predicted_ee'])
-            data.loc[(data['predicted_ee'] < 1), 'predicted_ee_cleaned'] = 1
-            return data
-
-        results_df = clean_data_points(results_df)
-
-        SE.BlandAltman.bland_altman_paired_plot_tested(results_df, '{}'.format(FOLDER_NAME), 1, log_transformed=True,
-                                                       min_count_regularise=False, output_filename=join(RESULTS_FOLDER, grp, 'bland_altman'))
-
-        result_string = '\n'.join(grp_results)
-        with open(join(RESULTS_FOLDER, grp, 'result_report.txt'), "w") as text_file:
-            text_file.write(result_string)
 
 
 if __name__ == '__main__':
@@ -266,5 +166,5 @@ if __name__ == '__main__':
             continue
 
         print('\n\n\n\nProcessing {}'.format(f))
-        run(f, trial_num, temp_folder)
+        run(f, trial_num, temp_folder, epochs=20, patience=10)
 

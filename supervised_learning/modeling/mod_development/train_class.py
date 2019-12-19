@@ -9,7 +9,6 @@ import pickle
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-# import seaborn as sns
 import shutil
 from tqdm import tqdm
 from time import time
@@ -20,13 +19,6 @@ from keras.layers import Conv1D, MaxPooling1D
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.utils import np_utils
 from tensorflow.python.keras.callbacks import TensorBoard
-
-from sklearn.metrics import confusion_matrix
-import supervised_learning.modeling.statistical_extensions as SE
-
-# pd.options.display.float_format = '{:.1f}'.format
-# sns.set()  # Default seaborn look and feel
-# plt.style.use('ggplot')
 
 
 def load_data(filenames):
@@ -77,22 +69,14 @@ def plot_model(history, MODEL_FOLDER):
     plt.close()
 
 
-def run(FOLDER_NAME, trial_id, data_root):
+def run(FOLDER_NAME, trial_id, data_root, epochs=20, patience=10):
 
     TRAIN_DATA_FOLDER = data_root + '/{}/train/'.format(FOLDER_NAME)
-    GROUPS = ['test', 'train_test']
-    TEST_DATA_FOLDERS = {
-        'test': data_root + '/{}/test/'.format(FOLDER_NAME),
-        'train_test': data_root + '/{}/train_test/'.format(FOLDER_NAME),
-        }
-    OUTPUT_FOLDER_ROOT = '../output/classification/v{}/{}/'.format(trial_id, FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = '../output/v{}/classification/{}/'.format(trial_id, FOLDER_NAME)
     MODEL_FOLDER = OUTPUT_FOLDER_ROOT + '/model_out/'
-    RESULTS_FOLDER = OUTPUT_FOLDER_ROOT + '/results/'
     if not exists(OUTPUT_FOLDER_ROOT):
         makedirs(OUTPUT_FOLDER_ROOT)
         makedirs(MODEL_FOLDER)
-        makedirs(join(RESULTS_FOLDER, 'test'))
-        makedirs(join(RESULTS_FOLDER, 'train_test'))
 
     # Create temp folder to save model outputs
     temp_model_out_folder = 'temp_model_out'
@@ -124,24 +108,6 @@ def run(FOLDER_NAME, trial_id, data_root):
     # One-hot encoding of y_train labels (only execute once!)
     y_train = np_utils.to_categorical(y_train, num_classes)
 
-    """Load and Setup Test Data"""
-    test_data_combined = {}
-    for grp in GROUPS:
-
-        test_data_combined[grp] = {}
-
-        fs = [join(TEST_DATA_FOLDERS[grp], f) for f in listdir(TEST_DATA_FOLDERS[grp]) if
-              isfile(join(TEST_DATA_FOLDERS[grp], f))]
-
-        test_X_data, test_Y_data, test_ID_user = load_data(fs)
-        test_X_data = test_X_data.reshape(test_X_data.shape[0], input_shape).astype("float32")
-        test_Y_data = test_Y_data.astype("float32")
-        test_Y_data = np_utils.to_categorical(test_Y_data, num_classes)
-
-        test_data_combined[grp]['test_X_data'] = test_X_data
-        test_data_combined[grp]['test_Y_data'] = test_Y_data
-        test_data_combined[grp]['test_ID_user'] = test_ID_user
-
     """Model architecture"""
     model_m = Sequential()
     model_m.add(Reshape((TIME_PERIODS, num_sensors), input_shape=(input_shape,)))
@@ -162,7 +128,7 @@ def run(FOLDER_NAME, trial_id, data_root):
             filepath='temp_model_out/best_model.{epoch:03d}-{val_loss:.2f}.h5',
             monitor='val_loss', save_best_only=True),
         TensorBoard(log_dir='logs/{}'.format(time())),
-        EarlyStopping(monitor='val_loss', patience=10)
+        EarlyStopping(monitor='val_loss', patience=patience)
     ]
 
     model_m.compile(loss='categorical_crossentropy',
@@ -171,7 +137,7 @@ def run(FOLDER_NAME, trial_id, data_root):
 
     # Hyper-parameters
     BATCH_SIZE = 32
-    EPOCHS = 20
+    EPOCHS = epochs
 
     history = model_m.fit(X_train,
                           y_train,
@@ -183,6 +149,9 @@ def run(FOLDER_NAME, trial_id, data_root):
 
     plot_model(history, MODEL_FOLDER)
 
+    with open(join(MODEL_FOLDER, 'history.pickle'), 'wb') as file_pi:
+        pickle.dump(history, file_pi)
+
     print('Selecting best model.')
     model_files = [(join(temp_model_out_folder, f), int(f.split('-')[0].split('.')[1])) for f in listdir(temp_model_out_folder) if
                    isfile(join(temp_model_out_folder, f)) and f.split('-')[0].split('.')[0] != 'final']
@@ -192,47 +161,6 @@ def run(FOLDER_NAME, trial_id, data_root):
     model_b = load_model(model_b_name)
     model_b.save(join(MODEL_FOLDER, model_b_name.split('\\')[1]))
     shutil.rmtree(temp_model_out_folder)
-
-    # Evaluate against test data
-    for grp in GROUPS:
-
-        grp_results = []
-        grp_results.append('Best model name {}'.format(model_b_name))
-
-        X_test = test_data_combined[grp]['test_X_data']
-        y_test = test_data_combined[grp]['test_Y_data']
-
-        print('Model Evaluation for {}'.format(grp))
-        y_pred_test = model_b.predict(X_test)
-
-        # Take the class with the highest probability from the test predictions
-        max_y_pred_test = np.argmax(y_pred_test, axis=1)
-        max_y_test = np.argmax(y_test, axis=1)
-
-        assert y_test.shape[0] == y_pred_test.shape[0]
-
-        # Evaluation matrices
-
-        class_names = ['SED', 'LPA', 'MVPA']
-        cnf_matrix = confusion_matrix(max_y_test, max_y_pred_test)
-
-        stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
-
-        assessment_result = 'Classes' + '\t' + str(class_names) + '\t' + '\n'
-        assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
-        assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
-        assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
-        assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
-        assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
-
-        grp_results.append(assessment_result)
-
-        SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM',
-                                              output_filename=join(RESULTS_FOLDER, grp, 'confusion_matrix.png'))
-
-        result_string = '\n'.join(grp_results)
-        with open(join(RESULTS_FOLDER, grp, 'result_report.txt'), "w") as text_file:
-            text_file.write(result_string)
 
 
 if __name__ == '__main__':
@@ -250,5 +178,5 @@ if __name__ == '__main__':
             continue
 
         print('\n\n\n\nProcessing {}'.format(f))
-        run(f, trial_num, temp_folder)
+        run(f, trial_num, temp_folder, epochs=20, patience=10)
 
