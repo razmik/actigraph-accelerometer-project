@@ -16,7 +16,7 @@ from sklearn.metrics import r2_score, confusion_matrix
 import supervised_learning.modeling.statistical_extensions as SE
 
 
-def load_data(filenames):
+def load_data(filenames, demo=False):
 
     # Single row for each
     data_dict = {}
@@ -36,9 +36,10 @@ def load_data(filenames):
             data_dict[user_id]['Y_data_regress'] = npy.item().get('energy_e')
             data_dict[user_id]['Y_data_classif'] = npy.item().get('activity_classes')
 
-        # ccc += 1
-        # if ccc > 20:
-        #     break
+        if demo:
+            ccc += 1
+            if ccc > 20:
+                break
 
     return data_dict
 
@@ -223,7 +224,7 @@ def evaluate_regression_modal(REG_MODEL_ROOT_FOLDER, REG_RESULTS_FOLDER, data_di
     pd.DataFrame(output_results, columns=out_col_names).to_csv(join(REG_RESULTS_FOLDER, 'results_reg_{}.csv'.format(group)), index=None)
 
 
-def run(FOLDER_NAME, training_version, trial_id, group, data_root):
+def run(FOLDER_NAME, training_version, trial_id, group, data_root, demo=False):
 
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
     REGRESSION_MODEL_ROOT_FOLDER = '../output/v{}/regression/{}/model_out/'.format(training_version, FOLDER_NAME)
@@ -240,7 +241,7 @@ def run(FOLDER_NAME, training_version, trial_id, group, data_root):
     # Load data
     all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
 
-    data_dictionary = load_data(all_files_test)
+    data_dictionary = load_data(all_files_test, demo=demo)
 
     evaluate_regression_modal(REGRESSION_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
 
@@ -262,5 +263,5 @@ if __name__ == '__main__':
             continue
 
         print('\n\nProcessing {} for {}'.format(f, grp))
-        run(f, training_version, trial_num, grp, temp_folder)
+        run(f, training_version, trial_num, grp, temp_folder, demo=True)
 

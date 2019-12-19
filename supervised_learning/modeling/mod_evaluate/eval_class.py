@@ -33,7 +33,7 @@ def get_time_in(labels, time_epoch):
     return SB, LPA, MVPA
 
 
-def load_data(filenames):
+def load_data(filenames, demo=False):
 
     # Single row for each
     data_dict = {}
@@ -53,9 +53,10 @@ def load_data(filenames):
             data_dict[user_id]['Y_data_classif'] = npy.item().get('activity_classes')
             data_dict[user_id]['Y_data_regress'] = npy.item().get('energy_e')
 
-        cc += 1
-        if cc > 25:
-            break
+        if demo:
+            cc += 1
+            if cc > 25:
+                break
 
     # Data relabeling from index 0 (use only 3 classes)
     for key in tqdm(data_dict.keys(), desc='Relabeling'):
@@ -189,7 +190,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results_classif_{}.csv'.format(group)), index=None)
 
 
-def run(FOLDER_NAME, training_version, trial_id, group, data_root):
+def run(FOLDER_NAME, training_version, trial_id, group, data_root, demo=False):
 
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
     CLASSIF_MODEL_ROOT_FOLDER = '../output/v{}/classification/{}/model_out/'.format(training_version, FOLDER_NAME)
@@ -207,7 +208,7 @@ def run(FOLDER_NAME, training_version, trial_id, group, data_root):
     all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
 
     print('Loading data...')
-    data_dictionary = load_data(all_files_test)
+    data_dictionary = load_data(all_files_test, demo=demo)
 
     evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
 
@@ -229,6 +230,6 @@ if __name__ == '__main__':
             continue
 
         print('\n\nProcessing {} for {}'.format(f, grp))
-        run(f, training_version, trial_num, grp, temp_folder)
+        run(f, training_version, trial_num, grp, temp_folder, demo=False)
 
     print('Completed.')
