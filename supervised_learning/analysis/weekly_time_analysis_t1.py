@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-SUBJECT_DETAIL_FILE = '../../analyze/user_details.csv'
+SUBJECT_DETAIL_FILE = 'user_details.xlsx'
 DATA_FILE = "EE_Prediction_subject_level_evaluation_v2.xlsx"
 
 
@@ -61,13 +61,13 @@ def get_values_30s(df_all):
 
 if __name__ == '__main__':
 
-    subject_df = pd.read_csv(SUBJECT_DETAIL_FILE)
+    subject_df = pd.read_excel(SUBJECT_DETAIL_FILE).groupby('Participant ID').first().reset_index()
 
     result_data = []
     result_col_names = ['Set', 'PA category', 'Reference', 'cnn_60']
 
     data_df = pd.read_excel(DATA_FILE, sheet_name='unique_participants_wk2_60s')
-    df_summary = pd.merge(data_df, subject_df, left_on='participant', right_on='subject', how='left')
+    df_summary = pd.merge(data_df, subject_df, left_on='participant', right_on='Participant ID', how='left')
 
     # All
     df_filt = df_summary[:]
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     result_col_names = ['Set', 'PA category', 'Reference', 'cnn_30']
 
     data_df = pd.read_excel(DATA_FILE, sheet_name='unique_participants_wk2_30s')
-    df_summary = pd.merge(data_df, subject_df, left_on='participant', right_on='subject', how='left')
+    df_summary = pd.merge(data_df, subject_df, left_on='participant', right_on='Participant ID', how='left')
 
     # All
     df_filt = df_summary[:]
