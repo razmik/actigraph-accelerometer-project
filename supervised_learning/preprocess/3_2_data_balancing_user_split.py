@@ -70,8 +70,8 @@ if __name__ == "__main__":
     LABEL_CLASS = 'waist_intensity'
     LABEL_REG = 'waist_ee'
 
-    GROUPS = ['train', 'test', 'train_test']
-    WEEKS = {'train': 'Week 1', 'test': 'Week 2', 'train_test': 'Week 2'}
+    GROUPS = ['train']
+    WEEKS = {'train': 'Week 1'}
 
     req_cols = ['X', 'Y', 'Z', 'waist_ee', 'waist_intensity']
     input_cols = ['X', 'Y', 'Z']
@@ -84,7 +84,6 @@ if __name__ == "__main__":
     # Test Train Split
     with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
         split_dict = pickle.load(handle)
-    split_dict['train_test'] = split_dict['train'][:]
 
     for user_group in GROUPS:
 

@@ -57,13 +57,13 @@ if __name__ == "__main__":
     target_cols = ['waist_ee', 'waist_intensity']
 
     INPUT_DATA_ROOT = "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined/"
-    OUTPUT_FOLDER_ROOT = join(INPUT_DATA_ROOT, 'model_ready')
+    OUTPUT_FOLDER_ROOT = join(INPUT_DATA_ROOT, 'model_ready_new')
     TRAIN_TEST_SUBJECT_PICKLE = '../participant_split/train_test_split.v2.pickle'
 
     # Test Train Split
     with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
         split_dict = pickle.load(handle)
-    split_dict['train_test'] = split_dict['train'][:]
+    split_dict['train_test'] = split_dict['train'][:] + split_dict['test'][:]
 
     for user_group in GROUPS:
 
@@ -71,6 +71,9 @@ if __name__ == "__main__":
         all_files = [f for f in listdir(INPUT_DATA_FOLDER) if isfile(join(INPUT_DATA_FOLDER, f))]
 
         for f in tqdm(all_files, desc=user_group):
+
+            if f.split()[0] not in split_dict[user_group]:
+                continue
 
             try:
                 df = pd.read_csv(join(INPUT_DATA_FOLDER, f), usecols=req_cols)

@@ -12,11 +12,37 @@ import keras
 from keras.models import load_model
 import itertools
 from scipy.stats.stats import pearsonr, spearmanr
-from sklearn.metrics import r2_score, confusion_matrix
+from sklearn.metrics import r2_score, confusion_matrix, mean_squared_error
 import supervised_learning.modeling.statistical_extensions as SE
 
 
-def load_data(filenames, demo=False):
+def load_data_overall(filenames, demo=False):
+
+    X_data = []
+    Y_data = []
+    ID_user = []
+    counter = 0
+    for filename in tqdm(filenames):
+        npy = np.load(filename, allow_pickle=True)
+        X_data.append(npy.item().get('segments'))
+        Y_data.append(npy.item().get('energy_e'))
+
+        user_id = filename.split('/')[-1][:6]
+        data_length = npy.item().get('energy_e').shape[0]
+        ID_user.extend([user_id for _ in range(data_length)])
+
+        if demo:
+            counter += 1
+            if counter > 10:
+                break
+
+    X_data = np.concatenate(X_data, axis=0)
+    Y_data = np.concatenate(Y_data, axis=0)
+
+    return X_data, Y_data, ID_user
+
+
+def load_data_individual(filenames, demo=False):
 
     # Single row for each
     data_dict = {}
@@ -82,12 +108,7 @@ def calculate_error(X, y, model):
     return person_corr, float(r_2_error), y_pred_test_1d_list
 
 
-def evaluate_regression_modal(REG_MODEL_ROOT_FOLDER, REG_RESULTS_FOLDER, data_dict, TIME_PERIODS, group):
-
-    # Select best model
-    model_files = [join(REG_MODEL_ROOT_FOLDER, f) for f in listdir(REG_MODEL_ROOT_FOLDER) if
-                   isfile(join(REG_MODEL_ROOT_FOLDER, f)) and '.h5' in f]
-    model_b = load_model(model_files[0])
+def evaluate_regression_modal(model_b, REG_RESULTS_FOLDER, data_dict, TIME_PERIODS, group):
 
     out_col_names = ['participant', 'R2_Overall', 'R2_SB', 'R2_LPA', 'R2_MVPA', 'Pearson_Overall', 'Pearson_SB', 'Pearson_LPA', 'Pearson_MVPA',
                      'accuracy', 'accuracy_ci', 'accuracy_2class', 'accuracy_ci_2class',
@@ -224,26 +245,90 @@ def evaluate_regression_modal(REG_MODEL_ROOT_FOLDER, REG_RESULTS_FOLDER, data_di
     pd.DataFrame(output_results, columns=out_col_names).to_csv(join(REG_RESULTS_FOLDER, 'results_reg_{}.csv'.format(group)), index=None)
 
 
+def bland_altman_eval(model_b, REG_RESULTS_FOLDER, X_data, Y_data, ID_user, group):
+
+    X, y = np.asarray(X_data), np.asarray(Y_data)
+
+    num_time_periods, num_sensors = X.shape[1], X.shape[2]
+    input_shape = (num_time_periods * num_sensors)
+    X = X.reshape(X.shape[0], input_shape)
+
+    # Convert type for Keras otherwise Keras cannot process the data
+    X = X.astype("float32")
+    y = y.astype("float32")
+
+    # Evaluate against test data
+    y_pred_test = model_b.predict(X)
+    y_pred_test_1d_list = [list(i)[0] for i in list(y_pred_test)]
+
+    # Overall analysis
+    grp_results = []
+    corr = pearsonr(list(y), y_pred_test_1d_list)
+    grp_results.append('\n\n -------RESULTS-------\n\n')
+    grp_results.append('Pearsons Correlation = {}'.format(corr))
+    grp_results.append('RMSE - {}'.format(np.sqrt(mean_squared_error(y, y_pred_test))))
+    grp_results.append('R2 Error - {}'.format(r2_score(y, y_pred_test)))
+
+    result_string = '\n'.join(grp_results)
+    with open(join(REG_RESULTS_FOLDER, 'overall_regress_report.txt'), "w") as text_file:
+        text_file.write(result_string)
+
+    # BA analysis
+    results_df = pd.DataFrame(
+        {'subject': ID_user,
+         'waist_ee': list(Y_data),
+         'predicted_ee': y_pred_test_1d_list
+         })
+
+    def clean_data_points(data):
+        data = data.assign(waist_ee_cleaned=data['waist_ee'])
+        data = data.assign(predicted_ee_cleaned=data['predicted_ee'])
+        data.loc[(data['predicted_ee'] < 1), 'predicted_ee_cleaned'] = 1
+        return data
+
+    results_df = clean_data_points(results_df)
+
+    ba_outfolder = join(REG_RESULTS_FOLDER, 'bland_altman', 'ba')
+    if not exists(ba_outfolder):
+        makedirs(ba_outfolder)
+
+    SE.BlandAltman.bland_altman_paired_plot_tested(results_df, 'Bland Altman Analysis', 1, log_transformed=True,
+                                                   min_count_regularise=False,
+                                                   output_filename=ba_outfolder)
+
+
 def run(FOLDER_NAME, training_version, group, data_root, demo=False):
 
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
     REGRESSION_MODEL_ROOT_FOLDER = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/regression/{}/model_out/'.format(training_version, FOLDER_NAME)
     OUTPUT_FOLDER_ROOT = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/regression/{}/individual_results/{}/'.format(training_version, FOLDER_NAME, group)
+    OUTPUT_FOLDER_ROOT_OVERALL = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/regression/{}/results/{}/'.format(training_version, FOLDER_NAME, group)
 
     # Create output folders
-    for f in [OUTPUT_FOLDER_ROOT]:
+    for f in [OUTPUT_FOLDER_ROOT, OUTPUT_FOLDER_ROOT_OVERALL]:
         if not exists(f):
             makedirs(f)
 
     # The number of steps within one time segment
     TIME_PERIODS = int(FOLDER_NAME.split('-')[1])
 
-    # Load data
+    # Select best model
+    model_files = [join(REGRESSION_MODEL_ROOT_FOLDER, f) for f in listdir(REGRESSION_MODEL_ROOT_FOLDER) if
+                   isfile(join(REGRESSION_MODEL_ROOT_FOLDER, f)) and '.h5' in f]
+    model_b = load_model(model_files[0])
+
     all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
 
-    data_dictionary = load_data(all_files_test, demo=demo)
+    # Load data for overall assessment
+    test_X_data, test_Y_data, test_ID_user = load_data_overall(all_files_test, demo)
+    bland_altman_eval(model_b, OUTPUT_FOLDER_ROOT_OVERALL, test_X_data, test_Y_data, test_ID_user, group)
+    del test_X_data
+    del test_Y_data
+    del test_ID_user
 
-    evaluate_regression_modal(REGRESSION_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
+    # Load data for individual assessment
+    # data_dictionary = load_data_individual(all_files_test, demo=demo)
+    # evaluate_regression_modal(model_b, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
 
 
 if __name__ == '__main__':
