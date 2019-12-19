@@ -78,7 +78,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
 
     out_col_names = ['participant',
                      'accuracy', 'accuracy_ci', 'accuracy_2class', 'accuracy_ci_2class',
-                     'spearman_corr_overall', 'spearman_corr_overall_2cls', 'spearman_corr_sb', 'spearman_corr_lpa', 'spearman_corr_sblpa', 'spearman_corr_mvpa',
+                     'spearman_corr_overall', 'spearman_corr_overall_2cls', #'spearman_corr_sb', 'spearman_corr_lpa', 'spearman_corr_sblpa', 'spearman_corr_mvpa',
                      'sensitivity SB', 'sensitivity LPA', 'sensitivity SBLPA', 'sensitivity MVPA', 'sensitivity MVPA2',
                      'sensitivity_ci_SB', 'sensitivity_ci_LPA', 'sensitivity_ci_SBLPA', 'sensitivity_ci_MVPA', 'sensitivity_ci_MVPA2',
                      'specificity_SB', 'specificity_LPA', 'specificity_SBLPA', 'specificity_MVPA', 'specificity_MVPA2',
@@ -86,7 +86,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
                      'actual_SB', 'predicted_SB', 'actual_LPA', 'predicted_LPA', 'actual_SBLPA', 'predicted_SBLPA', 'actual_MVPA', 'predicted_MVPA']
     output_results = []
     num_classes = 3
-    for key, data in tqdm(data_dict.items(), desc='Evaluating () - ():'.format(TIME_PERIODS, group)):
+    for key, data in tqdm(data_dict.items(), desc='Evaluating {} - {}:'.format(TIME_PERIODS, group)):
 
         # Test data placeholder
         X_test, y_test = data['X_data'], data['Y_data_classif']
@@ -147,18 +147,18 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
         # Spearman's correlation
         spearman_corr, spearman_pval = spearmanr(max_y_test, max_y_pred_test)
 
-        max_y_test_sb, max_y_pred_test_sb = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 0], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 0]
-        spearman_corr_sb, _ = spearmanr(max_y_test_sb, max_y_pred_test_sb)
-
-        max_y_test_lpa, max_y_pred_test_lpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 1], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 1]
-        spearman_corr_lpa, _ = spearmanr(max_y_test_lpa, max_y_pred_test_lpa)
-
-        max_y_test_mvpa, max_y_pred_test_mvpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 2], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 2]
-        spearman_corr_mvpa, _ = spearmanr(max_y_test_mvpa, max_y_pred_test_mvpa)
+        # max_y_test_sb, max_y_pred_test_sb = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 0], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 0]
+        # spearman_corr_sb, _ = spearmanr(max_y_test_sb, max_y_pred_test_sb)
+        #
+        # max_y_test_lpa, max_y_pred_test_lpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 1], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 1]
+        # spearman_corr_lpa, _ = spearmanr(max_y_test_lpa, max_y_pred_test_lpa)
+        #
+        # max_y_test_mvpa, max_y_pred_test_mvpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 2], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 2]
+        # spearman_corr_mvpa, _ = spearmanr(max_y_test_mvpa, max_y_pred_test_mvpa)
 
         """Evaluation matrices (2 CLASS)"""
         max_y_test_2cls = np.where(max_y_test == 0, 1, max_y_test)
-        max_y_pred_test_2cls = np.where(max_y_pred_test == 0, 1, max_y_test)
+        max_y_pred_test_2cls = np.where(max_y_pred_test == 0, 1, max_y_pred_test)
 
         cnf_matrix_2cls = confusion_matrix(max_y_test_2cls, max_y_pred_test_2cls)
         stats_2cls = SE.GeneralStats.evaluation_statistics(cnf_matrix_2cls)
@@ -172,13 +172,14 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
         # Spearman's correlation
         spearman_corr_2cls, _ = spearmanr(max_y_test_2cls, max_y_pred_test_2cls)
 
-        max_y_test_sblpa, max_y_pred_test_sblpa = [max_y_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if c == 0], [
-            max_y_pred_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if c == 1]
-        spearman_corr_sblpa, _ = spearmanr(max_y_test_sblpa, max_y_pred_test_sblpa)
+        # max_y_test_sblpa, max_y_pred_test_sblpa = [max_y_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if c == 1], [
+        #     max_y_pred_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if c == 1]
+        #
+        # spearman_corr_sblpa, _ = spearmanr(max_y_test_sblpa, max_y_pred_test_sblpa)
         """END 2 CLASS"""
 
         result_row = [key, stats['accuracy'], stats['accuracy_ci'], accuracy_2cls, accuracy_ci_2cls,
-                      spearman_corr, spearman_corr_2cls, spearman_corr_sb, spearman_corr_lpa, spearman_corr_sblpa, spearman_corr_mvpa,
+                      spearman_corr, spearman_corr_2cls, #spearman_corr_sb, spearman_corr_lpa, spearman_corr_sblpa, spearman_corr_mvpa,
                       sensitivity_sb, sensitivity_lpa, sensitivity_sblpa, sensitivity_mvpa, sensitivity_mvpa2,
                       sensitivity_ci_sb, sensitivity_ci_lpa, sensitivity_ci_sblpa, sensitivity_ci_mvpa, sensitivity_ci_mvpa2,
                       specificity_sb, specificity_lpa, specificity_sblpa, specificity_mvpa, specificity_mvpa2,
@@ -190,11 +191,11 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results_classif_{}.csv'.format(group)), index=None)
 
 
-def run(FOLDER_NAME, training_version, trial_id, group, data_root, demo=False):
+def run(FOLDER_NAME, training_version, group, data_root, demo=False):
 
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
-    CLASSIF_MODEL_ROOT_FOLDER = '../output/v{}/classification/{}/model_out/'.format(training_version, FOLDER_NAME)
-    OUTPUT_FOLDER_ROOT = '../output/v{}/classification/{}/individual_results/{}/'.format(trial_id, FOLDER_NAME, group)
+    CLASSIF_MODEL_ROOT_FOLDER = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/classification/{}/model_out/'.format(training_version, FOLDER_NAME)
+    OUTPUT_FOLDER_ROOT = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/classification/{}/individual_results/{}/'.format(training_version, FOLDER_NAME, group)
 
     # Create output folders
     for f in [OUTPUT_FOLDER_ROOT]:
@@ -219,8 +220,7 @@ if __name__ == '__main__':
     temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined\model_ready/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f)) and (f.split('-')[1] != f.split('-')[3])]
 
-    trial_num = 1
-    training_version = 1
+    training_version = '1-12_Dec'
     allowed_list = [3000, 6000]
     groups = ['test', 'train_test']
 
@@ -230,6 +230,6 @@ if __name__ == '__main__':
             continue
 
         print('\n\nProcessing {} for {}'.format(f, grp))
-        run(f, training_version, trial_num, grp, temp_folder, demo=False)
+        run(f, training_version, grp, temp_folder, demo=True)
 
     print('Completed.')
