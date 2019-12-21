@@ -77,9 +77,9 @@ def get_time_in(labels, time_epoch):
     for i, j in zip(unique, counts):
         outcomes[i] = j
 
-    SB = outcomes[0] / (6000 / time_epoch) if 0 in outcomes else 0
-    LPA = outcomes[1] / (6000 / time_epoch) if 1 in outcomes else 0
-    MVPA = outcomes[2] / (6000 / time_epoch) if 2 in outcomes else 0
+    SB = outcomes[1] / (6000 / time_epoch) if 1 in outcomes else 0
+    LPA = outcomes[2] / (6000 / time_epoch) if 2 in outcomes else 0
+    MVPA = outcomes[3] / (6000 / time_epoch) if 3 in outcomes else 0
 
     return SB, LPA, MVPA
 
@@ -112,8 +112,7 @@ def evaluate_regression_modal(model_b, REG_RESULTS_FOLDER, data_dict, TIME_PERIO
 
     out_col_names = ['participant', 'R2_Overall', 'R2_SB', 'R2_LPA', 'R2_MVPA', 'Pearson_Overall', 'Pearson_SB', 'Pearson_LPA', 'Pearson_MVPA',
                      'accuracy', 'accuracy_ci', 'accuracy_2class', 'accuracy_ci_2class',
-                     'spearman_corr_overall', 'spearman_corr_overall_2cls', #'spearman_corr_sb', 'spearman_corr_lpa',
-                     #'spearman_corr_sblpa', 'spearman_corr_mvpa',
+                     'spearman_corr_overall', 'spearman_corr_overall_2cls',
                      'sensitivity SB', 'sensitivity LPA', 'sensitivity SBLPA', 'sensitivity MVPA', 'sensitivity MVPA2',
                      'sensitivity_ci_SB', 'sensitivity_ci_LPA', 'sensitivity_ci_SBLPA', 'sensitivity_ci_MVPA',
                      'sensitivity_ci_MVPA2',
@@ -146,7 +145,7 @@ def evaluate_regression_modal(model_b, REG_RESULTS_FOLDER, data_dict, TIME_PERIO
         else:
             p_lpa, r2_lpa = 0, 0
 
-        X_test_mvpa, y_test_mvpa = [X_test[i] for i, c in enumerate(y_class) if c > 3], [y_test[i] for i, c in enumerate(y_class) if c > 3]
+        X_test_mvpa, y_test_mvpa = [X_test[i] for i, c in enumerate(y_class) if c == 3], [y_test[i] for i, c in enumerate(y_class) if c == 3]
         if len(y_test_mvpa) > 0:
             p_mvpa, r2_mvpa, _ = calculate_error(X_test_mvpa, y_test_mvpa, model_b)
         else:
@@ -188,18 +187,6 @@ def evaluate_regression_modal(model_b, REG_RESULTS_FOLDER, data_dict, TIME_PERIO
         # Spearman's correlation
         spearman_corr, spearman_pval = spearmanr(max_y_test, max_y_pred_test)
 
-        # max_y_test_sb, max_y_pred_test_sb = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 0], [
-        #     max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 0]
-        # spearman_corr_sb, _ = spearmanr(max_y_test_sb, max_y_pred_test_sb)
-        #
-        # max_y_test_lpa, max_y_pred_test_lpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 1], [
-        #     max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 1]
-        # spearman_corr_lpa, _ = spearmanr(max_y_test_lpa, max_y_pred_test_lpa)
-        #
-        # max_y_test_mvpa, max_y_pred_test_mvpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 2], [
-        #     max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 2]
-        # spearman_corr_mvpa, _ = spearmanr(max_y_test_mvpa, max_y_pred_test_mvpa)
-
         """Evaluation matrices (2 CLASS)"""
         max_y_test_2cls = np.where(max_y_test == 1, 2, max_y_test)
         max_y_pred_test_2cls = np.where(max_y_pred_test == 1, 2, max_y_pred_test)
@@ -216,27 +203,21 @@ def evaluate_regression_modal(model_b, REG_RESULTS_FOLDER, data_dict, TIME_PERIO
         # Spearman's correlation
         spearman_corr_2cls, _ = spearmanr(max_y_test_2cls, max_y_pred_test_2cls)
 
-        # max_y_test_sblpa, max_y_pred_test_sblpa = [max_y_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if
-        #                                            c == 1], [
-        #                                               max_y_pred_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if
-        #                                               c == 1]
-        # spearman_corr_sblpa, _ = spearmanr(max_y_test_sblpa, max_y_pred_test_sblpa)
         """END 2 CLASS"""
 
         # Calculate Time in
         actual_SB, actual_LPA, actual_MVPA = get_time_in(y_class, TIME_PERIODS)
         predicted_SB, predicted_LPA, predicted_MVPA = get_time_in(max_y_pred_test, TIME_PERIODS)
-
         result_row = [key, r2_overall, r2_sb, r2_lpa, r2_mvpa, p_overall, p_sb, p_lpa, p_mvpa,
                       stats['accuracy'], stats['accuracy_ci'], accuracy_2cls, accuracy_ci_2cls,
-                      spearman_corr, spearman_corr_2cls, #spearman_corr_sb, spearman_corr_lpa, spearman_corr_sblpa, spearman_corr_mvpa,
+                      spearman_corr, spearman_corr_2cls,
                       sensitivity_sb, sensitivity_lpa, sensitivity_sblpa, sensitivity_mvpa, sensitivity_mvpa2,
                       sensitivity_ci_sb, sensitivity_ci_lpa, sensitivity_ci_sblpa, sensitivity_ci_mvpa,
                       sensitivity_ci_mvpa2,
                       specificity_sb, specificity_lpa, specificity_sblpa, specificity_mvpa, specificity_mvpa2,
                       specificity_ci_sb, specificity_ci_lpa, specificity_ci_sblpa, specificity_ci_mvpa,
                       specificity_ci_mvpa2,
-                      actual_SB, predicted_SB, actual_LPA, predicted_LPA, (actual_LPA + actual_LPA),
+                      actual_SB, predicted_SB, actual_LPA, predicted_LPA, (actual_SB + actual_LPA),
                       (predicted_SB + predicted_LPA), actual_MVPA, predicted_MVPA
                       ]
         output_results.append(result_row)
@@ -342,13 +323,13 @@ if __name__ == '__main__':
 
     training_version = '1-12_Dec'
     allowed_list = [3000, 6000]
-    groups = ['train_test']#['test', 'train_test']
+    groups = ['test']#['test', 'train_test']
 
-    for f, grp in itertools.product(all_files, groups):
+    for f, grpd in itertools.product(all_files, groups):
 
         if int(f.split('-')[1]) not in allowed_list:
             continue
 
-        print('\n\nProcessing {} for {}'.format(f, grp))
-        run(f, training_version, grp, temp_folder, demo=False)
+        print('\n\nProcessing {} for {}'.format(f, grpd))
+        run(f, training_version, grpd, temp_folder, demo=True)
 

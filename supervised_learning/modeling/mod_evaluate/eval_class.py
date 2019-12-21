@@ -78,7 +78,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
 
     out_col_names = ['participant',
                      'accuracy', 'accuracy_ci', 'accuracy_2class', 'accuracy_ci_2class',
-                     'spearman_corr_overall', 'spearman_corr_overall_2cls', #'spearman_corr_sb', 'spearman_corr_lpa', 'spearman_corr_sblpa', 'spearman_corr_mvpa',
+                     'spearman_corr_overall', 'spearman_corr_overall_2cls',
                      'sensitivity SB', 'sensitivity LPA', 'sensitivity SBLPA', 'sensitivity MVPA', 'sensitivity MVPA2',
                      'sensitivity_ci_SB', 'sensitivity_ci_LPA', 'sensitivity_ci_SBLPA', 'sensitivity_ci_MVPA', 'sensitivity_ci_MVPA2',
                      'specificity_SB', 'specificity_LPA', 'specificity_SBLPA', 'specificity_MVPA', 'specificity_MVPA2',
@@ -147,15 +147,6 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
         # Spearman's correlation
         spearman_corr, spearman_pval = spearmanr(max_y_test, max_y_pred_test)
 
-        # max_y_test_sb, max_y_pred_test_sb = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 0], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 0]
-        # spearman_corr_sb, _ = spearmanr(max_y_test_sb, max_y_pred_test_sb)
-        #
-        # max_y_test_lpa, max_y_pred_test_lpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 1], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 1]
-        # spearman_corr_lpa, _ = spearmanr(max_y_test_lpa, max_y_pred_test_lpa)
-        #
-        # max_y_test_mvpa, max_y_pred_test_mvpa = [max_y_test[i] for i, c in enumerate(max_y_test) if c == 2], [max_y_pred_test[i] for i, c in enumerate(max_y_test) if c == 2]
-        # spearman_corr_mvpa, _ = spearmanr(max_y_test_mvpa, max_y_pred_test_mvpa)
-
         """Evaluation matrices (2 CLASS)"""
         max_y_test_2cls = np.where(max_y_test == 0, 1, max_y_test)
         max_y_pred_test_2cls = np.where(max_y_pred_test == 0, 1, max_y_pred_test)
@@ -172,19 +163,15 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
         # Spearman's correlation
         spearman_corr_2cls, _ = spearmanr(max_y_test_2cls, max_y_pred_test_2cls)
 
-        # max_y_test_sblpa, max_y_pred_test_sblpa = [max_y_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if c == 1], [
-        #     max_y_pred_test_2cls[i] for i, c in enumerate(max_y_test_2cls) if c == 1]
-        #
-        # spearman_corr_sblpa, _ = spearmanr(max_y_test_sblpa, max_y_pred_test_sblpa)
         """END 2 CLASS"""
 
         result_row = [key, stats['accuracy'], stats['accuracy_ci'], accuracy_2cls, accuracy_ci_2cls,
-                      spearman_corr, spearman_corr_2cls, #spearman_corr_sb, spearman_corr_lpa, spearman_corr_sblpa, spearman_corr_mvpa,
+                      spearman_corr, spearman_corr_2cls,
                       sensitivity_sb, sensitivity_lpa, sensitivity_sblpa, sensitivity_mvpa, sensitivity_mvpa2,
                       sensitivity_ci_sb, sensitivity_ci_lpa, sensitivity_ci_sblpa, sensitivity_ci_mvpa, sensitivity_ci_mvpa2,
                       specificity_sb, specificity_lpa, specificity_sblpa, specificity_mvpa, specificity_mvpa2,
                       specificity_ci_sb, specificity_ci_lpa, specificity_ci_sblpa, specificity_ci_mvpa, specificity_ci_mvpa2,
-                      actual_SB, predicted_SB, actual_LPA, predicted_LPA, (actual_LPA+actual_LPA), (predicted_SB+predicted_LPA), actual_MVPA, predicted_MVPA]
+                      actual_SB, predicted_SB, actual_LPA, predicted_LPA, (actual_SB+actual_LPA), (predicted_SB+predicted_LPA), actual_MVPA, predicted_MVPA]
         output_results.append(result_row)
 
     # test completed

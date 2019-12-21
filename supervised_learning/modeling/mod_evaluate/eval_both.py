@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     training_version = '1-12_Dec'
     allowed_list = [3000, 6000]
-    groups = ['test']#, 'train_test']
+    groups = ['train_test', 'test']
 
     # Run classifier
     for f, grp in itertools.product(all_files, groups):
