@@ -176,7 +176,7 @@ if __name__ == '__main__':
     eval_category = ['train_test', 'test']
 
     HBLR_ROOT = "E:/Projects/Accelerometer-project_Rashmika/supervised_learning/hb-lr-eval/outputs"
-    CNN_ROOT = "E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}_Incorrect".format(training_version)
+    CNN_ROOT = "E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}".format(training_version)
 
     result_col_names = ['Set', 'Item', 'CNN30', 'CNN60', 'HBLR']
 

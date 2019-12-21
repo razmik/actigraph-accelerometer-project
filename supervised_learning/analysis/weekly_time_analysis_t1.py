@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
     SUBJECT_DETAIL_FILE = 'user_details.xlsx'
     HBLR_ROOT = "E:/Projects/Accelerometer-project_Rashmika/supervised_learning/hb-lr-eval/outputs"
-    CNN_ROOT = "E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}_Incorrect".format(training_version)
+    CNN_ROOT = "E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}".format(training_version)
 
     participant_df = pd.read_excel(SUBJECT_DETAIL_FILE).groupby('Participant ID').first().reset_index()
 
