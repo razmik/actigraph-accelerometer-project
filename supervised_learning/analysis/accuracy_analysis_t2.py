@@ -1,6 +1,8 @@
 import pandas as pd
 from os import listdir
 from os.path import join
+import numpy as np
+import scipy.stats
 
 
 def load_df(folder_name):
@@ -21,37 +23,39 @@ def get_rloa(folder_name, key):
     return "{:.2f} ({:.2f}-{:.2f})".format(float(mean_bias), float(lower_loa), float(upper_loa))
 
 
+def mean_confidence_interval(data, confidence=0.95):
+    a = 1.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), scipy.stats.sem(a)
+    h = se * scipy.stats.t.ppf((1 + confidence) / 2., n-1)
+    return round(m, 2), round(m-h, 2), round(m+h, 2)
+
+
 def get_assessment_scores_cnn_overall(reg_df, class_df):
 
     # Pearson Corr
-    pearson_mean = reg_df['Pearson_Overall'].mean()
-    pearson_sd = reg_df['Pearson_Overall'].std()
-    pearson_corr = "{:.2f} ({:.2f}-{:.2f})".format(pearson_mean, (pearson_mean-pearson_sd), (pearson_mean+pearson_sd))
+    pearson_mean = mean_confidence_interval(reg_df['Pearson_Overall'], confidence=0.95)
+    pearson_corr = "{:.2f} ({:.2f}-{:.2f})".format(pearson_mean[0], pearson_mean[1], pearson_mean[2])
 
     # R2 Error
-    r2_mean = reg_df['R2_Overall'].mean()
-    r2_sd = reg_df['R2_Overall'].std()
-    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean, (r2_mean-r2_sd), (r2_mean+r2_sd))
+    r2_mean = mean_confidence_interval(reg_df['R2_Overall'], confidence=0.95)
+    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean[0], r2_mean[1], r2_mean[2])
 
     # Spearman Corr (2 Class)
-    spearman2_mean = class_df['spearman_corr_overall_2cls'].mean()
-    spearman2_sd = class_df['spearman_corr_overall_2cls'].std()
-    spearman2_corr = "{:.2f} ({:.2f}-{:.2f})".format(spearman2_mean, (spearman2_mean-spearman2_sd), (spearman2_mean+spearman2_sd))
+    spearman2_mean = mean_confidence_interval(class_df['spearman_corr_overall_2cls'], confidence=0.95)
+    spearman2_corr = "{:.2f} ({:.2f}-{:.2f})".format(spearman2_mean[0], spearman2_mean[1], spearman2_mean[2])
 
     # Spearman Corr (3 Class)
-    spearman3_mean = class_df['spearman_corr_overall'].mean()
-    spearman3_sd = class_df['spearman_corr_overall'].std()
-    spearman3_corr = "{:.2f} ({:.2f}-{:.2f})".format(spearman3_mean, (spearman3_mean-spearman3_sd), (spearman3_mean+spearman3_sd))
+    spearman3_mean = mean_confidence_interval(class_df['spearman_corr_overall'], confidence=0.95)
+    spearman3_corr = "{:.2f} ({:.2f}-{:.2f})".format(spearman3_mean[0], spearman3_mean[1], spearman3_mean[2])
 
     # Agreement (2 Class)
-    aggr2_mean = class_df['accuracy_2class'].mean() * 100
-    aggr2_sd = class_df['accuracy_2class'].std() * 100
-    aggr2_corr = "{:.2f} ({:.2f}-{:.2f})".format(aggr2_mean, (aggr2_mean-aggr2_sd), (aggr2_mean+aggr2_sd))
+    aggr2_mean = mean_confidence_interval(class_df['accuracy_2class'] * 100, confidence=0.95)
+    aggr2_corr = "{:.2f} ({:.2f}-{:.2f})".format(aggr2_mean[0], aggr2_mean[1], aggr2_mean[2])
 
     # Agreement (3 Class)
-    aggr3_mean = class_df['accuracy'].mean() * 100
-    aggr3_sd = class_df['accuracy'].std() * 100
-    aggr3_corr = "{:.2f} ({:.2f}-{:.2f})".format(aggr3_mean, (aggr3_mean-aggr3_sd), (aggr3_mean+aggr3_sd))
+    aggr3_mean = mean_confidence_interval(class_df['accuracy'] * 100, confidence=0.95)
+    aggr3_corr = "{:.2f} ({:.2f}-{:.2f})".format(aggr3_mean[0], aggr3_mean[1], aggr3_mean[2])
 
     return pearson_corr, r2_error, spearman2_corr, spearman3_corr, aggr2_corr, aggr3_corr
 
@@ -59,14 +63,12 @@ def get_assessment_scores_cnn_overall(reg_df, class_df):
 def get_assessment_scores_hblr_overall(reg_df):
 
     # Pearson Corr
-    pearson_mean = reg_df['Pearson_Overall'].mean()
-    pearson_sd = reg_df['Pearson_Overall'].std()
-    pearson_corr = "{:.2f}({:.2f}-{:.2f})".format(pearson_mean, (pearson_mean-pearson_sd), (pearson_mean+pearson_sd))
+    pearson_mean = mean_confidence_interval(reg_df['Pearson_Overall'], confidence=0.95)
+    pearson_corr = "{:.2f} ({:.2f}-{:.2f})".format(pearson_mean[0], pearson_mean[1], pearson_mean[2])
 
     # R2 Error
-    r2_mean = reg_df['R2_Overall'].mean()
-    r2_sd = reg_df['R2_Overall'].std()
-    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean, (r2_mean-r2_sd), (r2_mean+r2_sd))
+    r2_mean = mean_confidence_interval(reg_df['R2_Overall'], confidence=0.95)
+    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean[0], r2_mean[1], r2_mean[2])
 
     # Spearman Corr (2 Class)
     spearman2_corr = ""
@@ -75,9 +77,8 @@ def get_assessment_scores_hblr_overall(reg_df):
     spearman3_corr = ""
 
     # Agreement (2 Class)
-    aggr2_mean = reg_df['accuracy'].mean() * 100
-    aggr2_sd = reg_df['accuracy'].std() * 100
-    aggr2_corr = "{:.2f} ({:.2f}-{:.2f})".format(aggr2_mean, (aggr2_mean-aggr2_sd), (aggr2_mean+aggr2_sd))
+    aggr2_mean = mean_confidence_interval(reg_df['accuracy'] * 100, confidence=0.95)
+    aggr2_corr = "{:.2f} ({:.2f}-{:.2f})".format(aggr2_mean[0], aggr2_mean[1], aggr2_mean[2])
 
     # Agreement (3 Class)
     aggr3_corr = ""
@@ -126,46 +127,40 @@ def append_data_results_pa_cat(result_data, class_3000_df, class_6000_df, hblr_d
 
 def get_assessment_scores_cnn(reg_df, class_df, reg_ba_loc, pa_cat):
 
-    r2_mean = reg_df['R2_{}'.format(pa_cat)].mean() if pa_cat != 'SBLPA' else ''
-    r2_sd = reg_df['R2_{}'.format(pa_cat)].std() if pa_cat != 'SBLPA' else ''
-    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean, (r2_mean-r2_sd), (r2_mean+r2_sd)) if pa_cat != 'SBLPA' else ''
+    r2_mean = mean_confidence_interval(reg_df['R2_{}'.format(pa_cat)], confidence=0.95) if pa_cat != 'SBLPA' else ''
+    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean[0], r2_mean[1], r2_mean[2]) if pa_cat != 'SBLPA' else ''
 
-    pearson_mean = reg_df['Pearson_{}'.format(pa_cat)].mean() if pa_cat != 'SBLPA' else ''
-    pearson_sd = reg_df['Pearson_{}'.format(pa_cat)].std() if pa_cat != 'SBLPA' else ''
-    pearson_error = "{:.2f} ({:.2f}-{:.2f})".format(pearson_mean, (pearson_mean-pearson_sd), (pearson_mean+pearson_sd)) if pa_cat != 'SBLPA' else ''
+    # Pearson Corr
+    pearson_mean = mean_confidence_interval(reg_df['Pearson_{}'.format(pa_cat)], confidence=0.95) if pa_cat != 'SBLPA' else ''
+    pearson_error = "{:.2f} ({:.2f}-{:.2f})".format(pearson_mean[0], pearson_mean[1], pearson_mean[2]) if pa_cat != 'SBLPA' else ''
 
     rloa = get_rloa(reg_ba_loc, pa_cat) if pa_cat != 'SBLPA' else ''
 
-    sens_mean = class_df['sensitivity {}'.format(pa_cat)].mean() * 100
-    sens_sd = class_df['sensitivity {}'.format(pa_cat)].std() * 100
-    sens = "{:.2f} ({:.2f}-{:.2f})".format(sens_mean, (sens_mean-sens_sd), (sens_mean+sens_sd))
+    sens_mean = mean_confidence_interval(class_df['sensitivity {}'.format(pa_cat)] * 100, confidence=0.95)
+    sens = "{:.2f} ({:.2f}-{:.2f})".format(sens_mean[0], sens_mean[1], sens_mean[2])
 
-    spec_mean = class_df['specificity_{}'.format(pa_cat)].mean() * 100
-    spec_sd = class_df['specificity_{}'.format(pa_cat)].std() * 100
-    spec = "{:.2f} ({:.2f}-{:.2f})".format(spec_mean, (spec_mean-spec_sd), (spec_mean+spec_sd))
+    spec_mean = mean_confidence_interval(class_df['specificity_{}'.format(pa_cat)] * 100, confidence=0.95)
+    spec = "{:.2f} ({:.2f}-{:.2f})".format(spec_mean[0], spec_mean[1], spec_mean[2])
 
     return r2_error, pearson_error, rloa, sens, spec
 
 
 def get_assessment_scores_hb_lr(hild_df, reg_ba_loc, pa_cat):
 
-    r2_mean = hild_df['R2_{}'.format(pa_cat)].mean() if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    r2_sd = hild_df['R2_{}'.format(pa_cat)].std() if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean, (r2_mean-r2_sd), (r2_mean+r2_sd)) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    r2_mean = mean_confidence_interval(hild_df['R2_{}'.format(pa_cat)], confidence=0.95) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    r2_error = "{:.2f} ({:.2f}-{:.2f})".format(r2_mean[0], r2_mean[1], r2_mean[2]) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
 
-    pearson_mean = hild_df['Pearson_{}'.format(pa_cat)].mean() if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    pearson_sd = hild_df['Pearson_{}'.format(pa_cat)].std() if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    pearson_error = "{:.2f} ({:.2f}-{:.2f})".format(pearson_mean, (pearson_mean-pearson_sd), (pearson_mean+pearson_sd)) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    # Pearson Corr
+    pearson_mean = mean_confidence_interval(hild_df['Pearson_{}'.format(pa_cat)], confidence=0.95) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    pearson_error = "{:.2f} ({:.2f}-{:.2f})".format(pearson_mean[0], pearson_mean[1], pearson_mean[2]) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
 
     rloa = get_rloa(reg_ba_loc, pa_cat) if pa_cat != 'SBLPA' else ''
 
-    sens_mean = hild_df['sensitivity_{}'.format(pa_cat)].mean() * 100 if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    sens_sd = hild_df['sensitivity_{}'.format(pa_cat)].std() * 100 if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    sens = "{:.2f} ({:.2f}-{:.2f})".format(sens_mean, (sens_mean-sens_sd), (sens_mean+sens_sd)) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    sens_mean = mean_confidence_interval(hild_df['sensitivity_{}'.format(pa_cat)] * 100, confidence=0.95) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    sens = "{:.2f} ({:.2f}-{:.2f})".format(sens_mean[0], sens_mean[1], sens_mean[2]) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
 
-    spec_mean = hild_df['specificity_{}'.format(pa_cat)].mean() * 100 if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    spec_sd = hild_df['specificity_{}'.format(pa_cat)].std() * 100 if pa_cat != 'SB' and pa_cat != 'LPA' else ''
-    spec = "{:.2f} ({:.2f}-{:.2f})".format(spec_mean, (spec_mean-spec_sd), (spec_mean+spec_sd)) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    spec_mean = mean_confidence_interval(hild_df['specificity_{}'.format(pa_cat)] * 100, confidence=0.95) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
+    spec = "{:.2f} ({:.2f}-{:.2f})".format(spec_mean[0], spec_mean[1], spec_mean[2]) if pa_cat != 'SB' and pa_cat != 'LPA' else ''
 
     return r2_error, pearson_error, rloa, sens, spec
 
