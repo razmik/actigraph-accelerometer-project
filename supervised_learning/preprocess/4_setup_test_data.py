@@ -3,32 +3,20 @@ import numpy as np
 from os import listdir, makedirs
 from os.path import isfile, join, exists
 from tqdm import tqdm
-import operator
 import pickle
 
 
 def create_segments_and_labels(dataframe, time_steps, step, n_features, label_class, label_2):
 
-    # Down Sampling - Manual approach to solve data imbalance problem
-    class_count_map = {}
-    for i in range(0, len(dataframe) - time_steps, step):
-        timestep_data = dataframe[label_class][i: i + time_steps]
-        # If multiple classes in same segment, continue
-        if len(set(timestep_data)) != 1:
-            continue
-        class_count_map[i] = timestep_data.iloc[0]
-
-    sorted_class_count_map = sorted(class_count_map.items(), key=operator.itemgetter(1), reverse=False)
-
     segments = []
     labels = []
     regression_values = []
-    for i, c in sorted_class_count_map:
+    for i in range(0, len(dataframe) - time_steps, step):
         xs = dataframe['X'].values[i: i + time_steps]
         ys = dataframe['Y'].values[i: i + time_steps]
         zs = dataframe['Z'].values[i: i + time_steps]
         # Retrieve the most often used label in this segment
-        class_label = c
+        class_label = dataframe[label_class][i: i + time_steps].mode()[0]
         class_reg = dataframe[label_2][i: i + time_steps].mean()
         segments.append([xs, ys, zs])
         labels.append(class_label)
@@ -57,13 +45,13 @@ if __name__ == "__main__":
     target_cols = ['waist_ee', 'waist_intensity']
 
     INPUT_DATA_ROOT = "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined/"
-    OUTPUT_FOLDER_ROOT = join(INPUT_DATA_ROOT, 'model_ready_new')
+    OUTPUT_FOLDER_ROOT = join(INPUT_DATA_ROOT, 'model_ready_dec21')
     TRAIN_TEST_SUBJECT_PICKLE = '../participant_split/train_test_split.v2.pickle'
 
     # Test Train Split
     with open(TRAIN_TEST_SUBJECT_PICKLE, 'rb') as handle:
         split_dict = pickle.load(handle)
-    split_dict['train_test'] = split_dict['train'][:] + split_dict['test'][:]
+    split_dict['train_test'] = split_dict['train'][:]
 
     for user_group in GROUPS:
 
@@ -78,10 +66,6 @@ if __name__ == "__main__":
             try:
                 df = pd.read_csv(join(INPUT_DATA_FOLDER, f), usecols=req_cols)
 
-                class_counts = df['waist_intensity'].value_counts(normalize=True)
-                if class_counts.shape[0] == 1:
-                    continue
-
                 for time_window in TIME_PERIODS_LIST:
 
                     # No overlap for test data
@@ -90,7 +74,7 @@ if __name__ == "__main__":
                     reshaped_outcomes = create_segments_and_labels(df, time_window, STEP_DISTANCE,
                                                                    N_FEATURES, LABEL_CLASS, LABEL_REG)
 
-                    OUTPUT_FOLDER = join(OUTPUT_FOLDER_ROOT, 'window-{}-overlap-{}'.format(time_window, STEP_DISTANCE),
+                    OUTPUT_FOLDER = join(OUTPUT_FOLDER_ROOT, 'window-{}-overlap-{}'.format(time_window, int(STEP_DISTANCE/2)),
                                          user_group)
                     if not exists(OUTPUT_FOLDER):
                         makedirs(OUTPUT_FOLDER)
