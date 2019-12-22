@@ -137,8 +137,11 @@ def run(FOLDER_NAME, trial_id, data_root, epochs=20, patience=10):
 
     plot_model(history, MODEL_FOLDER)
 
-    with open(join(MODEL_FOLDER, 'history.pickle'), 'wb') as file_pi:
-        pickle.dump(history, file_pi)
+    try:
+        with open(join(MODEL_FOLDER, 'history.pickle'), 'wb') as file_pi:
+            pickle.dump(history, file_pi)
+    except Exception as e:
+        print('Unable to save history: Error - {}'.format(e))
 
     print('Selecting best model.')
     model_files = [(join(temp_model_out_folder, f), int(f.split('-')[0].split('.')[1])) for f in listdir(temp_model_out_folder) if
