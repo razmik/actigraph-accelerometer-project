@@ -33,15 +33,19 @@ def get_time_in(labels, time_epoch):
     return SB, LPA, MVPA
 
 
-def load_data(filenames, demo=False):
+def load_data(filenames, demo=False, user_list=None):
 
     # Single row for each
     data_dict = {}
     cc = 1
     for filename in tqdm(filenames, desc='Loading data'):
 
+        user_id = filename.split('/')[-1].split()[0]
+
+        if user_list is not None and user_id not in user_list:
+            continue
+
         npy = np.load(filename, allow_pickle=True)
-        user_id = filename.split('/')[-1][:6]
 
         if user_id in data_dict.keys():
             data_dict[user_id]['X_data'] = np.concatenate([data_dict[user_id]['X_data'], npy.item().get('segments')], axis=0)
@@ -178,7 +182,7 @@ def evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, CLASSIFICATION_RESU
     pd.DataFrame(output_results, columns=out_col_names).to_csv(join(CLASSIFICATION_RESULTS_FOLDER, 'results_classif_{}.csv'.format(group)), index=None)
 
 
-def run(FOLDER_NAME, training_version, group, data_root, demo=False):
+def run(FOLDER_NAME, training_version, group, data_root, demo=False, user_list=None):
 
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
     CLASSIF_MODEL_ROOT_FOLDER = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/classification/{}/model_out/'.format(training_version, FOLDER_NAME)
@@ -196,7 +200,7 @@ def run(FOLDER_NAME, training_version, group, data_root, demo=False):
     all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
 
     print('Loading data...')
-    data_dictionary = load_data(all_files_test, demo=demo)
+    data_dictionary = load_data(all_files_test, demo=demo, user_list=user_list)
 
     evaluate_classification_modal(CLASSIF_MODEL_ROOT_FOLDER, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
 
@@ -207,9 +211,11 @@ if __name__ == '__main__':
     temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined\model_ready/'
     all_files = [f for f in listdir(temp_folder) if os.path.isdir(join(temp_folder, f)) and (f.split('-')[1] != f.split('-')[3])]
 
-    training_version = '1-12_Dec'
-    allowed_list = [3000, 6000]
-    groups = ['test', 'train_test']
+    training_version = '1-12_Dec_Trail'
+    allowed_list = [6000]
+    groups = ['test']
+
+    req_user_list = ['LSM148', 'LSM148A']
 
     for f, grp in itertools.product(all_files, groups):
 
@@ -217,6 +223,6 @@ if __name__ == '__main__':
             continue
 
         print('\n\nProcessing {} for {}'.format(f, grp))
-        run(f, training_version, grp, temp_folder, demo=True)
+        run(f, training_version, grp, temp_folder, demo=False, user_list=req_user_list)
 
     print('Completed.')

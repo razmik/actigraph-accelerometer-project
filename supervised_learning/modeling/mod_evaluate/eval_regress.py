@@ -42,15 +42,19 @@ def load_data_overall(filenames, demo=False):
     return X_data, Y_data, ID_user
 
 
-def load_data_individual(filenames, demo=False):
+def load_data_individual(filenames, demo=False, user_list=None):
 
     # Single row for each
     data_dict = {}
     ccc = 1
     for filename in tqdm(filenames, desc='Loading data'):
 
+        user_id = filename.split('/')[-1].split()[0]
+
+        if user_list is not None and user_id not in user_list:
+            continue
+
         npy = np.load(filename, allow_pickle=True)
-        user_id = filename.split('/')[-1][:6]
 
         if user_id in data_dict.keys():
             data_dict[user_id]['X_data'] = np.concatenate([data_dict[user_id]['X_data'], npy.item().get('segments')], axis=0)
@@ -281,7 +285,7 @@ def bland_altman_eval(model_b, REG_RESULTS_FOLDER, X_data, Y_data, ID_user, grou
                                                    output_filename=ba_outfolder)
 
 
-def run(FOLDER_NAME, training_version, group, data_root, demo=False):
+def run(FOLDER_NAME, training_version, group, data_root, demo=False, user_list=None):
 
     TEST_DATA_FOLDER = data_root + '/{}/{}/'.format(FOLDER_NAME, group)
     REGRESSION_MODEL_ROOT_FOLDER = 'E:/Projects/Accelerometer-project_Rashmika/supervised_learning/output/v{}/regression/{}/model_out/'.format(training_version, FOLDER_NAME)
@@ -304,14 +308,14 @@ def run(FOLDER_NAME, training_version, group, data_root, demo=False):
     all_files_test = [join(TEST_DATA_FOLDER, f) for f in listdir(TEST_DATA_FOLDER) if isfile(join(TEST_DATA_FOLDER, f))]
 
     # Load data for overall assessment
-    test_X_data, test_Y_data, test_ID_user = load_data_overall(all_files_test, demo)
-    bland_altman_eval(model_b, OUTPUT_FOLDER_ROOT_OVERALL, test_X_data, test_Y_data, test_ID_user, group)
-    del test_X_data
-    del test_Y_data
-    del test_ID_user
+    # test_X_data, test_Y_data, test_ID_user = load_data_overall(all_files_test, demo)
+    # bland_altman_eval(model_b, OUTPUT_FOLDER_ROOT_OVERALL, test_X_data, test_Y_data, test_ID_user, group)
+    # del test_X_data
+    # del test_Y_data
+    # del test_ID_user
 
     # Load data for individual assessment
-    data_dictionary = load_data_individual(all_files_test, demo=demo)
+    data_dictionary = load_data_individual(all_files_test, demo=demo, user_list=user_list)
     evaluate_regression_modal(model_b, OUTPUT_FOLDER_ROOT, data_dictionary, TIME_PERIODS, group)
 
 
@@ -325,11 +329,13 @@ if __name__ == '__main__':
     allowed_list = [3000, 6000]
     groups = ['test']#['test', 'train_test']
 
+    req_user_list = []
+
     for f, grpd in itertools.product(all_files, groups):
 
         if int(f.split('-')[1]) not in allowed_list:
             continue
 
         print('\n\nProcessing {} for {}'.format(f, grpd))
-        run(f, training_version, grpd, temp_folder, demo=True)
+        run(f, training_version, grpd, temp_folder, demo=True, user_list=req_user_list)
 
