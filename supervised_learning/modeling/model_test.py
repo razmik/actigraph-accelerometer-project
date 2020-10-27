@@ -280,7 +280,7 @@ if __name__ == '__main__':
 
     trial_num = 5
     training_version = 4
-    allowed_list = [3000]#, 1500, 3000, 6000]
+    allowed_list = [6000]
 
     for f in sorted(all_files, reverse=True):
 

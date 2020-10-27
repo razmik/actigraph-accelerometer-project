@@ -554,7 +554,7 @@ class GeneralStats:
 
         thresh = cm.max() / 2.
         for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-            plt.text(j, i, cm[i, j],
+            plt.text(j, i, round(cm[i, j], 3),
                      horizontalalignment="center",
                      color="white" if cm[i, j] > thresh else "black")
 
@@ -562,7 +562,7 @@ class GeneralStats:
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
 
-        plt.savefig(output_filename, dpi=1200)
+        plt.savefig(output_filename, dpi=600)
 
     """
      Parameters

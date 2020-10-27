@@ -12,22 +12,23 @@ if __name__ == '__main__':
     temp_folder = 'E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Raw_features/Epoch1_Combined\model_ready/'
     all_files = [f for f in listdir(temp_folder) if isdir(join(temp_folder, f)) and (f.split('-')[1] != f.split('-')[3])]
 
-    training_version = '2-13_Dec'
-    allowed_list = [3000, 6000]
+    training_version = '1-14_Feb'
+    allowed_list = [6000]
     groups = ['train_test', 'test']
+    req_user_list = None #[]
 
     start_time = time.time()
 
     # Run classifier
-    for f, grp in itertools.product(all_files, groups):
-
-        if int(f.split('-')[1]) not in allowed_list:
-            continue
-
-        print('\nProcessing Classification on {} for {}'.format(f, grp))
-        cl_begin = time.time()
-        model_eval_class.run(f, training_version, grp, temp_folder, demo=False)
-        print('\nClassification on {} for {} completed in {:.3f} mins.'.format(f, grp, (time.time() - cl_begin)/60))
+    # for f, grp in itertools.product(all_files, groups):
+    #
+    #     if int(f.split('-')[1]) not in allowed_list:
+    #         continue
+    #
+    #     print('\nProcessing Classification on {} for {}'.format(f, grp))
+    #     cl_begin = time.time()
+    #     model_eval_class.run(f, training_version, grp, temp_folder, demo=False, user_list=req_user_list)
+    #     print('\nClassification on {} for {} completed in {:.3f} mins.'.format(f, grp, (time.time() - cl_begin)/60))
 
     # Run Regressor
     for f, grp in itertools.product(all_files, groups):
@@ -37,7 +38,7 @@ if __name__ == '__main__':
 
         print('\nProcessing Regression {} for {}'.format(f, grp))
         rg_begin = time.time()
-        model_eval_reg.run(f, training_version, grp, temp_folder, demo=False)
+        model_eval_reg.run(f, training_version, grp, temp_folder, demo=False, user_list=req_user_list)
         print('\nRegression on {} for {} completed in {:.3f} mins.'.format(f, grp, (time.time() - rg_begin)/60))
 
     print('Completed all in {:.3f} minutes.'.format((time.time() - start_time)/60))

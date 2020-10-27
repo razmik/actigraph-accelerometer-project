@@ -68,42 +68,42 @@ def evaluate_regression_modal_overall(results_df, REGRESSION_RESULTS_FOLDER):
 
     cnf_matrix = confusion_matrix(y_test_ai, y_pred_test_ai)
 
-    stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
+    # stats = SE.GeneralStats.evaluation_statistics(cnf_matrix)
+    #
+    # assessment_result = 'Classes' + '\t' + str(class_names) + '\t' + '\n'
+    # assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
+    # assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
+    # assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
+    # assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
+    # assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
+    #
+    # results_descriptions.append(assessment_result)
 
-    assessment_result = 'Classes' + '\t' + str(class_names) + '\t' + '\n'
-    assessment_result += 'Accuracy' + '\t' + str(stats['accuracy']) + '\t' + str(stats['accuracy_ci']) + '\n'
-    assessment_result += 'Sensitivity' + '\t' + str(stats['sensitivity']) + '\n'
-    assessment_result += 'Sensitivity CI' + '\t' + str(stats['sensitivity_ci']) + '\n'
-    assessment_result += 'Specificity' + '\t' + str(stats['specificity']) + '\n'
-    assessment_result += 'Specificity CI' + '\t' + str(stats['specificity_ci']) + '\n'
-
-    results_descriptions.append(assessment_result)
-
-    SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM',
+    SE.GeneralStats.plot_confusion_matrix(cnf_matrix, classes=class_names, title='CM', normalize=True,
                                           output_filename=join(REGRESSION_RESULTS_FOLDER, 'confusion_matrix.png'))
 
-    results_df = pd.DataFrame(
-        {'subject': ID_test,
-         'waist_ee': y_test,
-         'predicted_ee': y_pred_test
-         })
+    # results_df = pd.DataFrame(
+    #     {'subject': ID_test,
+    #      'waist_ee': y_test,
+    #      'predicted_ee': y_pred_test
+    #      })
+    #
+    # def clean_data_points(data):
+    #     data = data.assign(waist_ee_cleaned=data['waist_ee'])
+    #     data = data.assign(predicted_ee_cleaned=data['predicted_ee'])
+    #     data.loc[(data['predicted_ee'] < 1), 'predicted_ee_cleaned'] = 1
+    #     return data
 
-    def clean_data_points(data):
-        data = data.assign(waist_ee_cleaned=data['waist_ee'])
-        data = data.assign(predicted_ee_cleaned=data['predicted_ee'])
-        data.loc[(data['predicted_ee'] < 1), 'predicted_ee_cleaned'] = 1
-        return data
-
-    results_df = clean_data_points(results_df)
+    # results_df = clean_data_points(results_df)
 
     # print('Model Evaluation - BlandAltman')
-    SE.BlandAltman.bland_altman_paired_plot_tested(results_df, '{}'.format(REGRESSION_RESULTS_FOLDER), 1, log_transformed=True,
-                                                   min_count_regularise=False,
-                                                   output_filename=join(REGRESSION_RESULTS_FOLDER, 'bland_altman'))
+    # SE.BlandAltman.bland_altman_paired_plot_tested(results_df, '{}'.format(REGRESSION_RESULTS_FOLDER), 1, log_transformed=True,
+    #                                                min_count_regularise=False,
+    #                                                output_filename=join(REGRESSION_RESULTS_FOLDER, 'bland_altman'))
 
-    result_string = '\n'.join(results_descriptions)
-    with open(join(REGRESSION_RESULTS_FOLDER, 'result_report.txt'), "w") as text_file:
-        text_file.write(result_string)
+    # result_string = '\n'.join(results_descriptions)
+    # with open(join(REGRESSION_RESULTS_FOLDER, 'result_report.txt'), "w") as text_file:
+    #     text_file.write(result_string)
 
 
 def evaluate_regression_modal_individual(overall_df, REGRESSION_RESULTS_FOLDER):
@@ -166,7 +166,7 @@ def evaluate_regression_modal_individual(overall_df, REGRESSION_RESULTS_FOLDER):
 if __name__ == '__main__':
 
     INPUT_DATA_ROOT = "E:/Data/Accelerometer_Dataset_Rashmika/pre-processed/P2-Processed_Statistical_features/Epoch60_Combined/"
-    OUTPUT_FOLDER_ROOT = 'outputs'
+    OUTPUT_FOLDER_ROOT = 'outputs_new'
     TRAIN_TEST_SUBJECT_PICKLE = '../participant_split/train_test_split.v2.pickle'
 
     LABEL_REG = 'waist_ee'
@@ -220,6 +220,6 @@ if __name__ == '__main__':
         evaluate_regression_modal_overall(results, join(OUTPUT_FOLDER_PATH, 'overall'))
 
         # Evaluate individual participant
-        evaluate_regression_modal_individual(results, join(OUTPUT_FOLDER_PATH, 'individual'))
+        # evaluate_regression_modal_individual(results, join(OUTPUT_FOLDER_PATH, 'individual'))
 
     print('Assessment completed.')

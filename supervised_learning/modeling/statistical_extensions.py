@@ -126,6 +126,7 @@ class BlandAltman:
         """Define multiple dataframes based on the activity intensity"""
         dataframe_sb = dataframe.loc[dataframe['waist_ee'] <= 1.5]
         dataframe_lpa = dataframe.loc[(1.5 < dataframe['waist_ee']) & (dataframe['waist_ee'] < 3)]
+        dataframe_sblpa = dataframe.loc[dataframe['waist_ee'] < 3]
         dataframe_mvpa = dataframe.loc[3 <= dataframe['waist_ee']]
         dataframe_mpa = dataframe.loc[(3 <= dataframe['waist_ee']) & (dataframe['waist_ee'] < 6)]
         dataframe_vpa = dataframe.loc[6 <= dataframe['waist_ee']]
@@ -161,6 +162,16 @@ class BlandAltman:
                                dataframe_lpa['mean'], dataframe_lpa['diff'],
                                upper_loa_lpa, mean_bias_lpa, lower_loa_lpa,
                                output_filename + '_lpa')
+
+        """
+        Process BA plot for SBLPA
+        """
+        dataframe_sblpa, mean_bias_sblpa, upper_loa_sblpa, lower_loa_sblpa = BlandAltman._bland_altman_analyse(
+            dataframe_sblpa, log_transformed=log_transformed, min_count_regularise=min_count_regularise)
+        BlandAltman.plot_graph(plot_number + 4, plot_title + ' - SBLPA - Freedson VM3 Combination (11)',
+                               dataframe_sblpa['mean'], dataframe_sblpa['diff'],
+                               upper_loa_sblpa, mean_bias_sblpa, lower_loa_sblpa,
+                               output_filename + '_sblpa')
 
         """
         Process BA plot for MVPA
@@ -563,7 +574,7 @@ class GeneralStats:
 
         thresh = cm.max() / 2.
         for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-            plt.text(j, i, cm[i, j],
+            plt.text(j, i, round(cm[i, j], 3),
                      horizontalalignment="center",
                      color="white" if cm[i, j] > thresh else "black")
 
